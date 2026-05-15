@@ -1,0 +1,1031 @@
+{
+  "board": "Karnataka Textbook Society (KTBS)",
+  "academic_year": "2025-26",
+  "class": "10",
+  "medium": "English",
+  "mediums_available": [
+    "English",
+    "Kannada",
+    "Hindi",
+    "Urdu",
+    "Tamil",
+    "Telugu",
+    "Marathi"
+  ],
+  "subjects": [
+    {
+      "subject_name": "Mathematics",
+      "official_books": [
+        "Mathematics Part 1",
+        "Mathematics Part 2"
+      ],
+      "parts": [
+        {
+          "part": "Part 1",
+          "chapters": [
+            {
+              "chapter_no": 1,
+              "chapter_name": "Real Numbers",
+              "concepts": [
+                {
+                  "topic_name": "Euclid Division Lemma",
+                  "description": "Educational content pending generation.",
+                  "key_points": [],
+                  "formulas": [],
+                  "si_units": [],
+                  "methods": [],
+                  "shortcut_tricks": [],
+                  "remember_this": "Content will be updated soon."
+                },
+                {
+                  "topic_name": "Fundamental Theorem of Arithmetic",
+                  "description": "Educational content pending generation.",
+                  "key_points": [],
+                  "formulas": [],
+                  "si_units": [],
+                  "methods": [],
+                  "shortcut_tricks": [],
+                  "remember_this": "Content will be updated soon."
+                },
+                {
+                  "topic_name": "HCF and LCM",
+                  "description": "Educational content pending generation.",
+                  "key_points": [],
+                  "formulas": [],
+                  "si_units": [],
+                  "methods": [],
+                  "shortcut_tricks": [],
+                  "remember_this": "Content will be updated soon."
+                },
+                {
+                  "topic_name": "Prime Factorization",
+                  "description": "Educational content pending generation.",
+                  "key_points": [],
+                  "formulas": [],
+                  "si_units": [],
+                  "methods": [],
+                  "shortcut_tricks": [],
+                  "remember_this": "Content will be updated soon."
+                }
+              ]
+            },
+            {
+              "chapter_no": 2,
+              "chapter_name": "Polynomials",
+              "concepts": [
+                {
+                  "topic_name": "Zeros of Polynomial",
+                  "description": "Educational content pending generation.",
+                  "key_points": [],
+                  "formulas": [],
+                  "si_units": [],
+                  "methods": [],
+                  "shortcut_tricks": [],
+                  "remember_this": "Content will be updated soon."
+                },
+                {
+                  "topic_name": "Relationship Between Zeroes and Coefficients",
+                  "description": "Educational content pending generation.",
+                  "key_points": [],
+                  "formulas": [],
+                  "si_units": [],
+                  "methods": [],
+                  "shortcut_tricks": [],
+                  "remember_this": "Content will be updated soon."
+                },
+                {
+                  "topic_name": "Quadratic Polynomials",
+                  "description": "Educational content pending generation.",
+                  "key_points": [],
+                  "formulas": [],
+                  "si_units": [],
+                  "methods": [],
+                  "shortcut_tricks": [],
+                  "remember_this": "Content will be updated soon."
+                },
+                {
+                  "topic_name": "Division Algorithm",
+                  "description": "Educational content pending generation.",
+                  "key_points": [],
+                  "formulas": [],
+                  "si_units": [],
+                  "methods": [],
+                  "shortcut_tricks": [],
+                  "remember_this": "Content will be updated soon."
+                }
+              ]
+            },
+            {
+              "chapter_no": 3,
+              "chapter_name": "Pair of Linear Equations in Two Variables",
+              "concepts": [
+                {
+                  "topic_name": "Graphical Method",
+                  "description": "Educational content pending generation.",
+                  "key_points": [],
+                  "formulas": [],
+                  "si_units": [],
+                  "methods": [],
+                  "shortcut_tricks": [],
+                  "remember_this": "Content will be updated soon."
+                },
+                {
+                  "topic_name": "Substitution Method",
+                  "description": "Educational content pending generation.",
+                  "key_points": [],
+                  "formulas": [],
+                  "si_units": [],
+                  "methods": [],
+                  "shortcut_tricks": [],
+                  "remember_this": "Content will be updated soon."
+                },
+                {
+                  "topic_name": "Elimination Method",
+                  "description": "Educational content pending generation.",
+                  "key_points": [],
+                  "formulas": [],
+                  "si_units": [],
+                  "methods": [],
+                  "shortcut_tricks": [],
+                  "remember_this": "Content will be updated soon."
+                },
+                {
+                  "topic_name": "Cross Multiplication Method",
+                  "description": "Educational content pending generation.",
+                  "key_points": [],
+                  "formulas": [],
+                  "si_units": [],
+                  "methods": [],
+                  "shortcut_tricks": [],
+                  "remember_this": "Content will be updated soon."
+                }
+              ]
+            },
+            {
+              "chapter_no": 4,
+              "chapter_name": "Quadratic Equations",
+              "concepts": [
+                {
+                  "topic_name": "Factorization Method",
+                  "description": "Educational content pending generation.",
+                  "key_points": [],
+                  "formulas": [],
+                  "si_units": [],
+                  "methods": [],
+                  "shortcut_tricks": [],
+                  "remember_this": "Content will be updated soon."
+                },
+                {
+                  "topic_name": "Completing Square Method",
+                  "description": "Educational content pending generation.",
+                  "key_points": [],
+                  "formulas": [],
+                  "si_units": [],
+                  "methods": [],
+                  "shortcut_tricks": [],
+                  "remember_this": "Content will be updated soon."
+                },
+                {
+                  "topic_name": "Quadratic Formula",
+                  "description": "Educational content pending generation.",
+                  "key_points": [],
+                  "formulas": [],
+                  "si_units": [],
+                  "methods": [],
+                  "shortcut_tricks": [],
+                  "remember_this": "Content will be updated soon."
+                },
+                {
+                  "topic_name": "Nature of Roots",
+                  "description": "Educational content pending generation.",
+                  "key_points": [],
+                  "formulas": [],
+                  "si_units": [],
+                  "methods": [],
+                  "shortcut_tricks": [],
+                  "remember_this": "Content will be updated soon."
+                }
+              ]
+            },
+            {
+              "chapter_no": 5,
+              "chapter_name": "Arithmetic Progressions",
+              "concepts": [
+                {
+                  "topic_name": "Sequence",
+                  "description": "Educational content pending generation.",
+                  "key_points": [],
+                  "formulas": [],
+                  "si_units": [],
+                  "methods": [],
+                  "shortcut_tricks": [],
+                  "remember_this": "Content will be updated soon."
+                },
+                {
+                  "topic_name": "Common Difference",
+                  "description": "Educational content pending generation.",
+                  "key_points": [],
+                  "formulas": [],
+                  "si_units": [],
+                  "methods": [],
+                  "shortcut_tricks": [],
+                  "remember_this": "Content will be updated soon."
+                },
+                {
+                  "topic_name": "nth Term",
+                  "description": "Educational content pending generation.",
+                  "key_points": [],
+                  "formulas": [],
+                  "si_units": [],
+                  "methods": [],
+                  "shortcut_tricks": [],
+                  "remember_this": "Content will be updated soon."
+                },
+                {
+                  "topic_name": "Sum of AP",
+                  "description": "Educational content pending generation.",
+                  "key_points": [],
+                  "formulas": [],
+                  "si_units": [],
+                  "methods": [],
+                  "shortcut_tricks": [],
+                  "remember_this": "Content will be updated soon."
+                }
+              ]
+            },
+            {
+              "chapter_no": 6,
+              "chapter_name": "Triangles",
+              "concepts": [
+                {
+                  "topic_name": "Similarity",
+                  "description": "Educational content pending generation.",
+                  "key_points": [],
+                  "formulas": [],
+                  "si_units": [],
+                  "methods": [],
+                  "shortcut_tricks": [],
+                  "remember_this": "Content will be updated soon."
+                },
+                {
+                  "topic_name": "Basic Proportionality Theorem",
+                  "description": "Educational content pending generation.",
+                  "key_points": [],
+                  "formulas": [],
+                  "si_units": [],
+                  "methods": [],
+                  "shortcut_tricks": [],
+                  "remember_this": "Content will be updated soon."
+                },
+                {
+                  "topic_name": "Pythagoras Theorem",
+                  "description": "Educational content pending generation.",
+                  "key_points": [],
+                  "formulas": [],
+                  "si_units": [],
+                  "methods": [],
+                  "shortcut_tricks": [],
+                  "remember_this": "Content will be updated soon."
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "part": "Part 2",
+          "chapters": [
+            {
+              "chapter_no": 7,
+              "chapter_name": "Coordinate Geometry",
+              "concepts": [
+                {
+                  "topic_name": "Distance Formula",
+                  "description": "Educational content pending generation.",
+                  "key_points": [],
+                  "formulas": [],
+                  "si_units": [],
+                  "methods": [],
+                  "shortcut_tricks": [],
+                  "remember_this": "Content will be updated soon."
+                },
+                {
+                  "topic_name": "Section Formula",
+                  "description": "Educational content pending generation.",
+                  "key_points": [],
+                  "formulas": [],
+                  "si_units": [],
+                  "methods": [],
+                  "shortcut_tricks": [],
+                  "remember_this": "Content will be updated soon."
+                },
+                {
+                  "topic_name": "Midpoint Formula",
+                  "description": "Educational content pending generation.",
+                  "key_points": [],
+                  "formulas": [],
+                  "si_units": [],
+                  "methods": [],
+                  "shortcut_tricks": [],
+                  "remember_this": "Content will be updated soon."
+                }
+              ]
+            },
+            {
+              "chapter_no": 8,
+              "chapter_name": "Introduction to Trigonometry",
+              "concepts": [
+                {
+                  "topic_name": "Trigonometric Ratios",
+                  "description": "Educational content pending generation.",
+                  "key_points": [],
+                  "formulas": [],
+                  "si_units": [],
+                  "methods": [],
+                  "shortcut_tricks": [],
+                  "remember_this": "Content will be updated soon."
+                },
+                {
+                  "topic_name": "Trigonometric Identities",
+                  "description": "Educational content pending generation.",
+                  "key_points": [],
+                  "formulas": [],
+                  "si_units": [],
+                  "methods": [],
+                  "shortcut_tricks": [],
+                  "remember_this": "Content will be updated soon."
+                },
+                {
+                  "topic_name": "Values of Trigonometric Ratios",
+                  "description": "Educational content pending generation.",
+                  "key_points": [],
+                  "formulas": [],
+                  "si_units": [],
+                  "methods": [],
+                  "shortcut_tricks": [],
+                  "remember_this": "Content will be updated soon."
+                }
+              ]
+            },
+            {
+              "chapter_no": 9,
+              "chapter_name": "Applications of Trigonometry",
+              "concepts": [
+                {
+                  "topic_name": "Heights and Distances",
+                  "description": "Educational content pending generation.",
+                  "key_points": [],
+                  "formulas": [],
+                  "si_units": [],
+                  "methods": [],
+                  "shortcut_tricks": [],
+                  "remember_this": "Content will be updated soon."
+                },
+                {
+                  "topic_name": "Angle of Elevation",
+                  "description": "Educational content pending generation.",
+                  "key_points": [],
+                  "formulas": [],
+                  "si_units": [],
+                  "methods": [],
+                  "shortcut_tricks": [],
+                  "remember_this": "Content will be updated soon."
+                },
+                {
+                  "topic_name": "Angle of Depression",
+                  "description": "Educational content pending generation.",
+                  "key_points": [],
+                  "formulas": [],
+                  "si_units": [],
+                  "methods": [],
+                  "shortcut_tricks": [],
+                  "remember_this": "Content will be updated soon."
+                }
+              ]
+            },
+            {
+              "chapter_no": 10,
+              "chapter_name": "Circles",
+              "concepts": [
+                {
+                  "topic_name": "Tangents",
+                  "description": "Educational content pending generation.",
+                  "key_points": [],
+                  "formulas": [],
+                  "si_units": [],
+                  "methods": [],
+                  "shortcut_tricks": [],
+                  "remember_this": "Content will be updated soon."
+                },
+                {
+                  "topic_name": "Properties of Tangents",
+                  "description": "Educational content pending generation.",
+                  "key_points": [],
+                  "formulas": [],
+                  "si_units": [],
+                  "methods": [],
+                  "shortcut_tricks": [],
+                  "remember_this": "Content will be updated soon."
+                },
+                {
+                  "topic_name": "Number of Tangents",
+                  "description": "Educational content pending generation.",
+                  "key_points": [],
+                  "formulas": [],
+                  "si_units": [],
+                  "methods": [],
+                  "shortcut_tricks": [],
+                  "remember_this": "Content will be updated soon."
+                }
+              ]
+            },
+            {
+              "chapter_no": 11,
+              "chapter_name": "Areas Related to Circles",
+              "concepts": [
+                {
+                  "topic_name": "Sector",
+                  "description": "Educational content pending generation.",
+                  "key_points": [],
+                  "formulas": [],
+                  "si_units": [],
+                  "methods": [],
+                  "shortcut_tricks": [],
+                  "remember_this": "Content will be updated soon."
+                },
+                {
+                  "topic_name": "Segment",
+                  "description": "Educational content pending generation.",
+                  "key_points": [],
+                  "formulas": [],
+                  "si_units": [],
+                  "methods": [],
+                  "shortcut_tricks": [],
+                  "remember_this": "Content will be updated soon."
+                },
+                {
+                  "topic_name": "Area Calculations",
+                  "description": "Educational content pending generation.",
+                  "key_points": [],
+                  "formulas": [],
+                  "si_units": [],
+                  "methods": [],
+                  "shortcut_tricks": [],
+                  "remember_this": "Content will be updated soon."
+                },
+                {
+                  "topic_name": "Arc Length",
+                  "description": "Educational content pending generation.",
+                  "key_points": [],
+                  "formulas": [],
+                  "si_units": [],
+                  "methods": [],
+                  "shortcut_tricks": [],
+                  "remember_this": "Content will be updated soon."
+                }
+              ]
+            },
+            {
+              "chapter_no": 12,
+              "chapter_name": "Surface Areas and Volumes",
+              "concepts": [
+                {
+                  "topic_name": "Cone",
+                  "description": "Educational content pending generation.",
+                  "key_points": [],
+                  "formulas": [],
+                  "si_units": [],
+                  "methods": [],
+                  "shortcut_tricks": [],
+                  "remember_this": "Content will be updated soon."
+                },
+                {
+                  "topic_name": "Cylinder",
+                  "description": "Educational content pending generation.",
+                  "key_points": [],
+                  "formulas": [],
+                  "si_units": [],
+                  "methods": [],
+                  "shortcut_tricks": [],
+                  "remember_this": "Content will be updated soon."
+                },
+                {
+                  "topic_name": "Sphere",
+                  "description": "Educational content pending generation.",
+                  "key_points": [],
+                  "formulas": [],
+                  "si_units": [],
+                  "methods": [],
+                  "shortcut_tricks": [],
+                  "remember_this": "Content will be updated soon."
+                },
+                {
+                  "topic_name": "Hemisphere",
+                  "description": "Educational content pending generation.",
+                  "key_points": [],
+                  "formulas": [],
+                  "si_units": [],
+                  "methods": [],
+                  "shortcut_tricks": [],
+                  "remember_this": "Content will be updated soon."
+                },
+                {
+                  "topic_name": "Frustum",
+                  "description": "Educational content pending generation.",
+                  "key_points": [],
+                  "formulas": [],
+                  "si_units": [],
+                  "methods": [],
+                  "shortcut_tricks": [],
+                  "remember_this": "Content will be updated soon."
+                }
+              ]
+            },
+            {
+              "chapter_no": 13,
+              "chapter_name": "Statistics",
+              "concepts": [
+                {
+                  "topic_name": "Mean",
+                  "description": "Educational content pending generation.",
+                  "key_points": [],
+                  "formulas": [],
+                  "si_units": [],
+                  "methods": [],
+                  "shortcut_tricks": [],
+                  "remember_this": "Content will be updated soon."
+                },
+                {
+                  "topic_name": "Median",
+                  "description": "Educational content pending generation.",
+                  "key_points": [],
+                  "formulas": [],
+                  "si_units": [],
+                  "methods": [],
+                  "shortcut_tricks": [],
+                  "remember_this": "Content will be updated soon."
+                },
+                {
+                  "topic_name": "Mode",
+                  "description": "Educational content pending generation.",
+                  "key_points": [],
+                  "formulas": [],
+                  "si_units": [],
+                  "methods": [],
+                  "shortcut_tricks": [],
+                  "remember_this": "Content will be updated soon."
+                },
+                {
+                  "topic_name": "Cumulative Frequency Graph",
+                  "description": "Educational content pending generation.",
+                  "key_points": [],
+                  "formulas": [],
+                  "si_units": [],
+                  "methods": [],
+                  "shortcut_tricks": [],
+                  "remember_this": "Content will be updated soon."
+                }
+              ]
+            },
+            {
+              "chapter_no": 14,
+              "chapter_name": "Probability",
+              "concepts": [
+                {
+                  "topic_name": "Probability Basics",
+                  "description": "Educational content pending generation.",
+                  "key_points": [],
+                  "formulas": [],
+                  "si_units": [],
+                  "methods": [],
+                  "shortcut_tricks": [],
+                  "remember_this": "Content will be updated soon."
+                },
+                {
+                  "topic_name": "Events",
+                  "description": "Educational content pending generation.",
+                  "key_points": [],
+                  "formulas": [],
+                  "si_units": [],
+                  "methods": [],
+                  "shortcut_tricks": [],
+                  "remember_this": "Content will be updated soon."
+                },
+                {
+                  "topic_name": "Experimental Probability",
+                  "description": "Educational content pending generation.",
+                  "key_points": [],
+                  "formulas": [],
+                  "si_units": [],
+                  "methods": [],
+                  "shortcut_tricks": [],
+                  "remember_this": "Content will be updated soon."
+                }
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "subject_name": "Science",
+      "official_books": [
+        "Science Physics",
+        "Science Chemistry",
+        "Science Biology"
+      ],
+      "sections": [
+        {
+          "section_name": "Physics",
+          "chapters": [
+            {
+              "chapter_name": "Light Reflection and Refraction",
+              "concepts": [
+                "Reflection",
+                "Refraction",
+                "Mirror Formula",
+                "Lens Formula",
+                "Magnification"
+              ]
+            },
+            {
+              "chapter_name": "Human Eye and Colourful World",
+              "concepts": [
+                "Human Eye",
+                "Defects of Vision",
+                "Dispersion",
+                "Scattering of Light"
+              ]
+            },
+            {
+              "chapter_name": "Electricity",
+              "concepts": [
+                "Electric Current",
+                "Potential Difference",
+                "Ohm's Law",
+                "Resistance",
+                "Series and Parallel Circuits",
+                "Electric Power"
+              ]
+            },
+            {
+              "chapter_name": "Magnetic Effects of Electric Current",
+              "concepts": [
+                "Magnetic Field",
+                "Electromagnet",
+                "Electric Motor",
+                "Electromagnetic Induction"
+              ]
+            },
+            {
+              "chapter_name": "Sources of Energy",
+              "concepts": [
+                "Renewable Energy",
+                "Non-Renewable Energy",
+                "Solar Energy",
+                "Hydroelectric Energy"
+              ]
+            }
+          ]
+        },
+        {
+          "section_name": "Chemistry",
+          "chapters": [
+            {
+              "chapter_name": "Chemical Reactions and Equations",
+              "concepts": [
+                "Chemical Equation",
+                "Balancing Equations",
+                "Types of Reactions",
+                "Oxidation and Reduction"
+              ]
+            },
+            {
+              "chapter_name": "Acids Bases and Salts",
+              "concepts": [
+                "Acids",
+                "Bases",
+                "Indicators",
+                "pH Scale",
+                "Neutralization"
+              ]
+            },
+            {
+              "chapter_name": "Metals and Non-Metals",
+              "concepts": [
+                "Physical Properties",
+                "Chemical Properties",
+                "Reactivity Series",
+                "Corrosion"
+              ]
+            },
+            {
+              "chapter_name": "Carbon and Its Compounds",
+              "concepts": [
+                "Covalent Bond",
+                "Hydrocarbons",
+                "Functional Groups",
+                "Homologous Series"
+              ]
+            },
+            {
+              "chapter_name": "Periodic Classification of Elements",
+              "concepts": [
+                "Periodic Table",
+                "Mendeleev Table",
+                "Modern Periodic Table",
+                "Periodic Trends"
+              ]
+            }
+          ]
+        },
+        {
+          "section_name": "Biology",
+          "chapters": [
+            {
+              "chapter_name": "Life Processes",
+              "concepts": [
+                "Nutrition",
+                "Respiration",
+                "Transportation",
+                "Excretion"
+              ]
+            },
+            {
+              "chapter_name": "Control and Coordination",
+              "concepts": [
+                "Nervous System",
+                "Hormones",
+                "Reflex Action",
+                "Plant Movements"
+              ]
+            },
+            {
+              "chapter_name": "How Do Organisms Reproduce",
+              "concepts": [
+                "Asexual Reproduction",
+                "Sexual Reproduction",
+                "Reproductive Health"
+              ]
+            },
+            {
+              "chapter_name": "Heredity and Evolution",
+              "concepts": [
+                "Genes",
+                "Inheritance",
+                "Mendel's Experiments",
+                "Evolution"
+              ]
+            },
+            {
+              "chapter_name": "Our Environment",
+              "concepts": [
+                "Ecosystem",
+                "Food Chain",
+                "Biodegradable Waste",
+                "Environmental Conservation"
+              ]
+            },
+            {
+              "chapter_name": "Management of Natural Resources",
+              "concepts": [
+                "Forest Conservation",
+                "Water Conservation",
+                "Sustainable Development"
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "subject_name": "Social Science",
+      "official_books": [
+        "History",
+        "Geography",
+        "Political Science",
+        "Economics"
+      ],
+      "sections": [
+        {
+          "section_name": "History",
+          "chapters": [
+            "Rise of Nationalism in Europe",
+            "Nationalism in India",
+            "World Wars",
+            "India After Independence",
+            "Globalisation"
+          ]
+        },
+        {
+          "section_name": "Geography",
+          "chapters": [
+            "Resources and Development",
+            "Forest and Wildlife",
+            "Water Resources",
+            "Agriculture",
+            "Minerals and Energy Resources",
+            "Manufacturing Industries"
+          ]
+        },
+        {
+          "section_name": "Political Science",
+          "chapters": [
+            "Power Sharing",
+            "Federalism",
+            "Political Parties",
+            "Outcomes of Democracy"
+          ]
+        },
+        {
+          "section_name": "Economics",
+          "chapters": [
+            "Development",
+            "Sectors of Indian Economy",
+            "Money and Credit",
+            "Globalisation and Indian Economy"
+          ]
+        }
+      ]
+    },
+    {
+      "subject_name": "English",
+      "official_books": [
+        "English First Language",
+        "English Second Language"
+      ],
+      "sections": [
+        {
+          "section_name": "Prose",
+          "concepts": [
+            "Theme Analysis",
+            "Character Sketch",
+            "Inference",
+            "Critical Thinking",
+            "Comprehension"
+          ]
+        },
+        {
+          "section_name": "Poetry",
+          "concepts": [
+            "Poetic Devices",
+            "Imagery",
+            "Symbolism",
+            "Rhythm",
+            "Theme"
+          ]
+        },
+        {
+          "section_name": "Grammar",
+          "concepts": [
+            "Voice",
+            "Direct and Indirect Speech",
+            "Clauses",
+            "Sentence Transformation",
+            "Tenses"
+          ]
+        },
+        {
+          "section_name": "Writing Skills",
+          "concepts": [
+            "Essay Writing",
+            "Letter Writing",
+            "Report Writing",
+            "Speech Writing",
+            "Article Writing"
+          ]
+        }
+      ]
+    },
+    {
+      "subject_name": "Kannada",
+      "official_books": [
+        "Kannada First Language",
+        "Kannada Second Language"
+      ],
+      "sections": [
+        {
+          "section_name": "ಗದ್ಯ",
+          "concepts": [
+            "ಅರ್ಥಗ್ರಹಣ",
+            "ಪಾತ್ರ ವಿಶ್ಲೇಷಣೆ",
+            "ಸಾಮಾಜಿಕ ಸಂದೇಶ",
+            "ಭಾಷಾ ಶೈಲಿ",
+            "ಮುಖ್ಯ ಅಂಶಗಳು"
+          ]
+        },
+        {
+          "section_name": "ಪದ್ಯ",
+          "concepts": [
+            "ಭಾವಾರ್ಥ",
+            "ಛಂದಸ್ಸು",
+            "ಅಲಂಕಾರ",
+            "ಕಾವ್ಯ ಸೌಂದರ್ಯ",
+            "ಕಾವ್ಯ ವಿಶ್ಲೇಷಣೆ"
+          ]
+        },
+        {
+          "section_name": "ವ್ಯಾಕರಣ",
+          "concepts": [
+            "ಸಂಧಿ",
+            "ಸಮಾಸ",
+            "ನಾಮಪದ",
+            "ಸರ್ವನಾಮ",
+            "ಕ್ರಿಯಾಪದ",
+            "ವಾಕ್ಯ ರಚನೆ"
+          ]
+        },
+        {
+          "section_name": "ಬರಹ ಕೌಶಲ್ಯ",
+          "concepts": [
+            "ಪ್ರಬಂಧ",
+            "ಪತ್ರ ಬರಹ",
+            "ವರದಿ ಬರಹ",
+            "ಸಂವಾದ",
+            "ಸಾರಾಂಶ"
+          ]
+        }
+      ]
+    },
+    {
+      "subject_name": "Hindi",
+      "official_books": [
+        "Hindi First Language",
+        "Hindi Second Language"
+      ],
+      "sections": [
+        {
+          "section_name": "गद्य",
+          "concepts": [
+            "मुख्य विचार",
+            "चरित्र विश्लेषण",
+            "सामाजिक संदेश",
+            "अर्थ समझना"
+          ]
+        },
+        {
+          "section_name": "पद्य",
+          "concepts": [
+            "भावार्थ",
+            "अलंकार",
+            "काव्य सौंदर्य",
+            "ताल और लय"
+          ]
+        },
+        {
+          "section_name": "व्याकरण",
+          "concepts": [
+            "संज्ञा",
+            "सर्वनाम",
+            "क्रिया",
+            "विशेषण",
+            "काल",
+            "वाक्य रचना"
+          ]
+        },
+        {
+          "section_name": "लेखन कौशल",
+          "concepts": [
+            "निबंध लेखन",
+            "पत्र लेखन",
+            "रिपोर्ट लेखन",
+            "संवाद लेखन"
+          ]
+        }
+      ]
+    },
+    {
+      "subject_name": "Physical Education",
+      "official_books": [
+        "Physical Education"
+      ],
+      "concepts": [
+        "Yoga",
+        "Physical Fitness",
+        "Team Sports",
+        "Health Education",
+        "Exercise and Discipline"
+      ]
+    },
+    {
+      "subject_name": "Art Education",
+      "official_books": [
+        "Art Education"
+      ],
+      "concepts": [
+        "Drawing",
+        "Painting",
+        "Craft",
+        "Poster Design",
+        "Creative Arts"
+      ]
+    }
+  ],
+  "source_reference": {
+    "official_portal": "https://textbooks.karnataka.gov.in/textbooks/en/1000",
+    "verified_sources": [
+      "KTBS Textbook PDFs",
+      "KSEEB Curriculum",
+      "NCERT-Aligned Karnataka Textbooks"
+    ]
+  }
+}

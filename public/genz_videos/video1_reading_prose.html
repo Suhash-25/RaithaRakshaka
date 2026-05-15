@@ -1,0 +1,287 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Introduction to Prose — PragnaVistara</title>
+<link href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;700;900&family=Space+Grotesk:wght@500;700&display=swap" rel="stylesheet">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
+<style>
+*{margin:0;padding:0;box-sizing:border-box}
+html,body{width:100%;height:100%;background:#070314;font-family:'Outfit',sans-serif;overflow:hidden;color:#fff}
+#stage{width:100%;height:100%;position:relative;overflow:hidden}
+
+/* ── PARTICLES ── */
+.star{position:absolute;border-radius:50%;background:#fff;opacity:0;pointer-events:none}
+
+/* ── GRADIENT BG ── */
+#bg{position:absolute;inset:0;background:radial-gradient(ellipse at 20% 50%,#1a0533 0%,#070314 60%);transition:background 1.2s}
+
+/* ── SCENES ── */
+.scene{position:absolute;inset:0;display:flex;flex-direction:column;justify-content:center;align-items:center;opacity:0;pointer-events:none;padding:4% 8%}
+
+/* ── PLAY OVERLAY ── */
+#playOverlay{position:absolute;inset:0;display:flex;flex-direction:column;justify-content:center;align-items:center;z-index:100;background:radial-gradient(ellipse at center,#1a0533,#070314)}
+#playOverlay h1{font-size:clamp(22px,4vw,52px);font-weight:900;background:linear-gradient(135deg,#f0abfc,#818cf8,#22d3ee);-webkit-background-clip:text;-webkit-text-fill-color:transparent;text-align:center;margin-bottom:10px}
+#playOverlay p{color:#a78bfa;font-size:clamp(12px,1.8vw,22px);margin-bottom:40px;text-align:center}
+#playBtn{background:linear-gradient(135deg,#a855f7,#ec4899);border:none;color:#fff;font-family:'Outfit',sans-serif;font-weight:900;font-size:clamp(14px,2vw,24px);padding:16px 48px;border-radius:50px;cursor:pointer;box-shadow:0 0 40px rgba(168,85,247,.6);transition:transform .2s,box-shadow .2s;letter-spacing:.05em}
+#playBtn:hover{transform:scale(1.08);box-shadow:0 0 60px rgba(168,85,247,.9)}
+
+/* ── PROGRESS BAR ── */
+#progress{position:absolute;bottom:0;left:0;height:4px;background:linear-gradient(90deg,#a855f7,#ec4899,#22d3ee);width:0%;z-index:50;border-radius:0 2px 2px 0}
+#timer{position:absolute;bottom:10px;right:16px;font-size:clamp(10px,1.2vw,14px);color:#6b7280;z-index:50}
+#skipBtn{position:absolute;bottom:10px;left:16px;font-size:clamp(10px,1.2vw,13px);color:#6b7280;z-index:50;background:rgba(255,255,255,.06);border:1px solid rgba(255,255,255,.1);padding:4px 14px;border-radius:20px;cursor:pointer;font-family:'Outfit',sans-serif}
+#skipBtn:hover{color:#fff;background:rgba(255,255,255,.12)}
+
+/* ── SCENE 1: HOOK ── */
+#s1 .sparkle-title{font-size:clamp(28px,6vw,80px);font-weight:900;text-align:center;background:linear-gradient(135deg,#f0abfc,#818cf8,#22d3ee);-webkit-background-clip:text;-webkit-text-fill-color:transparent;line-height:1.1;letter-spacing:-.02em}
+#s1 .sub{font-size:clamp(13px,2vw,26px);color:#c4b5fd;margin-top:16px;text-align:center;font-weight:500}
+.glow-ring{width:clamp(80px,15vw,180px);height:clamp(80px,15vw,180px);border-radius:50%;border:3px solid rgba(168,85,247,.4);position:absolute;animation:ringPulse 3s ease-in-out infinite}
+@keyframes ringPulse{0%,100%{transform:scale(1);opacity:.4}50%{transform:scale(1.15);opacity:.9}}
+
+/* ── SCENE 2: WHAT IS PROSE ── */
+.glass-card{background:rgba(255,255,255,.05);backdrop-filter:blur(20px);border:1px solid rgba(255,255,255,.12);border-radius:24px;padding:clamp(16px,3vw,36px);position:relative;overflow:hidden}
+.glass-card::before{content:'';position:absolute;top:0;left:0;right:0;height:2px;background:linear-gradient(90deg,transparent,#a855f7,#22d3ee,transparent)}
+#s2 .main-card{width:90%;max-width:700px}
+#s2 h2{font-size:clamp(20px,4vw,52px);font-weight:900;background:linear-gradient(135deg,#f0abfc,#818cf8);-webkit-background-clip:text;-webkit-text-fill-color:transparent;margin-bottom:clamp(10px,2vw,24px)}
+.prose-def{display:flex;align-items:center;gap:clamp(8px,2vw,24px);margin-bottom:clamp(8px,1.5vw,18px)}
+.emoji-box{font-size:clamp(24px,4vw,52px);background:rgba(168,85,247,.15);border-radius:16px;padding:clamp(8px,1.5vw,20px);border:1px solid rgba(168,85,247,.3);flex-shrink:0}
+.prose-def p{font-size:clamp(12px,1.6vw,20px);color:#e2e8f0;line-height:1.5}
+.tag{display:inline-block;background:linear-gradient(135deg,#7c3aed,#a855f7);padding:3px 14px;border-radius:20px;font-size:clamp(10px,1.2vw,14px);font-weight:700;margin-top:6px}
+
+/* ── SCENE 3: EXAMPLES ── */
+#s3 h2{font-size:clamp(18px,3.5vw,48px);font-weight:900;text-align:center;margin-bottom:clamp(12px,2.5vw,32px);background:linear-gradient(135deg,#22d3ee,#818cf8);-webkit-background-clip:text;-webkit-text-fill-color:transparent}
+.cards-row{display:flex;flex-wrap:wrap;justify-content:center;gap:clamp(8px,1.5vw,20px);width:100%}
+.ex-card{background:rgba(255,255,255,.05);border:1px solid rgba(255,255,255,.1);border-radius:20px;padding:clamp(10px,2vw,24px) clamp(12px,2.5vw,28px);text-align:center;min-width:clamp(80px,12vw,140px);flex:0 0 auto;transform:translateY(60px);opacity:0}
+.ex-card .ico{font-size:clamp(24px,4vw,48px);margin-bottom:8px}
+.ex-card .lbl{font-size:clamp(10px,1.3vw,16px);color:#c4b5fd;font-weight:700}
+
+/* ── SCENE 4: KEYWORDS ── */
+#s4 h2{font-size:clamp(16px,3vw,42px);font-weight:900;text-align:center;margin-bottom:clamp(12px,2.5vw,32px);color:#fff}
+.kw-list{width:90%;max-width:640px;display:flex;flex-direction:column;gap:clamp(8px,1.5vw,18px)}
+.kw-item{background:rgba(255,255,255,.04);border:1px solid rgba(255,255,255,.08);border-radius:16px;padding:clamp(10px,2vw,20px) clamp(14px,2.5vw,28px);display:flex;align-items:center;gap:clamp(10px,2vw,20px);opacity:0;transform:translateX(-80px)}
+.kw-dot{width:clamp(10px,1.5vw,16px);height:clamp(10px,1.5vw,16px);border-radius:50%;flex-shrink:0}
+.kw-item p{font-size:clamp(12px,1.6vw,20px);color:#e2e8f0;font-weight:500}
+.kw-item .glow-word{font-weight:900;-webkit-text-fill-color:transparent;-webkit-background-clip:text}
+
+/* ── SCENE 5: ACRONYM ── */
+#s5 h2{font-size:clamp(16px,2.8vw,38px);font-weight:900;text-align:center;margin-bottom:clamp(10px,2vw,28px);color:#fbbf24}
+.acro-grid{display:flex;flex-direction:column;gap:clamp(6px,1.2vw,14px);width:90%;max-width:560px}
+.acro-row{display:flex;align-items:center;gap:clamp(10px,2vw,24px);background:rgba(255,255,255,.04);border-radius:14px;padding:clamp(8px,1.5vw,18px) clamp(12px,2vw,24px);border:1px solid rgba(255,255,255,.08);opacity:0;transform:scale(.8)}
+.acro-letter{font-size:clamp(22px,4vw,52px);font-weight:900;width:clamp(36px,5vw,60px);text-align:center;flex-shrink:0}
+.acro-word{font-size:clamp(13px,2vw,24px);font-weight:700;color:#e2e8f0}
+.acro-emoji{font-size:clamp(18px,2.5vw,32px);margin-left:auto;flex-shrink:0}
+
+/* ── SCENE 6: RECAP ── */
+#s6 h2{font-size:clamp(22px,4vw,52px);font-weight:900;text-align:center;margin-bottom:clamp(10px,2vw,28px);background:linear-gradient(135deg,#fbbf24,#f0abfc,#22d3ee);-webkit-background-clip:text;-webkit-text-fill-color:transparent}
+.recap-box{width:90%;max-width:680px;background:rgba(168,85,247,.1);border:2px solid rgba(168,85,247,.4);border-radius:24px;padding:clamp(16px,3vw,40px);text-align:center;box-shadow:0 0 60px rgba(168,85,247,.2);opacity:0;transform:scale(.85)}
+.recap-box p{font-size:clamp(14px,2.2vw,28px);line-height:1.6;color:#e2e8f0;font-weight:500}
+.recap-box .highlight{color:#f0abfc;font-weight:900}
+.star-row{display:flex;justify-content:center;gap:16px;margin-top:clamp(10px,2vw,24px);font-size:clamp(20px,3vw,40px)}
+</style>
+</head>
+<body>
+<div id="stage">
+  <div id="bg"></div>
+  <div id="particles"></div>
+
+  <!-- PLAY OVERLAY -->
+  <div id="playOverlay">
+    <div class="glow-ring" style="top:15%;left:10%"></div>
+    <div class="glow-ring" style="bottom:15%;right:10%;animation-delay:-1.5s;border-color:rgba(34,211,238,.4)"></div>
+    <h1>📖 Introduction to Prose</h1>
+    <p>Class 5 · English · Chapter 1 · PragnaVistara</p>
+    <button id="playBtn">▶ &nbsp;START LEARNING</button>
+  </div>
+
+  <!-- SCENE 1: HOOK -->
+  <div class="scene" id="s1">
+    <div class="sparkle-title" id="hookTitle">Welcome to the<br>World of Prose! 🚀</div>
+    <div class="sub" id="hookSub">Class 5 English · PragnaVistara · Gen-Z Edition</div>
+  </div>
+
+  <!-- SCENE 2: WHAT IS PROSE -->
+  <div class="scene" id="s2">
+    <div class="glass-card main-card">
+      <h2>📖 What is Prose?</h2>
+      <div class="prose-def" id="pd1" style="opacity:0">
+        <div class="emoji-box">📝</div>
+        <p>Prose is <strong>ordinary writing</strong> — the kind we use every day. It flows naturally like how we <em>talk, read news, or tell stories</em>.<br><span class="tag">NOT like poetry ✗</span></p>
+      </div>
+      <div class="prose-def" id="pd2" style="opacity:0">
+        <div class="emoji-box">🗣️</div>
+        <p>Think of prose as <strong>normal sentences and paragraphs</strong> — no special rhythm or rhyme required!</p>
+      </div>
+      <div class="prose-def" id="pd3" style="opacity:0">
+        <div class="emoji-box">⚡</div>
+        <p>Prose <strong>vs Poetry</strong>: Prose = natural flow of words. Poetry = rhythm &amp; rhyme patterns.</p>
+      </div>
+    </div>
+  </div>
+
+  <!-- SCENE 3: REAL-LIFE EXAMPLES -->
+  <div class="scene" id="s3">
+    <h2>🌍 Real-Life Examples of Prose</h2>
+    <div class="cards-row">
+      <div class="ex-card"><div class="ico">📚</div><div class="lbl">Storybooks</div></div>
+      <div class="ex-card"><div class="ico">📰</div><div class="lbl">Newspapers</div></div>
+      <div class="ex-card"><div class="ico">✉️</div><div class="lbl">Letters</div></div>
+      <div class="ex-card"><div class="ico">📓</div><div class="lbl">Essays</div></div>
+      <div class="ex-card"><div class="ico">💬</div><div class="lbl">Conversations</div></div>
+      <div class="ex-card"><div class="ico">🎭</div><div class="lbl">Plays</div></div>
+    </div>
+  </div>
+
+  <!-- SCENE 4: KEY CONCEPTS -->
+  <div class="scene" id="s4">
+    <h2>💡 Key Concepts to Remember</h2>
+    <div class="kw-list">
+      <div class="kw-item">
+        <div class="kw-dot" style="background:#a855f7;box-shadow:0 0 12px #a855f7"></div>
+        <p>Prose uses <span class="glow-word" style="background:linear-gradient(135deg,#f0abfc,#818cf8)">normal language</span> — just like how we speak!</p>
+      </div>
+      <div class="kw-item">
+        <div class="kw-dot" style="background:#22d3ee;box-shadow:0 0 12px #22d3ee"></div>
+        <p><span class="glow-word" style="background:linear-gradient(135deg,#22d3ee,#818cf8)">Stories are written in prose</span> — novels, tales &amp; adventures!</p>
+      </div>
+      <div class="kw-item">
+        <div class="kw-dot" style="background:#f0abfc;box-shadow:0 0 12px #f0abfc"></div>
+        <p>Prose helps us <span class="glow-word" style="background:linear-gradient(135deg,#fbbf24,#f0abfc)">communicate ideas</span> clearly and effectively.</p>
+      </div>
+      <div class="kw-item">
+        <div class="kw-dot" style="background:#4ade80;box-shadow:0 0 12px #4ade80"></div>
+        <p>No fixed <span class="glow-word" style="background:linear-gradient(135deg,#4ade80,#22d3ee)">rhyme or rhythm</span> — prose flows freely!</p>
+      </div>
+    </div>
+  </div>
+
+  <!-- SCENE 5: P-R-O-S-E ACRONYM -->
+  <div class="scene" id="s5">
+    <h2>✨ Memory Trick — P·R·O·S·E</h2>
+    <div class="acro-grid">
+      <div class="acro-row"><div class="acro-letter" style="background:linear-gradient(135deg,#f0abfc,#a855f7);-webkit-background-clip:text;-webkit-text-fill-color:transparent">P</div><div class="acro-word">Plain &amp; simple language we understand</div><div class="acro-emoji">😊</div></div>
+      <div class="acro-row"><div class="acro-letter" style="background:linear-gradient(135deg,#818cf8,#22d3ee);-webkit-background-clip:text;-webkit-text-fill-color:transparent">R</div><div class="acro-word">Real stories, books &amp; reading material</div><div class="acro-emoji">📚</div></div>
+      <div class="acro-row"><div class="acro-letter" style="background:linear-gradient(135deg,#fbbf24,#f0abfc);-webkit-background-clip:text;-webkit-text-fill-color:transparent">O</div><div class="acro-word">Ordinary sentences, no rhyme needed!</div><div class="acro-emoji">✍️</div></div>
+      <div class="acro-row"><div class="acro-letter" style="background:linear-gradient(135deg,#4ade80,#22d3ee);-webkit-background-clip:text;-webkit-text-fill-color:transparent">S</div><div class="acro-word">Stories, speeches &amp; school essays</div><div class="acro-emoji">🎤</div></div>
+      <div class="acro-row"><div class="acro-letter" style="background:linear-gradient(135deg,#fb923c,#f0abfc);-webkit-background-clip:text;-webkit-text-fill-color:transparent">E</div><div class="acro-word">Everyday communication — yes, that's prose!</div><div class="acro-emoji">🌟</div></div>
+    </div>
+  </div>
+
+  <!-- SCENE 6: RECAP -->
+  <div class="scene" id="s6">
+    <h2>🎓 Remember This!</h2>
+    <div class="recap-box" id="recapBox">
+      <p>"<span class="highlight">Prose</span> is the language we use every day to<br><span class="highlight">tell stories, share ideas,</span><br>and <span class="highlight">communicate!</span>"</p>
+      <div class="star-row">⭐️<span>🎉</span>⭐️<span>📖</span>⭐️</div>
+    </div>
+  </div>
+
+  <!-- UI -->
+  <div id="progress"></div>
+  <div id="timer">0:00</div>
+  <button id="skipBtn">Skip →</button>
+</div>
+
+<script>
+// ── PARTICLES ──
+const pCont = document.getElementById('particles');
+for(let i=0;i<60;i++){
+  const s=document.createElement('div');
+  s.className='star';
+  const sz=Math.random()*3+1;
+  s.style.cssText=`width:${sz}px;height:${sz}px;left:${Math.random()*100}%;top:${Math.random()*100}%;`;
+  gsap.set(s,{opacity:Math.random()*.6});
+  gsap.to(s,{opacity:Math.random()*.8,duration:Math.random()*4+2,repeat:-1,yoyo:true,ease:'sine.inOut'});
+  gsap.to(s,{y:`-=${Math.random()*60+20}`,duration:Math.random()*8+6,repeat:-1,yoyo:true,ease:'sine.inOut'});
+  pCont.appendChild(s);
+}
+
+// ── BG GRADIENTS per scene ──
+const bgs=[
+  'radial-gradient(ellipse at 20% 50%,#1a0533 0%,#070314 60%)',
+  'radial-gradient(ellipse at 80% 20%,#0d1b4b 0%,#070314 60%)',
+  'radial-gradient(ellipse at 50% 80%,#0d2b1a 0%,#070314 60%)',
+  'radial-gradient(ellipse at 30% 30%,#1a1a3e 0%,#070314 60%)',
+  'radial-gradient(ellipse at 70% 60%,#2d1b00 0%,#070314 60%)',
+  'radial-gradient(ellipse at 50% 50%,#1a0533 0%,#070314 50%)',
+];
+
+// ── TIMER ──
+const timerEl=document.getElementById('timer');
+const progressEl=document.getElementById('progress');
+const totalDur=55;
+let elapsed=0,timerInt=null;
+function startTimer(){
+  timerInt=setInterval(()=>{
+    elapsed=Math.min(elapsed+0.1,totalDur);
+    const m=Math.floor(elapsed/60);
+    const s=Math.floor(elapsed%60);
+    timerEl.textContent=`${m}:${s.toString().padStart(2,'0')}`;
+    gsap.to(progressEl,{width:`${(elapsed/totalDur)*100}%`,duration:.1,ease:'none'});
+  },100);
+}
+
+// ── MAIN TIMELINE ──
+function buildTimeline(){
+  const tl=gsap.timeline();
+  const bg=document.getElementById('bg');
+
+  // ── S1: HOOK ──
+  bg.style.background=bgs[0];
+  tl.to('#s1',{opacity:1,duration:.1})
+    .fromTo('#hookTitle',{scale:0.3,opacity:0,filter:'blur(20px)'},{scale:1,opacity:1,filter:'blur(0px)',duration:0.9,ease:'elastic.out(1,0.5)'})
+    .fromTo('#hookSub',{opacity:0,y:30},{opacity:1,y:0,duration:0.6,ease:'power2.out'},'+=.2')
+    .to('#s1',{opacity:0,scale:1.1,duration:.5,ease:'power2.in'},'+=1.8');
+
+  // ── S2: WHAT IS PROSE ──
+  tl.call(()=>{bg.style.background=bgs[1]})
+    .fromTo('#s2',{opacity:0,y:60},{opacity:1,y:0,duration:0.6,ease:'back.out(1.5)'})
+    .fromTo('#s2 .main-card',{scale:.9,opacity:0},{scale:1,opacity:1,duration:.5,ease:'power2.out'},'-=.3')
+    .to('#pd1',{opacity:1,y:0,duration:.5,ease:'power2.out'})
+    .to('#pd2',{opacity:1,y:0,duration:.5,ease:'power2.out'},'+=.25')
+    .to('#pd3',{opacity:1,y:0,duration:.5,ease:'power2.out'},'+=.25')
+    .to('#s2',{opacity:0,x:-100,duration:.5,ease:'power2.in'},'+=2.0');
+
+  // ── S3: EXAMPLES ──
+  tl.call(()=>{bg.style.background=bgs[2]})
+    .fromTo('#s3',{opacity:0,scale:.8},{opacity:1,scale:1,duration:.5,ease:'back.out(1.5)'})
+    .to('#s3 .ex-card',{translateY:0,opacity:1,duration:.45,stagger:.1,ease:'back.out(1.7)'})
+    .to('#s3',{opacity:0,y:-80,duration:.5,ease:'power2.in'},'+=2.4');
+
+  // ── S4: KEY CONCEPTS ──
+  tl.call(()=>{bg.style.background=bgs[3]})
+    .fromTo('#s4',{opacity:0,rotateY:-15},{opacity:1,rotateY:0,duration:.55,ease:'power2.out'})
+    .to('#s4 .kw-item',{translateX:0,opacity:1,duration:.45,stagger:.13,ease:'back.out(1.5)'})
+    .to('#s4',{opacity:0,rotateY:15,duration:.5,ease:'power2.in'},'+=2.0');
+
+  // ── S5: ACRONYM ──
+  tl.call(()=>{bg.style.background=bgs[4]})
+    .fromTo('#s5',{opacity:0,y:80},{opacity:1,y:0,duration:.5,ease:'power2.out'})
+    .to('#s5 .acro-row',{scale:1,opacity:1,duration:.4,stagger:.13,ease:'back.out(1.7)'})
+    .to('#s5',{opacity:0,scale:1.1,duration:.5,ease:'power2.in'},'+=1.8');
+
+  // ── S6: RECAP ──
+  tl.call(()=>{bg.style.background=bgs[5]})
+    .fromTo('#s6',{opacity:0,scale:.5},{opacity:1,scale:1,duration:0.65,ease:'elastic.out(1,0.5)'})
+    .to('#recapBox',{opacity:1,scale:1,duration:0.65,ease:'back.out(1.5)'})
+    .to('#recapBox',{boxShadow:'0 0 80px rgba(168,85,247,.5)',duration:1,yoyo:true,repeat:-1,ease:'sine.inOut'});
+
+  return tl;
+}
+
+let masterTl=null;
+
+document.getElementById('playBtn').addEventListener('click',()=>{
+  document.getElementById('playOverlay').style.display='none';
+  masterTl=buildTimeline();
+  startTimer();
+});
+
+document.getElementById('skipBtn').addEventListener('click',()=>{
+  if(masterTl){
+    masterTl.progress(masterTl.progress()+0.12);
+  }
+});
+</script>
+</body>
+</html>

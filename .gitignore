@@ -90,4 +90,3 @@ backend/scratch/
 backend/service_images/
 backend/qdrant_storage/
 backend/vector_store/
-

@@ -1,0 +1,335 @@
+{
+  "board": "Karnataka State Board",
+  "academic_year": "2025-26",
+  "class": "2",
+  "medium": "English",
+  "subjects": [
+    {
+      "subject_name": "English",
+      "category": "Language",
+      "concepts": [
+        {
+          "unit": "Advanced Alphabet and Phonics",
+          "topics": [
+            "Alphabet Revision",
+            "Vowel and Consonant Sounds",
+            "Blended Sounds",
+            "Rhyming Words",
+            "Word Families",
+            "Pronunciation Practice"
+          ]
+        },
+        {
+          "unit": "Vocabulary Development",
+          "topics": [
+            "Action Words",
+            "Naming Words",
+            "Describing Words",
+            "Synonyms and Opposites",
+            "Community Helpers",
+            "Animals and Birds",
+            "Transport",
+            "Occupations"
+          ]
+        },
+        {
+          "unit": "Reading Skills",
+          "topics": [
+            "Reading Short Stories",
+            "Reading Comprehension",
+            "Picture Interpretation",
+            "Sequencing Events",
+            "Identifying Main Characters"
+          ]
+        },
+        {
+          "unit": "Writing Skills",
+          "topics": [
+            "Sentence Formation",
+            "Paragraph Writing",
+            "Creative Writing",
+            "Dictation",
+            "Story Completion",
+            "Letter Formation"
+          ]
+        },
+        {
+          "unit": "Grammar",
+          "topics": [
+            "Nouns",
+            "Pronouns",
+            "Verbs",
+            "Adjectives",
+            "Articles",
+            "Singular and Plural",
+            "Punctuation",
+            "Use of Capital Letters"
+          ]
+        },
+        {
+          "unit": "Listening and Speaking",
+          "topics": [
+            "Story Listening",
+            "Conversation Practice",
+            "Recitation",
+            "Role Play",
+            "Speaking in Complete Sentences"
+          ]
+        }
+      ]
+    },
+    {
+      "subject_name": "Kannada",
+      "category": "Language",
+      "concepts": [
+        {
+          "unit": "ಅಕ್ಷರ ಮತ್ತು ಉಚ್ಚಾರಣೆ",
+          "topics": [
+            "ಸ್ವರ ಮತ್ತು ವ್ಯಂಜನ ಪುನರವಲೋಕನ",
+            "ಸಮಾಸ ಅಕ್ಷರಗಳು",
+            "ಉಚ್ಚಾರಣೆ ಅಭ್ಯಾಸ",
+            "ಸರಳ ಓದು"
+          ]
+        },
+        {
+          "unit": "ಪದಸಂಪತ್ತು",
+          "topics": [
+            "ನಾಮಪದಗಳು",
+            "ಕ್ರಿಯಾಪದಗಳು",
+            "ವಿರುದ್ಧಾರ್ಥಕ ಪದಗಳು",
+            "ಪ್ರಾಣಿ ಮತ್ತು ಪಕ್ಷಿಗಳು",
+            "ಬಣ್ಣಗಳು",
+            "ವಾಹನಗಳು"
+          ]
+        },
+        {
+          "unit": "ಓದು ಕೌಶಲ್ಯ",
+          "topics": [
+            "ಸರಳ ಕಥೆಗಳು",
+            "ಅರ್ಥಗ್ರಹಣ",
+            "ಚಿತ್ರ ವಿವರಣೆ",
+            "ಘಟನೆಗಳ ಕ್ರಮ"
+          ]
+        },
+        {
+          "unit": "ಬರಹ ಕೌಶಲ್ಯ",
+          "topics": [
+            "ವಾಕ್ಯ ರಚನೆ",
+            "ಸರಳ ಪ್ಯಾರಾಗ್ರಾಫ್",
+            "ನಕಲು ಬರಹ",
+            "ಶ್ರುತಿಲೇಖನ"
+          ]
+        },
+        {
+          "unit": "ವ್ಯಾಕರಣ",
+          "topics": [
+            "ನಾಮಪದ",
+            "ಕ್ರಿಯಾಪದ",
+            "ಏಕವಚನ ಮತ್ತು ಬಹುವಚನ",
+            "ವಿರಾಮ ಚಿಹ್ನೆಗಳು"
+          ]
+        }
+      ]
+    },
+    {
+      "subject_name": "Mathematics",
+      "category": "Core Subject",
+      "concepts": [
+        {
+          "unit": "Numbers and Numeration",
+          "topics": [
+            "Numbers up to 1000",
+            "Place Value",
+            "Expanded Form",
+            "Comparing Numbers",
+            "Ascending and Descending Order",
+            "Odd and Even Numbers",
+            "Skip Counting"
+          ]
+        },
+        {
+          "unit": "Addition",
+          "topics": [
+            "Two Digit Addition",
+            "Three Digit Addition",
+            "Carry Over Addition",
+            "Word Problems"
+          ]
+        },
+        {
+          "unit": "Subtraction",
+          "topics": [
+            "Two Digit Subtraction",
+            "Three Digit Subtraction",
+            "Borrowing",
+            "Word Problems"
+          ]
+        },
+        {
+          "unit": "Multiplication Basics",
+          "topics": [
+            "Repeated Addition",
+            "Multiplication Tables",
+            "Simple Multiplication Facts"
+          ]
+        },
+        {
+          "unit": "Measurement",
+          "topics": [
+            "Length",
+            "Weight",
+            "Capacity",
+            "Comparison of Measurements"
+          ]
+        },
+        {
+          "unit": "Geometry",
+          "topics": [
+            "2D Shapes",
+            "3D Shapes",
+            "Lines and Curves",
+            "Symmetry Basics"
+          ]
+        },
+        {
+          "unit": "Time and Money",
+          "topics": [
+            "Reading Clock",
+            "Days and Months",
+            "Currency Notes and Coins",
+            "Simple Transactions"
+          ]
+        },
+        {
+          "unit": "Data Handling",
+          "topics": [
+            "Picture Graphs",
+            "Sorting Objects",
+            "Simple Data Collection"
+          ]
+        }
+      ]
+    },
+    {
+      "subject_name": "Environmental Studies",
+      "category": "EVS",
+      "concepts": [
+        {
+          "unit": "My Body and Health",
+          "topics": [
+            "Body Parts and Functions",
+            "Healthy Habits",
+            "Exercise",
+            "Cleanliness",
+            "Safety Rules"
+          ]
+        },
+        {
+          "unit": "Family and Community",
+          "topics": [
+            "Family Roles",
+            "Helping at Home",
+            "Neighbors",
+            "Community Helpers"
+          ]
+        },
+        {
+          "unit": "Food and Nutrition",
+          "topics": [
+            "Healthy Food",
+            "Balanced Diet Basics",
+            "Sources of Food",
+            "Cooking Methods"
+          ]
+        },
+        {
+          "unit": "Plants Around Us",
+          "topics": [
+            "Parts of Plants",
+            "Uses of Plants",
+            "Plant Growth",
+            "Types of Plants"
+          ]
+        },
+        {
+          "unit": "Animals Around Us",
+          "topics": [
+            "Domestic and Wild Animals",
+            "Food Habits of Animals",
+            "Animal Homes",
+            "Useful Animals"
+          ]
+        },
+        {
+          "unit": "Transport and Communication",
+          "topics": [
+            "Means of Transport",
+            "Road Safety",
+            "Communication Methods",
+            "Postal Services"
+          ]
+        },
+        {
+          "unit": "Environment and Weather",
+          "topics": [
+            "Air and Water",
+            "Weather Conditions",
+            "Seasons",
+            "Conserving Nature"
+          ]
+        }
+      ]
+    },
+    {
+      "subject_name": "Art Education",
+      "category": "Co-Curricular",
+      "concepts": [
+        {
+          "unit": "Creative Arts",
+          "topics": [
+            "Sketching",
+            "Color Mixing",
+            "Scenery Drawing",
+            "Pattern Art",
+            "Festival Art"
+          ]
+        },
+        {
+          "unit": "Craft Activities",
+          "topics": [
+            "Paper Craft",
+            "Origami",
+            "Clay Modeling",
+            "Decoration Activities"
+          ]
+        }
+      ]
+    },
+    {
+      "subject_name": "Physical Education",
+      "category": "Co-Curricular",
+      "concepts": [
+        {
+          "unit": "Basic Physical Skills",
+          "topics": [
+            "Running",
+            "Jumping",
+            "Throwing",
+            "Balancing",
+            "Coordination Activities"
+          ]
+        },
+        {
+          "unit": "Games and Fitness",
+          "topics": [
+            "Group Games",
+            "Exercise Routines",
+            "Teamwork",
+            "Discipline",
+            "Healthy Lifestyle"
+          ]
+        }
+      ]
+    }
+  ]
+}

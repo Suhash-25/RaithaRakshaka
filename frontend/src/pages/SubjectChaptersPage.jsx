@@ -177,10 +177,12 @@ export default function SubjectChaptersPage() {
           const isExpanded = expandedChapters.includes(ch.id) || !!searchQuery.trim()
           return (
             <div key={ch.id} className="rounded-2xl border border-surface-border bg-surface-card/70 overflow-hidden">
-              <button
-                type="button"
+              <div
+                role="button"
+                tabIndex={0}
                 onClick={() => searchQuery.trim() ? navigate(`/learn/${classId}/${subjectId}/chapters/${ch.id}`) : toggleChapter(ch.id)}
-                className="w-full px-5 py-4 text-left flex items-center justify-between hover:bg-surface/40 transition-colors"
+                onKeyDown={(e) => { if(e.key === 'Enter') { searchQuery.trim() ? navigate(`/learn/${classId}/${subjectId}/chapters/${ch.id}`) : toggleChapter(ch.id)} }}
+                className="w-full px-5 py-4 text-left flex items-center justify-between hover:bg-surface/40 transition-colors cursor-pointer"
               >
                 <div className="flex items-center gap-4">
                   <div className="flex h-12 w-12 items-center justify-center rounded-xl border border-primary-500 bg-surface-card text-lg font-bold text-primary-500">
@@ -201,7 +203,7 @@ export default function SubjectChaptersPage() {
                   </button>
                   {isExpanded ? <ChevronDown size={18} className="text-surface-muted" /> : <ChevronRight size={18} className="text-surface-muted" />}
                 </div>
-              </button>
+              </div>
 
               {isExpanded && (
                 <div className="border-t border-surface-border bg-surface/30 px-5 py-3">

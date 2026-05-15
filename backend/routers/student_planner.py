@@ -112,6 +112,75 @@ Return STRICT JSON format EXACTLY like this (NO Markdown wrappers, no ```json, j
         print("ML Recommendation error:", e)
         return {"recommendations": []}
 
+class EnrichTopicRequest(BaseModel):
+    board: str
+    classLabel: str
+    subject: str
+    chapterTitle: str
+    topicTitle: str
+
+@router.post("/enrich-topic")
+async def enrich_topic(req: EnrichTopicRequest):
+    from ai_helper import generate_text_async
+    import json
+    import re
+
+    prompt = f"""
+Act as an expert high school teacher for {req.board} ({req.classLabel}).
+You are creating an extremely high-quality, comprehensive learning module for the subject of {req.subject}.
+Chapter: {req.chapterTitle}
+Topic: {req.topicTitle}
+
+Your goal is to generate:
+1. "description": A very detailed, multi-paragraph textbook-style explanation of the topic, using Markdown. It should explain the core concepts, real-world applications, and why it matters.
+2. "mcq": Exactly 3 challenging multiple-choice questions testing conceptual understanding.
+3. "questions": Exactly 2 subjective analysis questions with hints and expected concepts.
+4. "misconceptions": Exactly 2 common misconception traps with probes and corrections.
+
+Return STRICT JSON format EXACTLY matching this structure (no Markdown wrappers around the JSON, just the raw JSON object):
+{{
+  "description": "...",
+  "mcq": [
+    {{
+      "id": "mcq1",
+      "text": "Question text?",
+      "options": ["Option A", "Option B", "Option C", "Option D"],
+      "correctIndex": 1,
+      "explanation": "Why this is correct."
+    }}
+  ],
+  "questions": [
+    {{
+      "id": "q1",
+      "text": "Subjective question?",
+      "hint": "Think about...",
+      "expectedConcepts": ["concept1", "concept2"],
+      "estimatedTime": "5 min"
+    }}
+  ],
+  "misconceptions": [
+    {{
+      "id": "m1",
+      "probe": "Do you think X is Y?",
+      "options": ["Yes, because...", "No, actually..."],
+      "correctIndex": 1,
+      "correction": "The truth is...",
+      "detectKeywords": ["wrong word"]
+    }}
+  ]
+}}
+"""
+    try:
+        text_resp, provider = await generate_text_async(prompt)
+        text_resp = text_resp.strip()
+        if text_resp.startswith("```"):
+            text_resp = text_resp.strip("`").removeprefix("json").strip()
+        data = json.loads(text_resp)
+        return data
+    except Exception as e:
+        print("Enrich Topic error:", e)
+        return {}
+
 @router.post("/generate-plan")
 async def generate_plan(req: PlanRequest):
     from ai_helper import generate_text_async

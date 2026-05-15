@@ -27,11 +27,15 @@ export default function SubjectLearningPage() {
 
   const [learningStage, setLearningStage] = useState(0) // 0=description, 1=questions, 2=misconceptions
   const [showVisual, setShowVisual] = useState(false)
+  const [showVisualVideo, setShowVisualVideo] = useState(false)
   const [currentQ, setCurrentQ] = useState(0)
   const [answers, setAnswers] = useState({})
   const [showHints, setShowHints] = useState({})
   const [misconceptionAnswers, setMisconceptionAnswers] = useState({})
   const [misconceptionSubmitted, setMisconceptionSubmitted] = useState(false)
+
+  const [enrichedData, setEnrichedData] = useState(null)
+  const [isEnriching, setIsEnriching] = useState(false)
 
   useEffect(() => {
     let cancelled = false
@@ -53,30 +57,57 @@ export default function SubjectLearningPage() {
     return (catalog && chapterId && topicId) ? getCatalogTopic(catalog, chapterId, topicId) : null
   }, [catalog, chapterId, topicId])
 
+  useEffect(() => {
+    if (!topic || !chapter || !catalog) return
+    setEnrichedData(null)
+    
+    // Check if we already have questions or a very long description
+    if (topic.questions?.length > 0) return
+
+    setIsEnriching(true)
+    fetch('/api/student/enrich-topic', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({
+        board: catalog.board ?? 'State Board',
+        classLabel: catalog.classLabel ?? classId,
+        subject: catalog.subject ?? subjectId,
+        chapterTitle: chapter.title ?? chapterId,
+        topicTitle: topic.title ?? topicId,
+      })
+    })
+    .then(r => r.json())
+    .then(data => {
+      setEnrichedData(data)
+      setIsEnriching(false)
+    })
+    .catch(e => {
+      console.error("Enrichment failed", e)
+      setIsEnriching(false)
+    })
+  }, [topicId, catalog, chapter, topic, classId, subjectId])
+
   const animation = useMemo(() => topic?.animationType ? getAnimation(topic.animationType) : null, [topic])
-  const questions = topic?.questions ?? []
-  const misconceptions = topic?.misconceptions ?? []
+  const questions = enrichedData?.questions?.length > 0 ? enrichedData.questions : (topic?.questions ?? [])
+  const misconceptions = enrichedData?.misconceptions?.length > 0 ? enrichedData.misconceptions : (topic?.misconceptions ?? [])
   const topicDescription = useMemo(() => {
     if (!topic || !chapter || !catalog) return ''
-    return topic.description || buildTopicDescription({
+    return enrichedData?.description || topic.description || buildTopicDescription({
       boardLabel: catalog.board ?? 'Syllabus',
       classLabel: catalog.classLabel,
       subjectName: catalog.subject,
       chapterTitle: chapter.title,
       topicName: topic.title,
     })
-  }, [catalog, chapter, topic])
+  }, [catalog, chapter, topic, enrichedData])
   const visualQuery = `${catalog?.classLabel ?? classId} ${catalog?.subject ?? subjectId} ${chapter?.title ?? ''} ${topic?.title ?? ''} explanation`
   const visualVideoUrl = topic?.visualVideoUrl || buildVisualVideoUrl(visualQuery)
   const visualSearchUrl = topic?.visualSearchUrl || buildVisualSearchUrl(visualQuery)
 
   useEffect(() => {
     setLearningStage(1)
-    setShowVisualVideo(false)
-  }, [topicId])
-
-  useEffect(() => {
     setShowVisual(false)
+    setShowVisualVideo(false)
   }, [topicId])
 
   // Find next/prev topic for navigation
@@ -157,10 +188,21 @@ export default function SubjectLearningPage() {
     return { score: matched.length / expected.length, matched, missing }
   }, [])
 
-  if (isLoading) {
+  if (isLoading || isEnriching) {
     return (
-      <div className="container-page flex items-center justify-center">
-        <LoaderCircle className="h-8 w-8 animate-spin text-primary-500" />
+      <div className="container-page flex flex-col items-center justify-center min-h-[60vh] animate-fade-in">
+        <div className="relative flex items-center justify-center mb-6">
+          <div className="absolute h-16 w-16 animate-ping rounded-full bg-primary-500/20"></div>
+          <LoaderCircle className="h-10 w-10 animate-spin text-primary-500 relative z-10" />
+        </div>
+        <h2 className="text-xl font-bold font-display text-surface-text">
+          {isEnriching ? "AI Teacher is analyzing..." : "Loading content..."}
+        </h2>
+        <p className="mt-2 text-surface-muted text-sm max-w-sm text-center">
+          {isEnriching 
+            ? "Creating a custom-tailored, detailed explanation and generating unique practice questions specifically for this topic. Please wait a few seconds."
+            : "Fetching your learning materials."}
+        </p>
       </div>
     )
   }

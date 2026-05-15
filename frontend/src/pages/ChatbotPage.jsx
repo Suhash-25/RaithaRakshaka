@@ -8,10 +8,12 @@
  */
 
 import { useState, useEffect, useRef, useCallback } from 'react'
-import { Bot, Trash2, AlertCircle } from 'lucide-react'
+import { Bot, Trash2, AlertCircle, Volume2, VolumeX } from 'lucide-react'
 import { useStudent } from '@/context/StudentContext'
 import useOnlineStatus from '@/hooks/useOnlineStatus'
 import { useAuthSessionCtx } from '@/context/AuthSessionContext'
+import { getAnonId } from '@/utils/identity'
+import { saveProgressEvent } from '@/utils/indexedDB'
 import AgentPipeline from './chatbot/AgentPipeline'
 import ChatInput from './chatbot/ChatInput'
 
@@ -26,6 +28,7 @@ const TASK_KEYWORDS = [
   'what is','how does','why does','define','difference between',
 ]
 const PLANNER_KEYWORDS = ['plan','planner','schedule','roadmap','study plan','weekly plan','learning path']
+const TEACHER_KEYWORDS = ['teach','teacher','learn with me','question me','quiz me','ask me']
 
 function isTaskIntent(text) {
   if (!text) return false
@@ -36,6 +39,11 @@ function isPlannerIntent(text) {
   if (!text) return false
   const lower = text.toLowerCase()
   return PLANNER_KEYWORDS.some(kw => lower.includes(kw))
+}
+function isTeacherIntent(text) {
+  if (!text) return false
+  const lower = text.toLowerCase()
+  return TEACHER_KEYWORDS.some(kw => lower.includes(kw))
 }
 
 // ─── Helpers ──────────────────────────────────────────────────────────────────
@@ -64,9 +72,53 @@ function TypingIndicator() {
   )
 }
 
-function MessageBubble({ message, studentInitials }) {
+function SpeakingIndicator() {
+  return (
+    <div className="flex items-center justify-center gap-1.5 text-xs text-primary-500 animate-fade-in">
+      {[0, 1, 2, 3, 4].map(i => (
+        <span
+          key={i}
+          className="w-1 rounded-full bg-primary-500/80 animate-pulse"
+          style={{
+            height: `${8 + (i % 3) * 5}px`,
+            animationDelay: `${i * 120}ms`,
+          }}
+        />
+      ))}
+      <span className="ml-1 text-surface-muted">Speaking</span>
+    </div>
+  )
+}
+
+const EMOTION_BADGES = {
+  neutral: '😐 neutral',
+  excited: '😊 excited',
+  confused: '🤔 confused',
+  stressed: '😟 stressed',
+}
+
+function detectTextLanguage(text = '') {
+  if (/[\u0C80-\u0CFF]/.test(text)) return 'kn'
+  if (/[\u0900-\u097F]/.test(text)) return 'hi'
+  return 'en'
+}
+
+function normalizeVoiceMeta(emotion = {}) {
+  return {
+    emotion: emotion.detected_emotion || emotion.emotion || 'neutral',
+    language: emotion.language || 'en',
+    pitch_mean: emotion.pitch_mean ?? 0,
+    energy: emotion.energy ?? 0,
+    tempo: emotion.tempo ?? 0,
+    anon_id: emotion.anon_id || '',
+    timestamp: emotion.timestamp,
+  }
+}
+
+function MessageBubble({ message, studentInitials, onReplay }) {
   const isUser = message.role === 'user'
   const hasAgentFlow = message.agent_flow?.length > 0
+  const voiceMeta = message.voice_meta
 
   return (
     <div className={`flex items-end gap-2 animate-fade-in ${isUser ? 'flex-row-reverse' : ''}`}>
@@ -94,14 +146,26 @@ function MessageBubble({ message, studentInitials }) {
 
         {/* Text bubble */}
         {message.text && (
-          <div className={`
-            px-4 py-3 rounded-2xl text-sm leading-relaxed whitespace-pre-wrap
-            ${isUser
-              ? 'bg-primary-500 text-white rounded-br-sm'
-              : 'bg-surface-card border border-surface-border text-surface-text rounded-bl-sm'
-            }
-          `}>
-            {message.text}
+          <div className="flex items-start gap-1.5">
+            <div className={`
+              px-4 py-3 rounded-2xl text-sm leading-relaxed whitespace-pre-wrap
+              ${isUser
+                ? 'bg-primary-500 text-white rounded-br-sm'
+                : 'bg-surface-card border border-surface-border text-surface-text rounded-bl-sm'
+              }
+            `}>
+              {message.text}
+            </div>
+            {!isUser && onReplay && (
+              <button
+                type="button"
+                onClick={() => onReplay(message.text, message.voice_language || detectTextLanguage(message.text))}
+                title="Replay voice"
+                className="mt-1 p-1.5 rounded-lg text-surface-muted hover:text-primary-500 hover:bg-primary-500/10 transition-colors flex-shrink-0"
+              >
+                <Volume2 className="w-3.5 h-3.5" />
+              </button>
+            )}
           </div>
         )}
 
@@ -118,6 +182,17 @@ function MessageBubble({ message, studentInitials }) {
         {message.fileName && !message.imagePreview && (
           <div className="flex items-center gap-1.5 px-3 py-1.5 rounded-lg bg-surface-card border border-surface-border text-xs text-surface-muted">
             📎 {message.fileName}
+          </div>
+        )}
+
+        {voiceMeta && (
+          <div className={`flex flex-wrap items-center gap-1.5 px-1 text-[10px] ${isUser ? 'justify-end' : 'justify-start'}`}>
+            <span className="rounded-full border border-surface-border bg-surface-card px-2 py-0.5 text-surface-muted">
+              {voiceMeta.language?.toUpperCase?.() || 'EN'}
+            </span>
+            <span className="rounded-full border border-surface-border bg-surface-card px-2 py-0.5 text-surface-muted">
+              {EMOTION_BADGES[voiceMeta.emotion] || EMOTION_BADGES.neutral}
+            </span>
           </div>
         )}
 
@@ -152,10 +227,17 @@ export default function ChatbotPage() {
   const [currentFile, setCurrentFile] = useState(null)
   const [filePreview, setFilePreview] = useState(null)
   const [listening, setListening] = useState(false)
+  const [speaking, setSpeaking] = useState(false)
+  const [voiceMuted, setVoiceMuted] = useState(false)
+  const [teacherMode, setTeacherMode] = useState(false)
+  const [teacherSubject, setTeacherSubject] = useState('')
   const [offlineQueue, setOfflineQueue] = useState(loadQueue)
 
   const bottomRef = useRef(null)
-  const recognitionRef = useRef(null)
+  const speechAudioRef = useRef(null)
+  const speechAbortRef = useRef(null)
+  const spokenMessagesRef = useRef(new Set())
+  const lastVoiceLanguageRef = useRef(null)
 
   const studentInitials = getInitials(currentStudent?.name)
 
@@ -185,37 +267,109 @@ export default function ChatbotPage() {
       role: 'assistant',
       text: `Hi${currentStudent?.name ? ` ${currentStudent.name}` : ''}! 👋 I'm your AI learning assistant.${authNote} Ask me anything about your studies!`,
       agent_flow: [],
+      speak: false,
       time: new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' }),
     }])
   }, [currentStudent?.name, isAuthenticated]) // eslint-disable-line
 
   // ─── Voice Input ───────────────────────────────────────────────────────────
+  const stopSpeech = useCallback(() => {
+    console.log('[voice:tts] stop requested')
+    speechAbortRef.current?.abort()
+    speechAbortRef.current = null
+    if (speechAudioRef.current) {
+      speechAudioRef.current.pause()
+      URL.revokeObjectURL(speechAudioRef.current.src)
+    }
+    speechAudioRef.current = null
+    setSpeaking(false)
+  }, [])
+
+  const speakText = useCallback(async (text, language) => {
+    if (!text?.trim()) return
+    stopSpeech()
+    console.log('[voice:tts] request start', { language, chars: text.length })
+
+    const controller = new AbortController()
+    speechAbortRef.current = controller
+    setSpeaking(true)
+
+    try {
+      const res = await fetch('/voice/speak', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ text, language }),
+        signal: controller.signal,
+      })
+      console.log('[voice:tts] response received', { ok: res.ok, status: res.status, contentType: res.headers.get('content-type') })
+      if (!res.ok) {
+        const detail = await res.text().catch(() => '')
+        throw new Error(detail || 'Voice output failed')
+      }
+
+      const audioData = await res.blob()
+      console.log('[voice:tts] audio blob created', { size: audioData.size, type: audioData.type })
+      const audioUrl = URL.createObjectURL(audioData)
+      const audio = new Audio(audioUrl)
+      speechAudioRef.current = audio
+      audio.onended = () => {
+        console.log('[voice:tts] playback ended')
+        URL.revokeObjectURL(audioUrl)
+        speechAudioRef.current = null
+        setSpeaking(false)
+      }
+      audio.onerror = () => {
+        console.warn('[voice:tts] playback error')
+        URL.revokeObjectURL(audioUrl)
+        speechAudioRef.current = null
+        setSpeaking(false)
+      }
+      console.log('[voice:tts] playback start')
+      await audio.play()
+    } catch (err) {
+      if (err.name !== 'AbortError') {
+        console.warn('[voice:tts] failed:', err)
+      }
+      setSpeaking(false)
+    }
+  }, [stopSpeech])
+
+  useEffect(() => {
+    const lastIndex = messages.length - 1
+    const last = messages[lastIndex]
+    if (!last || last.role !== 'assistant' || !last.text || last.pipeline_done === false || last.speak === false || voiceMuted) {
+      return
+    }
+
+    const speechKey = `${lastIndex}:${last.text}`
+    if (spokenMessagesRef.current.has(speechKey)) return
+    spokenMessagesRef.current.add(speechKey)
+
+    const language = last.voice_language || detectTextLanguage(last.text)
+    console.log('[voice:tts] auto-play assistant message', { language, index: lastIndex })
+    speakText(last.text, language)
+  }, [messages, speakText, voiceMuted])
+
   const startVoice = useCallback(() => {
-    const SR = window.SpeechRecognition || window.webkitSpeechRecognition
-    if (!SR) {
-      setErrorMsg('Voice input is not supported in this browser.')
+    const SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition
+    if (!SpeechRecognition) {
+      alert('Voice not supported in this browser. Use Chrome.')
       return
     }
-    if (listening) {
-      recognitionRef.current?.stop()
-      setListening(false)
-      return
+
+    const recognition = new SpeechRecognition()
+    recognition.lang = ({ en: 'en-IN', hi: 'hi-IN', kn: 'kn-IN' })[localStorage.getItem('edu-sakhi-language')] || 'en-IN'
+    recognition.interimResults = false
+    recognition.maxAlternatives = 1
+    recognition.onstart = () => setListening(true)
+    recognition.onend = () => setListening(false)
+    recognition.onresult = (event) => {
+      const transcript = event.results[0][0].transcript
+      setInput(transcript)
     }
-    const rec = new SR()
-    rec.lang = 'en-IN'
-    rec.continuous = false
-    rec.interimResults = false
-    rec.onstart = () => setListening(true)
-    rec.onresult = (e) => {
-      const text = e.results[0][0].transcript
-      setInput(prev => prev ? `${prev} ${text}` : text)
-      setListening(false)
-    }
-    rec.onerror = () => setListening(false)
-    rec.onend = () => setListening(false)
-    rec.start()
-    recognitionRef.current = rec
-  }, [listening])
+    recognition.onerror = (event) => console.error('[voice:stt] error:', event.error)
+    recognition.start()
+  }, [])
 
   // ─── File handling ─────────────────────────────────────────────────────────
   const handleFileSelect = (e) => {
@@ -238,7 +392,7 @@ export default function ChatbotPage() {
   }
 
   // ─── Send message ──────────────────────────────────────────────────────────
-  const sendMessage = useCallback(async (text, file, isReplay = false) => {
+  const sendMessage = useCallback(async (text, file, isReplay = false, voiceMeta = null) => {
     if (!text?.trim() && !file) return
     const now = new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })
 
@@ -248,6 +402,7 @@ export default function ChatbotPage() {
       text: text || '',
       imagePreview: file?.type?.startsWith('image/') ? filePreview?.src : null,
       fileName: file && !file.type?.startsWith('image/') ? file.name : null,
+      voice_meta: voiceMeta,
       time: now,
     }
     setMessages(prev => [...prev, userMsg])
@@ -400,6 +555,47 @@ export default function ChatbotPage() {
     }
 
     // ── Branch C: casual message → direct LLM, no pipeline card ──────────────
+    if (teacherMode || isTeacherIntent(text)) {
+      try {
+        const anonId = await getAnonId()
+        const language = localStorage.getItem('edu-sakhi-language') || 'en'
+        const res = await fetch(CHAT_ENDPOINT, {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({
+            message: text,
+            language,
+            teacher_active: teacherMode,
+            student_id: currentStudent?.id || 'guest',
+            anon_id: anonId,
+          }),
+        })
+        const payload = await res.json()
+        const data = payload?.data || payload
+        if (data.teacher_active) {
+          setTeacherMode(true)
+          setTeacherSubject(data.subject || '')
+        }
+        if (data.progress_record) await saveProgressEvent(data.progress_record)
+        setMessages(prev => [...prev, {
+          role: 'assistant',
+          text: [data.response, data.next_question].filter(Boolean).join('\n\n'),
+          agent_flow: data.agent_flow || [],
+          pipeline_done: true,
+          time: now,
+        }])
+      } catch (err) {
+        setMessages(prev => [...prev, {
+          role: 'assistant',
+          text: `Teacher pipeline failed: ${err.message || 'Please try again.'}`,
+          agent_flow: [{ agent: 'Teacher Agent', status: 'error', message: 'Pipeline failed.' }],
+          pipeline_done: true,
+          time: now,
+        }])
+      } finally { setLoading(false) }
+      return
+    }
+
     if (!isTaskIntent(text)) {
       try {
         const res = await fetch('/api/chat/direct', {
@@ -543,6 +739,7 @@ export default function ChatbotPage() {
     e?.preventDefault()
     const text = input.trim()
     if (!text && !currentFile) return
+    lastVoiceLanguageRef.current = detectTextLanguage(text)
     setInput('')
     sendMessage(text, currentFile)
     clearFile()
@@ -594,6 +791,22 @@ export default function ChatbotPage() {
         </div>
 
         <div className="flex items-center gap-2">
+          <button
+            onClick={() => {
+              const nextMuted = !voiceMuted
+              console.log('[voice:tts] mute toggled', { muted: nextMuted })
+              setVoiceMuted(nextMuted)
+              if (nextMuted) stopSpeech()
+            }}
+            title={voiceMuted ? 'Unmute voice output' : 'Mute voice output'}
+            className={`p-2 rounded-lg transition-colors ${
+              voiceMuted
+                ? 'text-accent-rose bg-accent-rose/10'
+                : 'text-surface-muted hover:text-primary-500 hover:bg-primary-500/10'
+            }`}
+          >
+            {voiceMuted ? <VolumeX className="w-4 h-4" /> : <Volume2 className="w-4 h-4" />}
+          </button>
           {/* Offline queue badge */}
           {offlineQueue.length > 0 && (
             <span className="text-xs px-2 py-1 rounded-full bg-accent-amber/10 text-accent-amber border border-accent-amber/30">
@@ -623,16 +836,18 @@ export default function ChatbotPage() {
       )}
 
       {/* ── Messages area ── */}
+      {teacherMode && <div className="mb-3 rounded-xl border border-primary-500/30 bg-primary-500/10 px-4 py-2 text-sm text-primary-500">Teacher Agent Active{teacherSubject ? ` - ${teacherSubject}` : ''}</div>}
       <div
         id="chat-messages-area"
         className="flex-1 overflow-y-auto space-y-4 pr-1 mb-4 scroll-smooth"
       >
         {messages.map((msg, i) => (
-          <MessageBubble key={i} message={msg} studentInitials={studentInitials} />
+          <MessageBubble key={i} message={msg} studentInitials={studentInitials} onReplay={speakText} />
         ))}
 
         {/* Typing indicator */}
         {loading && <TypingIndicator />}
+        {speaking && <SpeakingIndicator />}
 
         <div ref={bottomRef} />
       </div>

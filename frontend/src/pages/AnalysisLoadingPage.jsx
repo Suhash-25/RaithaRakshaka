@@ -12,6 +12,7 @@ import {
 } from '@/utils/indexedDB'
 import { buildExplanationCacheId } from '@/utils/offlineEngine'
 import { getMasteryScore } from '@/utils/progressAnalytics'
+import { getCurrentStudent } from '@/services/studentManagement'
 
 const FALLBACK_EXPLANATION = {
   type: 'hybrid',
@@ -102,6 +103,7 @@ export default function AnalysisLoadingPage() {
         })
 
         if (!cancelled) {
+          const currentStudent = await getCurrentStudent().catch(() => null)
           const syncStatus =
             analysisResult.analysis_method === 'frontend_offline_engine' ||
             explanationResult.source === 'offline_template'
@@ -137,6 +139,8 @@ export default function AnalysisLoadingPage() {
           try {
             if (typeof window !== 'undefined' && !window.sessionStorage.getItem(progressWriteKey)) {
               await saveProgressEvent({
+                student_id: currentStudent?.id ?? 'guest',
+                studentName: currentStudent?.name ?? 'Guest student',
                 responseId,
                 questionId: answer.questionId,
                 questionText: answer.questionText,

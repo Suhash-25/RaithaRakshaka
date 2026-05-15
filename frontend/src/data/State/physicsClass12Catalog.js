@@ -14,11 +14,11 @@ export const PHYSICS_CLASS_12 = {
     {
       id: 'ch1',
       number: 1,
-      title: 'Electric Charges and Fields',
+      title: "Electric Charges and Fields",
       topics: [
         {
           id: 'ch1-t1',
-          title: 'Electric Charge',
+          title: "Electric Charge",
           duration: '12 min',
           difficulty: 'foundation',
           animationType: 'electricCharge',
@@ -80,6 +80,7 @@ export const PHYSICS_CLASS_12 = {
         {
           id: 'ch1-t2',
           title: "Coulomb's Law",
+          description: "Diving into Coulomb's Law within the context of Electric Charges and Fields offers students a fascinating look at the mechanisms that drive Physics. It is not just about memorizing facts, but about comprehending the underlying patterns that make up this field of study. Mastery of this area is essential for building a robust educational foundation.\n\nUnderstanding the core elements of Coulomb's Law requires focused attention on its primary characteristics within Electric Charges and Fields. Students engage in comprehensive learning that encompasses both theoretical definitions and practical implications. This structured learning pathway ensures a deep and lasting comprehension of the subject material.\n\nA real-world example of Coulomb's Law can be seen in everyday problem-solving scenarios. When faced with a challenge related to Electric Charges and Fields, applying the structured methods learned in this topic allows for quick and accurate resolutions, demonstrating the immense value of this knowledge.\n\nUltimately, the knowledge gained from studying Coulomb's Law serves as a lifelong intellectual asset. By thoroughly understanding Electric Charges and Fields, learners are well-prepared to tackle future academic challenges with resilience and competence.",
           duration: '15 min',
           difficulty: 'core',
           animationType: 'coulombsLaw',
@@ -140,7 +141,8 @@ export const PHYSICS_CLASS_12 = {
         },
         {
           id: 'ch1-t3',
-          title: 'Electric Field',
+          title: "Electric Field",
+      description: "In the realm of Physics, the concept of Electric Field stands out as a critical building block. Associated with Electric Charges and Fields, this subject matter encourages analytical thinking and deeper cognitive engagement. Students exploring this topic will discover how interconnected and structured our learning systems truly are.\n\nThe detailed examination of Electric Field reveals the intricate layers of Electric Charges and Fields. Through guided study, students unpack complex concepts, translating them into easily digestible pieces of knowledge. This process is essential for achieving academic excellence and conceptual clarity.\n\nFor instance, consider how Electric Field manifests in daily life. Whether you are organizing objects, measuring spaces, or simply observing nature, the principles of Electric Charges and Fields are actively at play. This practical manifestation makes the theoretical aspects much more tangible and easier to grasp.\n\nIn summary, mastering Electric Field empowers students with the confidence and skills necessary to excel in Physics. The journey through Electric Charges and Fields guarantees a comprehensive educational experience that goes far beyond the classroom.",
           duration: '14 min',
           difficulty: 'core',
           animationType: 'electricFieldLines',
@@ -191,7 +193,7 @@ export const PHYSICS_CLASS_12 = {
         },
         {
           id: 'ch1-t4',
-          title: 'Electric Dipole',
+          title: "Electric Dipole",
           duration: '13 min',
           difficulty: 'advanced',
           animationType: 'electricDipole',
@@ -298,7 +300,7 @@ export const PHYSICS_CLASS_12 = {
         },
         {
           id: 'ch1-t6',
-          title: 'Applications of Gauss\'s Law',
+          title: "Applications of Gauss's Law",
           duration: '15 min',
           difficulty: 'advanced',
           animationType: 'gaussLaw',
@@ -341,9 +343,9 @@ export const PHYSICS_CLASS_12 = {
     },
     // ── Chapter 2 ─────────────────────────────────────
     {
-      id: 'ch2', number: 2, title: 'Electrostatic Potential and Capacitance',
+      id: 'ch2', number: 2, title: "Electrostatic Potential and Capacitance",
       topics: [
-        { id: 'ch2-t1', title: 'Electrostatic Potential', duration: '14 min', difficulty: 'foundation', animationType: 'electricPotential',
+        { id: 'ch2-t1', title: "Electrostatic Potential", duration: '14 min', difficulty: 'foundation', animationType: 'electricPotential',
           learningObjectives: ['Define electric potential and potential difference', 'Relate electric potential to work done', 'Explain equipotential surfaces and their properties'],
           mcq: [
             { id: 'ch2-t1-mcq1', text: 'Work done in moving a charge along an equipotential surface is:', options: ['Maximum', 'Minimum but not zero', 'Zero', 'Depends on the path'], correctIndex: 2, explanation: 'No potential difference exists along an equipotential surface, so W = qΔV = 0.' },
@@ -360,7 +362,7 @@ export const PHYSICS_CLASS_12 = {
             { id: 'ch2-t1-m1', probe: 'If the electric potential at a point is zero, the electric field at that point must also be zero. True or false?', options: ['True — zero potential means zero field', 'False — potential can be zero while field is non-zero'], correctIndex: 1, correction: 'The midpoint between two equal and opposite charges has zero potential but a non-zero electric field.', detectKeywords: ['zero potential means zero field'] },
           ],
         },
-        { id: 'ch2-t2', title: 'Potential due to Point Charge and Dipole', duration: '12 min', difficulty: 'core', animationType: 'electricPotential',
+        { id: 'ch2-t2', title: "Potential due to Point Charge and Dipole", duration: '12 min', difficulty: 'core', animationType: 'electricPotential',
           learningObjectives: ['Calculate potential due to point charges', 'Compare potential variation for point charge (1/r) vs dipole (1/r²)', 'Explain zero potential on the equatorial plane of a dipole'],
           mcq: [
             { id: 'ch2-t2-mcq1', text: 'The electric potential at the equatorial point of a dipole is:', options: ['Maximum', 'Minimum', 'Zero', 'Equal to kq/r'], correctIndex: 2, explanation: 'The potentials from +q and −q cancel exactly on the equatorial plane.' },
@@ -373,7 +375,7 @@ export const PHYSICS_CLASS_12 = {
             { id: 'ch2-t2-m1', probe: 'Potential is always positive near a positive charge and negative near a negative charge. True?', options: ['True always', 'It depends on contributions from all charges present'], correctIndex: 1, correction: 'The net potential at a point is the algebraic sum of potentials due to all charges. Near a positive charge it can still be negative if a larger negative charge is nearby.', detectKeywords: ['always positive near positive'] },
           ],
         },
-        { id: 'ch2-t3', title: 'Capacitance and Parallel Plate Capacitor', duration: '16 min', difficulty: 'core', animationType: 'capacitor',
+        { id: 'ch2-t3', title: "Capacitance and Parallel Plate Capacitor", duration: '16 min', difficulty: 'core', animationType: 'capacitor',
           learningObjectives: ['Define capacitance and its SI unit', 'Derive capacitance of a parallel plate capacitor', 'Calculate energy stored in a capacitor', 'Explain the effect of dielectric on capacitance'],
           mcq: [
             { id: 'ch2-t3-mcq1', text: 'A parallel plate capacitor with air has capacitance C. If a dielectric of constant K=4 fills the gap, the new capacitance is:', options: ['C/4', 'C', '4C', '16C'], correctIndex: 2, explanation: 'Capacitance with dielectric = KC = 4C.' },
@@ -391,7 +393,7 @@ export const PHYSICS_CLASS_12 = {
             { id: 'ch2-t3-m2', probe: 'If you double the voltage across a capacitor, the stored energy doubles. True?', options: ['True — energy is proportional to voltage', 'False — energy quadruples since U = ½CV²'], correctIndex: 1, correction: 'Energy U = ½CV². Doubling V makes U four times larger, not twice.', detectKeywords: ['doubles', 'proportional to V'] },
           ],
         },
-        { id: 'ch2-t4', title: 'Combination of Capacitors', duration: '12 min', difficulty: 'core', animationType: 'capacitor',
+        { id: 'ch2-t4', title: "Combination of Capacitors", duration: '12 min', difficulty: 'core', animationType: 'capacitor',
           learningObjectives: ['Calculate equivalent capacitance in series and parallel', 'Analyze charge and voltage distribution in combinations'],
           mcq: [
             { id: 'ch2-t4-mcq1', text: 'Three capacitors of 6μF each connected in series have equivalent capacitance:', options: ['18μF', '2μF', '6μF', '9μF'], correctIndex: 1, explanation: '1/Ceq = 1/6 + 1/6 + 1/6 = 3/6 = 1/2, so Ceq = 2μF.' },
@@ -404,7 +406,7 @@ export const PHYSICS_CLASS_12 = {
             { id: 'ch2-t4-m1', probe: 'In series combination, each capacitor stores the same amount of charge. True or false?', options: ['False — the larger capacitor stores more charge', 'True — the same charge flows through all capacitors in series'], correctIndex: 1, correction: 'In series, the same current flows through all capacitors, so they all acquire the same charge Q. The voltage divides, not the charge.', detectKeywords: ['different charge', 'larger stores more'] },
           ],
         },
-        { id: 'ch2-t5', title: 'Dielectrics and Polarization', duration: '14 min', difficulty: 'advanced', animationType: 'capacitor',
+        { id: 'ch2-t5', title: "Dielectrics and Polarization", duration: '14 min', difficulty: 'advanced', animationType: 'capacitor',
           learningObjectives: ['Explain polarization in dielectric materials', 'Distinguish between polar and non-polar dielectrics', 'Analyze the effect of dielectric on electric field and capacitance'],
           questions: [
             { id: 'ch2-t5-q1', text: 'When a dielectric is placed in an external electric field, it gets polarized. Explain the mechanism of polarization in a non-polar dielectric.', hint: 'The centres of positive and negative charges separate slightly.', expectedConcepts: ['induced dipoles', 'charge separation', 'opposing field inside'], estimatedTime: '4 min' },
@@ -418,9 +420,9 @@ export const PHYSICS_CLASS_12 = {
     },
     // ── Chapter 3 ─────────────────────────────────────
     {
-      id: 'ch3', number: 3, title: 'Current Electricity',
+      id: 'ch3', number: 3, title: "Current Electricity",
       topics: [
-        { id: 'ch3-t1', title: 'Electric Current and Drift Velocity', duration: '14 min', difficulty: 'foundation', animationType: 'ohmCircuit',
+        { id: 'ch3-t1', title: "Electric Current and Drift Velocity", duration: '14 min', difficulty: 'foundation', animationType: 'ohmCircuit',
           learningObjectives: ['Define electric current and distinguish between drift velocity and signal speed', 'Derive the relation I = neAvd', 'Explain the effect of temperature on drift velocity'],
           mcq: [
             { id: 'ch3-t1-mcq1', text: 'The drift velocity of electrons in a conductor is of the order of:', options: ['3 × 10⁸ m/s', '10⁶ m/s', '10⁻⁴ m/s', '0 m/s'], correctIndex: 2, explanation: 'Drift velocity is typically ~0.1 mm/s, very small compared to the speed of the electric field signal.' },
@@ -465,7 +467,7 @@ export const PHYSICS_CLASS_12 = {
             { id: 'ch3-t3-m1', probe: 'Kirchhoff\'s laws only work for simple circuits with one loop. True?', options: ['True — complex circuits need different methods', 'False — they work for any circuit, no matter how complex'], correctIndex: 1, correction: 'Kirchhoff\'s laws are universally applicable to any electrical circuit. For complex networks, you apply them to multiple junctions and loops simultaneously.', detectKeywords: ['only simple', 'one loop only'] },
           ],
         },
-        { id: 'ch3-t4', title: 'Wheatstone Bridge and Meter Bridge', duration: '14 min', difficulty: 'advanced', animationType: 'wheatstone',
+        { id: 'ch3-t4', title: "Wheatstone Bridge and Meter Bridge", duration: '14 min', difficulty: 'advanced', animationType: 'wheatstone',
           learningObjectives: ['Explain the principle of Wheatstone bridge', 'Calculate unknown resistance using meter bridge'],
           numerical: [
             { id: 'ch3-t4-num1', text: 'In a meter bridge, the null point is at 35 cm. If the known resistance is 7Ω, find the unknown resistance.', answer: 3.77, unit: 'Ω', solution: 'R/S = l/(100-l) → R = 7 × 35/65 ≈ 3.77 Ω', hint: 'R/S = l/(100-l)' },
@@ -477,7 +479,7 @@ export const PHYSICS_CLASS_12 = {
             { id: 'ch3-t4-m1', probe: 'The sensitivity of a meter bridge is the same everywhere along the wire. True?', options: ['True — it is uniform throughout', 'False — it is most sensitive when the balance point is near the middle'], correctIndex: 1, correction: 'The meter bridge is most sensitive when the balance point is near the middle of the wire (around 50 cm).', detectKeywords: ['same everywhere', 'uniform sensitivity'] },
           ],
         },
-        { id: 'ch3-t5', title: 'Cells and Internal Resistance', duration: '13 min', difficulty: 'core', animationType: 'ohmCircuit',
+        { id: 'ch3-t5', title: "Cells and Internal Resistance", duration: '13 min', difficulty: 'core', animationType: 'ohmCircuit',
           learningObjectives: ['Define EMF and internal resistance', 'Calculate terminal voltage of a cell', 'Analyze series and parallel combinations of cells'],
           numerical: [
             { id: 'ch3-t5-num1', text: 'A cell of EMF 2V and internal resistance 1Ω is connected to an external resistance of 4Ω. Find the current and terminal voltage.', answer: 0.4, unit: 'A', solution: 'I = E/(R+r) = 2/(4+1) = 0.4A; V = E - Ir = 2 - 0.4 = 1.6V', hint: 'I = EMF/(R+r)' },
@@ -494,9 +496,9 @@ export const PHYSICS_CLASS_12 = {
     },
     // ── Chapter 4 ─────────────────────────────────────
     {
-      id: 'ch4', number: 4, title: 'Moving Charges and Magnetism',
+      id: 'ch4', number: 4, title: "Moving Charges and Magnetism",
       topics: [
-        { id: 'ch4-t1', title: 'Magnetic Force on a Moving Charge', duration: '14 min', difficulty: 'foundation', animationType: 'biotsavart',
+        { id: 'ch4-t1', title: "Magnetic Force on a Moving Charge", duration: '14 min', difficulty: 'foundation', animationType: 'biotsavart',
           learningObjectives: ['Describe the Lorentz force on a moving charge', 'Explain circular motion of charged particles in magnetic fields', 'Prove that magnetic force does no work'],
           mcq: [
             { id: 'ch4-t1-mcq1', text: 'A charged particle moving parallel to a magnetic field experiences:', options: ['Maximum force', 'Minimum but non-zero force', 'Zero force', 'Force perpendicular to both v and B'], correctIndex: 2, explanation: 'F = qv×B. When v ∥ B, the cross product is zero.' },
@@ -510,7 +512,7 @@ export const PHYSICS_CLASS_12 = {
             { id: 'ch4-t1-m1', probe: 'The magnetic force can change the speed of a charged particle. True?', options: ['True — it accelerates the particle', 'False — it only changes direction, not speed'], correctIndex: 1, correction: 'Since F is always perpendicular to v, magnetic force does zero work and cannot change the particle\'s kinetic energy or speed — only its direction.', detectKeywords: ['changes speed', 'accelerates', 'speeds up'] },
           ],
         },
-        { id: 'ch4-t2', title: 'Biot-Savart Law', duration: '16 min', difficulty: 'core', animationType: 'biotsavart',
+        { id: 'ch4-t2', title: "Biot-Savart Law", duration: '16 min', difficulty: 'core', animationType: 'biotsavart',
           learningObjectives: ['State and apply the Biot-Savart law', 'Derive magnetic field at the center of a circular loop', 'Compare Biot-Savart law with Coulomb\'s law'],
           numerical: [
             { id: 'ch4-t2-num1', text: 'A circular coil of radius 10 cm carries a current of 5A. Find the magnetic field at its center.', answer: 31.4, unit: 'μT', solution: 'B = μ₀I/2R = 4π×10⁻⁷ × 5/(2 × 0.1) = 31.4 × 10⁻⁶ T = 31.4 μT', hint: 'B = μ₀I/2R' },
@@ -536,7 +538,7 @@ export const PHYSICS_CLASS_12 = {
             { id: 'ch4-t3-m1', probe: 'The magnetic field inside a solenoid depends on the position along the axis. True?', options: ['True — it is stronger at the center', 'False — for an ideal solenoid, B is uniform throughout the interior'], correctIndex: 1, correction: 'In an ideal infinite solenoid, the magnetic field is uniform (same B everywhere inside). Only near the ends of a real finite solenoid does the field vary.', detectKeywords: ['stronger at center', 'varies inside', 'depends on position'] },
           ],
         },
-        { id: 'ch4-t4', title: 'Force between Parallel Current-Carrying Conductors', duration: '12 min', difficulty: 'core', animationType: 'biotsavart',
+        { id: 'ch4-t4', title: "Force between Parallel Current-Carrying Conductors", duration: '12 min', difficulty: 'core', animationType: 'biotsavart',
           learningObjectives: ['Determine force between parallel currents', 'State the SI definition of ampere'],
           questions: [
             { id: 'ch4-t4-q1', text: 'Two long parallel wires carry currents in the same direction. Do they attract or repel each other? Explain using the magnetic field of one wire on the other.', hint: 'Find the direction of force using F = Il×B.', expectedConcepts: ['attract', 'same direction currents attract', 'force using right hand rule'], estimatedTime: '4 min' },
@@ -546,7 +548,7 @@ export const PHYSICS_CLASS_12 = {
             { id: 'ch4-t4-m1', probe: 'Two parallel wires carrying current in the same direction repel each other like two like charges. True?', options: ['True — same direction means same "sign" so they repel', 'False — parallel currents in the same direction attract each other'], correctIndex: 1, correction: 'Unlike electric charges, parallel currents in the same direction attract each other. Opposite direction currents repel.', detectKeywords: ['repel same direction', 'like charges repel'] },
           ],
         },
-        { id: 'ch4-t5', title: 'Moving Coil Galvanometer', duration: '12 min', difficulty: 'advanced', animationType: 'biotsavart',
+        { id: 'ch4-t5', title: "Moving Coil Galvanometer", duration: '12 min', difficulty: 'advanced', animationType: 'biotsavart',
           learningObjectives: ['Explain the working principle of a galvanometer', 'Convert galvanometer to ammeter and voltmeter'],
           questions: [
             { id: 'ch4-t5-q1', text: 'Explain the principle of a moving coil galvanometer. Why is a radial magnetic field used?', hint: 'Radial field ensures the plane of the coil is always parallel to B.', expectedConcepts: ['torque on current loop', 'radial field', 'uniform deflection', 'proportional to current'], estimatedTime: '4 min' },
@@ -560,9 +562,9 @@ export const PHYSICS_CLASS_12 = {
     },
     // ── Chapter 5 ─────────────────────────────────────
     {
-      id: 'ch5', number: 5, title: 'Magnetism and Matter',
+      id: 'ch5', number: 5, title: "Magnetism and Matter",
       topics: [
-        { id: 'ch5-t1', title: 'Bar Magnet and Magnetic Field Lines', duration: '12 min', difficulty: 'foundation', animationType: 'magneticFieldLab',
+        { id: 'ch5-t1', title: "Bar Magnet and Magnetic Field Lines", duration: '12 min', difficulty: 'foundation', animationType: 'magneticFieldLab',
           learningObjectives: ['Draw magnetic field lines of a bar magnet', 'Explain the magnetic dipole analogy with a solenoid'],
           questions: [
             { id: 'ch5-t1-q1', text: 'Draw the magnetic field line pattern of a bar magnet. How can you tell from the pattern where the field is strongest?', hint: 'Closer field lines mean stronger field.', expectedConcepts: ['N to S outside', 'density indicates strength', 'closed loops'], estimatedTime: '3 min' },
@@ -572,7 +574,7 @@ export const PHYSICS_CLASS_12 = {
             { id: 'ch5-t1-m1', probe: 'Magnetic field lines start from the north pole and end at the south pole. True?', options: ['True — they start at N and end at S', 'Not exactly — field lines are closed loops, continuing through the magnet from S to N inside'], correctIndex: 1, correction: 'Magnetic field lines form closed loops. Outside the magnet they go N→S, but inside they continue from S→N. They have no start or end point.', detectKeywords: ['start at north', 'end at south', 'begin and end'] },
           ],
         },
-        { id: 'ch5-t2', title: 'Earth\'s Magnetism', duration: '10 min', difficulty: 'foundation', animationType: 'magneticFieldLab',
+        { id: 'ch5-t2', title: "Earth's Magnetism", duration: '10 min', difficulty: 'foundation', animationType: 'magneticFieldLab',
           learningObjectives: ['Explain elements of Earth\'s magnetic field', 'Define declination, dip, and horizontal component'],
           questions: [
             { id: 'ch5-t2-q1', text: 'The geographic north pole of the Earth is actually near the magnetic south pole. Explain why a compass needle\'s north pole points toward geographic north.', hint: 'Opposite poles attract.', expectedConcepts: ['magnetic south near geographic north', 'opposite poles attract', 'compass aligns with earth field'], estimatedTime: '3 min' },
@@ -582,7 +584,7 @@ export const PHYSICS_CLASS_12 = {
             { id: 'ch5-t2-m1', probe: 'The Earth\'s geographic north pole is also its magnetic north pole. True?', options: ['True — north is north', 'False — geographic north is near Earth\'s magnetic south pole'], correctIndex: 1, correction: 'The compass north pole is attracted toward geographic north because Earth\'s magnetic south pole is located near the geographic north pole.', detectKeywords: ['geographic north is magnetic north', 'same pole'] },
           ],
         },
-        { id: 'ch5-t3', title: 'Dia-, Para- and Ferromagnetic Materials', duration: '14 min', difficulty: 'core', animationType: 'magneticFieldLab',
+        { id: 'ch5-t3', title: "Dia-, Para- and Ferromagnetic Materials", duration: '14 min', difficulty: 'core', animationType: 'magneticFieldLab',
           learningObjectives: ['Classify materials by magnetic behavior', 'Define magnetic susceptibility and permeability', 'Explain the Curie temperature and its significance'],
           questions: [
             { id: 'ch5-t3-q1', text: 'Classify the following as dia-, para- or ferromagnetic: copper, aluminium, iron, bismuth, oxygen. Explain the key difference between these three types.', hint: 'Think about how they respond to an external magnetic field.', expectedConcepts: ['diamagnetic repelled weakly', 'paramagnetic attracted weakly', 'ferromagnetic attracted strongly', 'correct classification'], estimatedTime: '4 min' },
@@ -592,7 +594,7 @@ export const PHYSICS_CLASS_12 = {
             { id: 'ch5-t3-m1', probe: 'Diamagnetic materials are attracted by magnets, just weakly. True?', options: ['True — all materials are attracted by magnets', 'False — diamagnetic materials are weakly REPELLED by magnetic fields'], correctIndex: 1, correction: 'Diamagnetic materials are repelled, not attracted. They have negative susceptibility. Examples: bismuth, copper, water.', detectKeywords: ['attracted weakly', 'all attracted'] },
           ],
         },
-        { id: 'ch5-t4', title: 'Hysteresis', duration: '12 min', difficulty: 'advanced', animationType: 'magneticFieldLab',
+        { id: 'ch5-t4', title: "Hysteresis", duration: '12 min', difficulty: 'advanced', animationType: 'magneticFieldLab',
           learningObjectives: ['Explain the B-H hysteresis curve', 'Define retentivity and coercivity', 'Select materials for transformer cores vs permanent magnets'],
           questions: [
             { id: 'ch5-t4-q1', text: 'What is magnetic hysteresis? Why does the B-H curve form a loop instead of retracing the same path?', hint: 'The magnetization lags behind the applied field.', expectedConcepts: ['magnetization lags', 'domain walls resist movement', 'energy dissipation', 'retentivity and coercivity'], estimatedTime: '4 min' },
@@ -606,9 +608,9 @@ export const PHYSICS_CLASS_12 = {
     },
     // ── Chapter 6 ─────────────────────────────────────
     {
-      id: 'ch6', number: 6, title: 'Electromagnetic Induction',
+      id: 'ch6', number: 6, title: "Electromagnetic Induction",
       topics: [
-        { id: 'ch6-t1', title: 'Faraday\'s Laws of Electromagnetic Induction', duration: '15 min', difficulty: 'foundation', animationType: 'faradayLaw',
+        { id: 'ch6-t1', title: "Faraday's Laws of Electromagnetic Induction", duration: '15 min', difficulty: 'foundation', animationType: 'faradayLaw',
           learningObjectives: ['State Faraday\'s laws of electromagnetic induction', 'Calculate induced EMF from rate of change of flux', 'Relate the negative sign to Lenz\'s law'],
           mcq: [
             { id: 'ch6-t1-mcq1', text: 'The magnitude of induced EMF is proportional to:', options: ['The magnetic flux', 'The rate of change of magnetic flux', 'The area of the coil', 'The resistance of the coil'], correctIndex: 1, explanation: 'Faraday\'s law: EMF = −NdΦ/dt. EMF depends on rate of change, not the flux itself.' },
@@ -624,7 +626,7 @@ export const PHYSICS_CLASS_12 = {
             { id: 'ch6-t1-m1', probe: 'A stationary magnet near a coil induces an EMF as long as the magnet is present. True?', options: ['True — the magnet\'s field induces EMF', 'False — EMF is induced only when the flux is CHANGING'], correctIndex: 1, correction: 'EMF is induced only when there is a change in magnetic flux. A stationary magnet produces constant flux and hence zero EMF.', detectKeywords: ['always induces', 'magnet present means EMF'] },
           ],
         },
-        { id: 'ch6-t2', title: 'Lenz\'s Law', duration: '12 min', difficulty: 'core', animationType: 'faradayLaw',
+        { id: 'ch6-t2', title: "Lenz's Law", duration: '12 min', difficulty: 'core', animationType: 'faradayLaw',
           learningObjectives: ['State Lenz\'s law and relate it to conservation of energy', 'Predict direction of induced current using Lenz\'s law'],
           questions: [
             { id: 'ch6-t2-q1', text: 'A north pole of a magnet is pushed toward a coil. Predict the direction of induced current and explain using Lenz\'s law.', hint: 'The coil must oppose the approaching north pole.', expectedConcepts: ['current creates opposing north pole', 'opposes change in flux', 'conservation of energy'], estimatedTime: '4 min' },
@@ -633,7 +635,7 @@ export const PHYSICS_CLASS_12 = {
             { id: 'ch6-t2-m1', probe: 'The induced current supports the change in flux to maintain equilibrium. True?', options: ['True — it helps the change', 'False — it always OPPOSES the change in flux'], correctIndex: 1, correction: 'Lenz\'s law states that the induced current opposes the cause that produces it. If it aided the change, energy would be created from nothing.', detectKeywords: ['supports', 'aids', 'helps the change'] },
           ],
         },
-        { id: 'ch6-t3', title: 'Motional EMF', duration: '13 min', difficulty: 'core', animationType: 'faradayLaw',
+        { id: 'ch6-t3', title: "Motional EMF", duration: '13 min', difficulty: 'core', animationType: 'faradayLaw',
           learningObjectives: ['Derive the expression for motional EMF (BLv)', 'Explain the energy source in motional EMF generation'],
           numerical: [
             { id: 'ch6-t3-num1', text: 'A 50 cm rod moves at 10 m/s perpendicular to a field of 0.4 T. Find the motional EMF.', answer: 2, unit: 'V', solution: 'EMF = BLv = 0.4 × 0.5 × 10 = 2 V', hint: 'EMF = BLv' },
@@ -645,7 +647,7 @@ export const PHYSICS_CLASS_12 = {
             { id: 'ch6-t3-m1', probe: 'Motional EMF is generated because the magnetic field does work on the charges. True?', options: ['True — B does work on moving charges', 'False — the external agent moving the rod does the work'], correctIndex: 1, correction: 'The magnetic force is perpendicular to charge velocity and does no work. The external agent that moves the rod against the opposing force does the actual work.', detectKeywords: ['magnetic field does work', 'B does work'] },
           ],
         },
-        { id: 'ch6-t4', title: 'Self and Mutual Inductance', duration: '15 min', difficulty: 'advanced', animationType: 'faradayLaw',
+        { id: 'ch6-t4', title: "Self and Mutual Inductance", duration: '15 min', difficulty: 'advanced', animationType: 'faradayLaw',
           learningObjectives: ['Define self-inductance and its mechanical analogy', 'Define mutual inductance', 'Calculate induced EMF from changing current'],
           questions: [
             { id: 'ch6-t4-q1', text: 'Define self-inductance. Why is the inductor sometimes called an electrical analogue of inertia in mechanics?', hint: 'An inductor opposes change in current through it.', expectedConcepts: ['opposes change in current', 'L = NΦ/I', 'analogous to mass'], estimatedTime: '4 min' },
@@ -655,7 +657,7 @@ export const PHYSICS_CLASS_12 = {
             { id: 'ch6-t4-m1', probe: 'Self-inductance only exists when two coils are present. True?', options: ['True — you need two coils for inductance', 'False — a single coil has self-inductance'], correctIndex: 1, correction: 'Self-inductance is a property of a single coil. It opposes change in its own current. Mutual inductance requires two coils.', detectKeywords: ['needs two coils', 'only with two'] },
           ],
         },
-        { id: 'ch6-t5', title: 'Eddy Currents', duration: '10 min', difficulty: 'core', animationType: 'faradayLaw',
+        { id: 'ch6-t5', title: "Eddy Currents", duration: '10 min', difficulty: 'core', animationType: 'faradayLaw',
           learningObjectives: ['Explain the origin of eddy currents', 'List useful and harmful effects of eddy currents'],
           questions: [
             { id: 'ch6-t5-q1', text: 'What are eddy currents? Give one application where they are useful and one where they are undesirable.', hint: 'Think about braking systems and transformer cores.', expectedConcepts: ['circulating currents in bulk conductor', 'electromagnetic braking useful', 'transformer heating undesirable'], estimatedTime: '3 min' },
@@ -668,9 +670,9 @@ export const PHYSICS_CLASS_12 = {
     },
     // ── Chapter 7 ─────────────────────────────────────
     {
-      id: 'ch7', number: 7, title: 'Alternating Current',
+      id: 'ch7', number: 7, title: "Alternating Current",
       topics: [
-        { id: 'ch7-t1', title: 'AC Voltage and Current', duration: '12 min', difficulty: 'foundation', animationType: 'acCircuit',
+        { id: 'ch7-t1', title: "AC Voltage and Current", duration: '12 min', difficulty: 'foundation', animationType: 'acCircuit',
           learningObjectives: ['Relate peak, RMS, and average values of AC', 'Explain why RMS value is used for power calculations'],
           mcq: [
             { id: 'ch7-t1-mcq1', text: 'The RMS value of an AC current with peak value 10A is:', options: ['10 A', '7.07 A', '5 A', '14.14 A'], correctIndex: 1, explanation: 'I_rms = I₀/√2 = 10/1.414 ≈ 7.07 A.' },
@@ -682,7 +684,7 @@ export const PHYSICS_CLASS_12 = {
             { id: 'ch7-t1-m1', probe: 'The average value of AC over a complete cycle is equal to the RMS value. True?', options: ['True — average and RMS are the same', 'False — the average of AC over a complete cycle is ZERO'], correctIndex: 1, correction: 'The average value of a sinusoidal AC over one complete cycle is zero (positive and negative halves cancel). RMS is different from average.', detectKeywords: ['average equals RMS', 'same as RMS'] },
           ],
         },
-        { id: 'ch7-t2', title: 'AC through LCR Circuit and Resonance', duration: '18 min', difficulty: 'advanced', animationType: 'acCircuit',
+        { id: 'ch7-t2', title: "AC through LCR Circuit and Resonance", duration: '18 min', difficulty: 'advanced', animationType: 'acCircuit',
           learningObjectives: ['Analyze impedance and phase in LCR circuits', 'Derive resonance frequency and its conditions', 'Construct phasor diagrams for LCR circuits'],
           numerical: [
             { id: 'ch7-t2-num1', text: 'An LCR circuit has L = 0.5 H and C = 2μF. Find the resonance frequency.', answer: 159, unit: 'Hz', solution: 'f = 1/(2π√LC) = 1/(2π√(0.5 × 2×10⁻⁶)) ≈ 159 Hz', hint: 'f = 1/(2π√LC)' },
@@ -695,7 +697,7 @@ export const PHYSICS_CLASS_12 = {
             { id: 'ch7-t2-m1', probe: 'At resonance in an LCR circuit, the voltage across L and C are both zero. True?', options: ['True — they cancel out so both are zero', 'False — they are equal and opposite, individually they can be very large'], correctIndex: 1, correction: 'At resonance, VL and VC are individually large but equal and opposite, so they cancel. Neither is zero individually.', detectKeywords: ['both zero', 'no voltage across L or C'] },
           ],
         },
-        { id: 'ch7-t3', title: 'Power in AC Circuits', duration: '12 min', difficulty: 'core', animationType: 'acCircuit',
+        { id: 'ch7-t3', title: "Power in AC Circuits", duration: '12 min', difficulty: 'core', animationType: 'acCircuit',
           learningObjectives: ['Define power factor and its significance', 'Calculate average power in AC circuits', 'Explain wattless current in purely reactive circuits'],
           questions: [
             { id: 'ch7-t3-q1', text: 'What is the power factor of an AC circuit? For what type of circuit is the power factor zero, and what does that mean physically?', hint: 'Power factor = cosφ. Think about purely reactive circuits.', expectedConcepts: ['cosφ', 'zero for purely L or C', 'no power dissipated', 'wattless current'], estimatedTime: '4 min' },
@@ -704,7 +706,7 @@ export const PHYSICS_CLASS_12 = {
             { id: 'ch7-t3-m1', probe: 'A circuit with power factor zero consumes no energy at all. True?', options: ['False — some energy is always consumed', 'True — zero power factor means zero average power dissipation'], correctIndex: 1, correction: 'When cosφ = 0 (purely reactive circuit), average power = VIcosφ = 0. Energy oscillates between source and reactive element but is not dissipated.', detectKeywords: ['always consumes', 'some energy consumed'] },
           ],
         },
-        { id: 'ch7-t4', title: 'Transformers', duration: '14 min', difficulty: 'core', animationType: 'acCircuit',
+        { id: 'ch7-t4', title: "Transformers", duration: '14 min', difficulty: 'core', animationType: 'acCircuit',
           learningObjectives: ['Explain the working principle of a transformer', 'Calculate turns ratio and its effect on voltage/current', 'Explain why transformers require AC'],
           mcq: [
             { id: 'ch7-t4-mcq1', text: 'A step-up transformer increases voltage. The current in the secondary coil:', options: ['Also increases', 'Decreases', 'Remains same', 'Becomes zero'], correctIndex: 1, explanation: 'Power is conserved: V₁I₁ = V₂I₂. If V increases, I must decrease.' },
@@ -717,7 +719,7 @@ export const PHYSICS_CLASS_12 = {
             { id: 'ch7-t4-m1', probe: 'A step-up transformer creates extra energy by increasing voltage. True?', options: ['True — it multiplies energy', 'False — it increases voltage but decreases current, keeping power constant'], correctIndex: 1, correction: 'A transformer converts voltage level while keeping power approximately constant. Higher voltage means proportionally lower current.', detectKeywords: ['creates energy', 'multiplies energy', 'free energy'] },
           ],
         },
-        { id: 'ch7-t5', title: 'LC Oscillations', duration: '12 min', difficulty: 'advanced', animationType: 'acCircuit',
+        { id: 'ch7-t5', title: "LC Oscillations", duration: '12 min', difficulty: 'advanced', animationType: 'acCircuit',
           learningObjectives: ['Describe energy exchange in LC oscillations', 'Draw the analogy with mechanical oscillations'],
           questions: [
             { id: 'ch7-t5-q1', text: 'Describe the energy exchange between the inductor and capacitor during LC oscillations. What is the analogy with a mechanical system?', hint: 'Compare with a mass-spring system.', expectedConcepts: ['electric to magnetic energy', 'analogous to KE and PE', 'mass-spring oscillation'], estimatedTime: '4 min' },
@@ -730,9 +732,9 @@ export const PHYSICS_CLASS_12 = {
     },
     // ── Chapter 8 ─────────────────────────────────────
     {
-      id: 'ch8', number: 8, title: 'Electromagnetic Waves',
+      id: 'ch8', number: 8, title: "Electromagnetic Waves",
       topics: [
-        { id: 'ch8-t1', title: 'Displacement Current and Maxwell\'s Equations', duration: '14 min', difficulty: 'advanced', animationType: 'emWave',
+        { id: 'ch8-t1', title: "Displacement Current and Maxwell's Equations", duration: '14 min', difficulty: 'advanced', animationType: 'emWave',
           learningObjectives: ['Explain the inconsistency Maxwell found in Ampere\'s law', 'Define displacement current and its physical significance'],
           questions: [
             { id: 'ch8-t1-q1', text: 'What problem did Maxwell identify with Ampere\'s circuital law, and how did he resolve it by introducing displacement current?', hint: 'Think about a charging capacitor.', expectedConcepts: ['inconsistency during charging', 'displacement current', 'changing electric field'], estimatedTime: '4 min' },
@@ -741,7 +743,7 @@ export const PHYSICS_CLASS_12 = {
             { id: 'ch8-t1-m1', probe: 'Displacement current involves actual movement of charges through the dielectric. True?', options: ['True — charges flow through the gap', 'False — it is due to changing electric field, no actual charge flow'], correctIndex: 1, correction: 'Displacement current is not a real current of moving charges. It arises from the time-varying electric field between the plates.', detectKeywords: ['actual charges', 'charges flow through', 'real current'] },
           ],
         },
-        { id: 'ch8-t2', title: 'Electromagnetic Spectrum', duration: '12 min', difficulty: 'foundation', animationType: 'emWave',
+        { id: 'ch8-t2', title: "Electromagnetic Spectrum", duration: '12 min', difficulty: 'foundation', animationType: 'emWave',
           learningObjectives: ['Arrange EM waves by frequency/wavelength', 'Identify sources, properties, and applications of each type'],
           mcq: [
             { id: 'ch8-t2-mcq1', text: 'Which of the following has the highest frequency?', options: ['Radio waves', 'Microwaves', 'X-rays', 'Gamma rays'], correctIndex: 3, explanation: 'Gamma rays have the highest frequency (and shortest wavelength) in the EM spectrum.' },
@@ -754,7 +756,7 @@ export const PHYSICS_CLASS_12 = {
             { id: 'ch8-t2-m1', probe: 'Radio waves travel slower than gamma rays in vacuum. True?', options: ['True — gamma rays are more energetic so faster', 'False — all EM waves travel at the same speed c in vacuum'], correctIndex: 1, correction: 'All electromagnetic waves travel at c = 3×10⁸ m/s in vacuum regardless of frequency or energy.', detectKeywords: ['gamma faster', 'different speeds', 'energy means faster'] },
           ],
         },
-        { id: 'ch8-t3', title: 'Properties of EM Waves', duration: '10 min', difficulty: 'core', animationType: 'emWave',
+        { id: 'ch8-t3', title: "Properties of EM Waves", duration: '10 min', difficulty: 'core', animationType: 'emWave',
           learningObjectives: ['Explain the transverse nature of EM waves', 'State that EM waves do not require a medium'],
           questions: [
             { id: 'ch8-t3-q1', text: 'Show that electromagnetic waves are transverse in nature. What oscillates in an EM wave?', hint: 'E and B are perpendicular to the direction of propagation.', expectedConcepts: ['E and B perpendicular to direction', 'transverse', 'no medium needed'], estimatedTime: '3 min' },
@@ -763,7 +765,7 @@ export const PHYSICS_CLASS_12 = {
             { id: 'ch8-t3-m1', probe: 'Electromagnetic waves need a material medium to propagate. True?', options: ['True — like sound waves', 'False — EM waves can travel through vacuum'], correctIndex: 1, correction: 'Unlike sound, electromagnetic waves do not need a medium. They propagate through vacuum via oscillating electric and magnetic fields.', detectKeywords: ['need medium', 'require medium', 'like sound'] },
           ],
         },
-        { id: 'ch8-t4', title: 'Energy and Momentum of EM Waves', duration: '10 min', difficulty: 'advanced', animationType: 'emWave',
+        { id: 'ch8-t4', title: "Energy and Momentum of EM Waves", duration: '10 min', difficulty: 'advanced', animationType: 'emWave',
           learningObjectives: ['Calculate energy and momentum carried by EM waves', 'Explain radiation pressure'],
           questions: [
             { id: 'ch8-t4-q1', text: 'EM waves carry both energy and momentum. If an EM wave is absorbed by a surface, what happens in terms of momentum transfer?', hint: 'Radiation pressure exists.', expectedConcepts: ['momentum = U/c', 'radiation pressure', 'force on surface'], estimatedTime: '3 min' },

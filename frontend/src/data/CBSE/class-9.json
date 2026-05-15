@@ -1,0 +1,499 @@
+{
+  "board": "CBSE",
+  "academic_year": "2025-26",
+  "medium": "English Medium",
+  "class": "Class 9",
+  "source": "CBSE Academic & NCERT Curriculum",
+  "subjects": [
+    {
+      "subject_name": "English",
+      "textbook": "Beehive & Moments",
+      "chapters": [
+        {
+          "chapter_number": 1,
+          "chapter_title": "The Fun They Had",
+          "topics": [
+            "Future Education",
+            "Technology in Learning",
+            "Reading Comprehension"
+          ]
+        },
+        {
+          "chapter_number": 2,
+          "chapter_title": "The Sound of Music",
+          "topics": [
+            "Biography",
+            "Determination",
+            "Music and Culture"
+          ]
+        },
+        {
+          "chapter_number": 3,
+          "chapter_title": "The Little Girl",
+          "topics": [
+            "Family Relationships",
+            "Child Psychology",
+            "Emotions"
+          ]
+        },
+        {
+          "chapter_number": 4,
+          "chapter_title": "A Truly Beautiful Mind",
+          "topics": [
+            "Albert Einstein",
+            "Science",
+            "Human Values"
+          ]
+        },
+        {
+          "chapter_number": 5,
+          "chapter_title": "The Snake and the Mirror",
+          "topics": [
+            "Humour",
+            "Fear and Courage",
+            "Narrative Skills"
+          ]
+        },
+        {
+          "chapter_number": 6,
+          "chapter_title": "My Childhood",
+          "topics": [
+            "A.P.J. Abdul Kalam",
+            "Childhood Memories",
+            "Unity and Diversity"
+          ]
+        },
+        {
+          "chapter_number": 7,
+          "chapter_title": "Packing",
+          "topics": [
+            "Humour",
+            "Travel Preparation",
+            "Situational Comedy"
+          ]
+        },
+        {
+          "chapter_number": 8,
+          "chapter_title": "Reach for the Top",
+          "topics": [
+            "Success Stories",
+            "Sports",
+            "Motivation"
+          ]
+        }
+      ]
+    },
+    {
+      "subject_name": "Hindi",
+      "textbook": "Kshitij & Kritika",
+      "chapters": [
+        {
+          "chapter_number": 1,
+          "chapter_title": "दो बैलों की कथा",
+          "topics": [
+            "पशु प्रेम",
+            "मित्रता",
+            "संवेदनशीलता"
+          ]
+        },
+        {
+          "chapter_number": 2,
+          "chapter_title": "ल्हासा की ओर",
+          "topics": [
+            "यात्रा वर्णन",
+            "संस्कृति",
+            "अनुभव"
+          ]
+        },
+        {
+          "chapter_number": 3,
+          "chapter_title": "उपभोक्तावाद की संस्कृति",
+          "topics": [
+            "समाज",
+            "उपभोक्तावाद",
+            "आधुनिक जीवन"
+          ]
+        },
+        {
+          "chapter_number": 4,
+          "chapter_title": "साँवले सपनों की याद",
+          "topics": [
+            "संस्मरण",
+            "बचपन",
+            "भावनाएँ"
+          ]
+        },
+        {
+          "chapter_number": 5,
+          "chapter_title": "मेरे बचपन के दिन",
+          "topics": [
+            "बाल जीवन",
+            "परिवार",
+            "स्मृतियाँ"
+          ]
+        }
+      ]
+    },
+    {
+      "subject_name": "Mathematics",
+      "textbook": "Mathematics",
+      "chapters": [
+        {
+          "chapter_number": 1,
+          "chapter_title": "Number Systems",
+          "topics": [
+            "Real Numbers",
+            "Irrational Numbers",
+            "Operations on Numbers"
+          ]
+        },
+        {
+          "chapter_number": 2,
+          "chapter_title": "Polynomials",
+          "topics": [
+            "Polynomial Expressions",
+            "Zeroes",
+            "Factorization"
+          ]
+        },
+        {
+          "chapter_number": 3,
+          "chapter_title": "Coordinate Geometry",
+          "topics": [
+            "Cartesian Plane",
+            "Coordinates",
+            "Graph Representation"
+          ]
+        },
+        {
+          "chapter_number": 4,
+          "chapter_title": "Linear Equations in Two Variables",
+          "topics": [
+            "Equation Representation",
+            "Graphs",
+            "Solutions"
+          ]
+        },
+        {
+          "chapter_number": 5,
+          "chapter_title": "Introduction to Euclid's Geometry",
+          "topics": [
+            "Axioms",
+            "Postulates",
+            "Geometrical Reasoning"
+          ]
+        },
+        {
+          "chapter_number": 6,
+          "chapter_title": "Lines and Angles",
+          "topics": [
+            "Angle Properties",
+            "Parallel Lines",
+            "Transversals"
+          ]
+        },
+        {
+          "chapter_number": 7,
+          "chapter_title": "Triangles",
+          "topics": [
+            "Congruence",
+            "Properties",
+            "Theorems"
+          ]
+        },
+        {
+          "chapter_number": 8,
+          "chapter_title": "Quadrilaterals",
+          "topics": [
+            "Types of Quadrilaterals",
+            "Properties",
+            "Applications"
+          ]
+        },
+        {
+          "chapter_number": 9,
+          "chapter_title": "Areas of Parallelograms and Triangles",
+          "topics": [
+            "Area Formulae",
+            "Geometrical Applications",
+            "Comparisons"
+          ]
+        },
+        {
+          "chapter_number": 10,
+          "chapter_title": "Circles",
+          "topics": [
+            "Chord",
+            "Arc",
+            "Circle Properties"
+          ]
+        },
+        {
+          "chapter_number": 11,
+          "chapter_title": "Surface Areas and Volumes",
+          "topics": [
+            "Cube",
+            "Cuboid",
+            "Cylinder"
+          ]
+        },
+        {
+          "chapter_number": 12,
+          "chapter_title": "Statistics",
+          "topics": [
+            "Data Collection",
+            "Graphs",
+            "Interpretation"
+          ]
+        }
+      ]
+    },
+    {
+      "subject_name": "Science",
+      "textbook": "Science",
+      "chapters": [
+        {
+          "chapter_number": 1,
+          "chapter_title": "Matter in Our Surroundings",
+          "topics": [
+            "States of Matter",
+            "Physical Changes",
+            "Evaporation"
+          ]
+        },
+        {
+          "chapter_number": 2,
+          "chapter_title": "Is Matter Around Us Pure",
+          "topics": [
+            "Mixtures",
+            "Solutions",
+            "Separation Techniques"
+          ]
+        },
+        {
+          "chapter_number": 3,
+          "chapter_title": "Atoms and Molecules",
+          "topics": [
+            "Atomic Theory",
+            "Molecules",
+            "Chemical Formulae"
+          ]
+        },
+        {
+          "chapter_number": 4,
+          "chapter_title": "Structure of the Atom",
+          "topics": [
+            "Subatomic Particles",
+            "Atomic Models",
+            "Electronic Configuration"
+          ]
+        },
+        {
+          "chapter_number": 5,
+          "chapter_title": "The Fundamental Unit of Life",
+          "topics": [
+            "Cell Structure",
+            "Cell Organelles",
+            "Plant and Animal Cells"
+          ]
+        },
+        {
+          "chapter_number": 6,
+          "chapter_title": "Tissues",
+          "topics": [
+            "Plant Tissues",
+            "Animal Tissues",
+            "Functions"
+          ]
+        },
+        {
+          "chapter_number": 7,
+          "chapter_title": "Motion",
+          "topics": [
+            "Speed",
+            "Velocity",
+            "Acceleration"
+          ]
+        },
+        {
+          "chapter_number": 8,
+          "chapter_title": "Force and Laws of Motion",
+          "topics": [
+            "Newton's Laws",
+            "Momentum",
+            "Inertia"
+          ]
+        },
+        {
+          "chapter_number": 9,
+          "chapter_title": "Gravitation",
+          "topics": [
+            "Gravity",
+            "Mass and Weight",
+            "Floatation"
+          ]
+        },
+        {
+          "chapter_number": 10,
+          "chapter_title": "Work and Energy",
+          "topics": [
+            "Work Done",
+            "Kinetic Energy",
+            "Potential Energy"
+          ]
+        }
+      ]
+    },
+    {
+      "subject_name": "Social Science",
+      "textbook": "India and the Contemporary World-I, Contemporary India-I, Democratic Politics-I, Economics",
+      "chapters": [
+        {
+          "chapter_number": 1,
+          "chapter_title": "The French Revolution",
+          "topics": [
+            "French Society",
+            "Revolution",
+            "Democracy"
+          ]
+        },
+        {
+          "chapter_number": 2,
+          "chapter_title": "Socialism in Europe and the Russian Revolution",
+          "topics": [
+            "Russian Revolution",
+            "Socialism",
+            "Lenin"
+          ]
+        },
+        {
+          "chapter_number": 3,
+          "chapter_title": "India - Size and Location",
+          "topics": [
+            "Geographical Features",
+            "India's Location",
+            "Neighbours"
+          ]
+        },
+        {
+          "chapter_number": 4,
+          "chapter_title": "Physical Features of India",
+          "topics": [
+            "Mountains",
+            "Plateaus",
+            "Plains"
+          ]
+        },
+        {
+          "chapter_number": 5,
+          "chapter_title": "What is Democracy? Why Democracy?",
+          "topics": [
+            "Democracy",
+            "Government",
+            "Political Systems"
+          ]
+        },
+        {
+          "chapter_number": 6,
+          "chapter_title": "Constitutional Design",
+          "topics": [
+            "Indian Constitution",
+            "Rights",
+            "Democratic Principles"
+          ]
+        },
+        {
+          "chapter_number": 7,
+          "chapter_title": "The Story of Village Palampur",
+          "topics": [
+            "Rural Economy",
+            "Farming",
+            "Village Life"
+          ]
+        },
+        {
+          "chapter_number": 8,
+          "chapter_title": "People as Resource",
+          "topics": [
+            "Human Resource",
+            "Education",
+            "Employment"
+          ]
+        }
+      ]
+    },
+    {
+      "subject_name": "Environmental Studies (EVS)",
+      "chapters": [
+        {
+          "chapter_number": 1,
+          "chapter_title": "Natural Resources",
+          "topics": [
+            "Water Resources",
+            "Forest Resources",
+            "Conservation"
+          ]
+        },
+        {
+          "chapter_number": 2,
+          "chapter_title": "Environmental Pollution",
+          "topics": [
+            "Air Pollution",
+            "Water Pollution",
+            "Control Measures"
+          ]
+        },
+        {
+          "chapter_number": 3,
+          "chapter_title": "Sustainable Development",
+          "topics": [
+            "Resource Management",
+            "Recycling",
+            "Environmental Protection"
+          ]
+        }
+      ]
+    },
+    {
+      "subject_name": "Kannada",
+      "chapters": [
+        {
+          "chapter_number": 1,
+          "chapter_title": "ಪ್ರಕೃತಿ ಮತ್ತು ಪರಿಸರ",
+          "topics": [
+            "ಪರಿಸರ ಸಂರಕ್ಷಣೆ",
+            "ಪ್ರಕೃತಿ",
+            "ಕಾವ್ಯ ಅಧ್ಯಯನ"
+          ]
+        },
+        {
+          "chapter_number": 2,
+          "chapter_title": "ಸ್ನೇಹ ಮತ್ತು ಮೌಲ್ಯಗಳು",
+          "topics": [
+            "ಸ್ನೇಹ",
+            "ಮಾನವೀಯತೆ",
+            "ನೈತಿಕ ಮೌಲ್ಯಗಳು"
+          ]
+        },
+        {
+          "chapter_number": 3,
+          "chapter_title": "ವಿಜ್ಞಾನ ಮತ್ತು ಸಮಾಜ",
+          "topics": [
+            "ತಂತ್ರಜ್ಞಾನ",
+            "ಸಮಾಜದ ಅಭಿವೃದ್ಧಿ",
+            "ಜ್ಞಾನ"
+          ]
+        },
+        {
+          "chapter_number": 4,
+          "chapter_title": "ಸಾಹಸ ಮತ್ತು ಆತ್ಮವಿಶ್ವಾಸ",
+          "topics": [
+            "ಧೈರ್ಯ",
+            "ಪ್ರೇರಣೆ",
+            "ಆತ್ಮವಿಶ್ವಾಸ"
+          ]
+        }
+      ]
+    }
+  ]
+}

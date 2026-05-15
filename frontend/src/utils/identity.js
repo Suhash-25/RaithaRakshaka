@@ -11,7 +11,7 @@ const IDENTITY_ID = 'anonymous-identity'
 const CURRENT_STUDENT_ID = 'current-student'
 
 async function getDB() {
-  return openDB(DB_NAME, DB_VERSION)
+  return openDB(DB_NAME)
 }
 
 function createDeviceId() {

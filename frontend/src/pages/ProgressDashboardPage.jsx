@@ -1,7 +1,7 @@
 import { useEffect, useMemo, useState } from 'react'
 import { Link } from 'react-router-dom'
 import { ChartBarIcon, SparklesIcon, TargetIcon, TrendingUpIcon } from '@/components/ui/Icons'
-import { getAllProgressEvents } from '@/utils/indexedDB'
+import { getProgressEventsByStudent } from '@/utils/indexedDB'
 import { buildProgressSnapshot, getSeverityLabel } from '@/utils/progressAnalytics'
 import { getCurrentStudent } from '@/services/studentManagement'
 
@@ -83,10 +83,8 @@ export default function ProgressDashboardPage() {
     let active = true
 
     async function loadDashboard() {
-      const [rows, currentStudent] = await Promise.all([
-        getAllProgressEvents(),
-        getCurrentStudent(),
-      ])
+      const currentStudent = await getCurrentStudent()
+      const rows = await getProgressEventsByStudent(currentStudent?.id ?? 'guest')
       if (active) {
         setEvents(rows)
         setStudent(currentStudent)
@@ -95,14 +93,22 @@ export default function ProgressDashboardPage() {
     }
 
     loadDashboard()
+    const refresh = () => loadDashboard()
+    window.addEventListener('pv-progress-updated', refresh)
+    window.addEventListener('focus', refresh)
+    const intervalId = window.setInterval(refresh, 5000)
 
     return () => {
       active = false
+      window.removeEventListener('pv-progress-updated', refresh)
+      window.removeEventListener('focus', refresh)
+      window.clearInterval(intervalId)
     }
   }, [])
 
   const snapshot = useMemo(() => buildProgressSnapshot(events), [events])
   const maxMisconceptionCount = snapshot.misconceptionBreakdown[0]?.count ?? 1
+  const prediction = snapshot.prediction
 
   if (loading) {
     return (
@@ -132,6 +138,7 @@ export default function ProgressDashboardPage() {
           </h1>
           <p className="mt-3 max-w-2xl text-sm leading-relaxed text-surface-muted">
             Local progress tracking from IndexedDB, built around attempts, misconception patterns, and how mastery is moving over time.
+            The dashboard refreshes live for {student?.name ?? 'the active learner'} as quiz analysis is saved.
           </p>
           {student?.anon_id && (
             <div className="mt-4 max-w-2xl rounded-xl border border-surface-border bg-white/5 px-4 py-3">
@@ -208,6 +215,56 @@ export default function ProgressDashboardPage() {
                       className="progress-fill"
                       style={{ width: `${(item.count / maxMisconceptionCount) * 100}%` }}
                     />
+                  </div>
+                </div>
+              ))}
+            </div>
+          )}
+        </article>
+      </section>
+
+      <section className="mb-8 grid gap-6 xl:grid-cols-[1.15fr_0.85fr]">
+        <article className="card">
+          <div className="mb-5 flex items-center justify-between gap-3">
+            <div>
+              <h2 className="text-xl font-display font-bold text-surface-text">Predictive model</h2>
+              <p className="mt-1 text-sm text-surface-muted">
+                A lightweight forecast based on the latest mastery slope and weak-area severity.
+              </p>
+            </div>
+            <span className={prediction.riskLevel === 'high' ? 'badge-rose' : prediction.riskLevel === 'medium' ? 'badge-amber' : 'badge-teal'}>
+              {prediction.risk}
+            </span>
+          </div>
+
+          <div className="grid gap-4 sm:grid-cols-3">
+            <PredictionTile label="Next expected mastery" value={`${prediction.nextMastery}%`} />
+            <PredictionTile label="Trend" value={prediction.trend} />
+            <PredictionTile label="Confidence" value={`${prediction.confidence}%`} />
+          </div>
+
+          <div className="mt-5 rounded-2xl border border-surface-border bg-surface/40 p-4">
+            <p className="text-sm font-semibold text-surface-text">Recommended next action</p>
+            <p className="mt-2 text-sm leading-relaxed text-surface-muted">{prediction.recommendation}</p>
+          </div>
+        </article>
+
+        <article className="card">
+          <h2 className="mb-5 text-xl font-display font-bold text-surface-text">Forecast window</h2>
+          {prediction.forecast.length === 0 ? (
+            <div className="flex h-44 items-center justify-center rounded-2xl border border-dashed border-surface-border bg-surface/40 text-sm text-surface-muted">
+              Forecast appears after quiz attempts.
+            </div>
+          ) : (
+            <div className="space-y-4">
+              {prediction.forecast.map((point) => (
+                <div key={point.label}>
+                  <div className="mb-2 flex items-center justify-between text-sm">
+                    <span className="text-surface-text">{point.label}</span>
+                    <span className="text-surface-muted">{point.score}%</span>
+                  </div>
+                  <div className="progress-track h-3">
+                    <div className="progress-fill" style={{ width: `${point.score}%` }} />
                   </div>
                 </div>
               ))}
@@ -304,6 +361,15 @@ export default function ProgressDashboardPage() {
           </div>
         </article>
       </section>
+    </div>
+  )
+}
+
+function PredictionTile({ label, value }) {
+  return (
+    <div className="rounded-2xl border border-surface-border bg-surface/40 px-4 py-4">
+      <p className="text-xs uppercase tracking-[0.08em] text-surface-muted">{label}</p>
+      <p className="mt-2 text-2xl font-display font-bold text-surface-text">{value}</p>
     </div>
   )
 }

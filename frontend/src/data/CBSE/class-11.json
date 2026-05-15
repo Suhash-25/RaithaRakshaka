@@ -1,0 +1,438 @@
+{
+  "board": "CBSE",
+  "academic_year": "2025-26",
+  "medium": "English Medium",
+  "class": "Class 11",
+  "source": "CBSE Academic & NCERT Curriculum",
+  "subjects": [
+    {
+      "subject_name": "English",
+      "textbook": "Hornbill & Snapshots",
+      "chapters": [
+        {
+          "chapter_number": 1,
+          "chapter_title": "The Portrait of a Lady",
+          "topics": [
+            "Family Relationships",
+            "Narrative Writing",
+            "Character Sketch"
+          ]
+        },
+        {
+          "chapter_number": 2,
+          "chapter_title": "We're Not Afraid to Die",
+          "topics": [
+            "Adventure",
+            "Survival at Sea",
+            "Courage"
+          ]
+        },
+        {
+          "chapter_number": 3,
+          "chapter_title": "Discovering Tut",
+          "topics": [
+            "Egyptian History",
+            "Archaeology",
+            "Scientific Investigation"
+          ]
+        },
+        {
+          "chapter_number": 4,
+          "chapter_title": "The Ailing Planet",
+          "topics": [
+            "Environment",
+            "Sustainable Development",
+            "Global Warming"
+          ]
+        },
+        {
+          "chapter_number": 5,
+          "chapter_title": "The Browning Version",
+          "topics": [
+            "School Life",
+            "Human Emotions",
+            "Drama"
+          ]
+        }
+      ]
+    },
+    {
+      "subject_name": "Hindi",
+      "textbook": "Aroh & Vitan",
+      "chapters": [
+        {
+          "chapter_number": 1,
+          "chapter_title": "नमक का दारोगा",
+          "topics": [
+            "ईमानदारी",
+            "कर्तव्य",
+            "सामाजिक व्यवस्था"
+          ]
+        },
+        {
+          "chapter_number": 2,
+          "chapter_title": "मियाँ नसीरुद्दीन",
+          "topics": [
+            "हास्य",
+            "व्यंग्य",
+            "व्यक्तित्व चित्रण"
+          ]
+        },
+        {
+          "chapter_number": 3,
+          "chapter_title": "कबीर के पद",
+          "topics": [
+            "भक्ति साहित्य",
+            "दोहा",
+            "आध्यात्मिकता"
+          ]
+        },
+        {
+          "chapter_number": 4,
+          "chapter_title": "ग़ज़ल",
+          "topics": [
+            "काव्य सौंदर्य",
+            "उर्दू साहित्य",
+            "भावार्थ"
+          ]
+        }
+      ]
+    },
+    {
+      "subject_name": "Mathematics",
+      "textbook": "Mathematics",
+      "chapters": [
+        {
+          "chapter_number": 1,
+          "chapter_title": "Sets",
+          "topics": [
+            "Types of Sets",
+            "Operations on Sets",
+            "Venn Diagrams"
+          ]
+        },
+        {
+          "chapter_number": 2,
+          "chapter_title": "Relations and Functions",
+          "topics": [
+            "Relations",
+            "Functions",
+            "Domain and Range"
+          ]
+        },
+        {
+          "chapter_number": 3,
+          "chapter_title": "Trigonometric Functions",
+          "topics": [
+            "Angles",
+            "Identities",
+            "Graphs"
+          ]
+        },
+        {
+          "chapter_number": 4,
+          "chapter_title": "Complex Numbers",
+          "topics": [
+            "Imaginary Numbers",
+            "Algebra of Complex Numbers",
+            "Argand Plane"
+          ]
+        },
+        {
+          "chapter_number": 5,
+          "chapter_title": "Linear Inequalities",
+          "topics": [
+            "Graphical Representation",
+            "Solution Sets",
+            "Applications"
+          ]
+        },
+        {
+          "chapter_number": 6,
+          "chapter_title": "Permutations and Combinations",
+          "topics": [
+            "Factorials",
+            "Arrangements",
+            "Selections"
+          ]
+        },
+        {
+          "chapter_number": 7,
+          "chapter_title": "Binomial Theorem",
+          "topics": [
+            "Expansion",
+            "Binomial Coefficients",
+            "Applications"
+          ]
+        },
+        {
+          "chapter_number": 8,
+          "chapter_title": "Sequences and Series",
+          "topics": [
+            "Arithmetic Progression",
+            "Geometric Progression",
+            "Series Sum"
+          ]
+        },
+        {
+          "chapter_number": 9,
+          "chapter_title": "Straight Lines",
+          "topics": [
+            "Slope",
+            "Equation of Line",
+            "Distance Formula"
+          ]
+        },
+        {
+          "chapter_number": 10,
+          "chapter_title": "Conic Sections",
+          "topics": [
+            "Circle",
+            "Parabola",
+            "Ellipse and Hyperbola"
+          ]
+        },
+        {
+          "chapter_number": 11,
+          "chapter_title": "Limits and Derivatives",
+          "topics": [
+            "Limits",
+            "Continuity",
+            "Differentiation Basics"
+          ]
+        },
+        {
+          "chapter_number": 12,
+          "chapter_title": "Statistics",
+          "topics": [
+            "Measures of Dispersion",
+            "Mean Deviation",
+            "Standard Deviation"
+          ]
+        },
+        {
+          "chapter_number": 13,
+          "chapter_title": "Probability",
+          "topics": [
+            "Random Experiments",
+            "Events",
+            "Probability Rules"
+          ]
+        }
+      ]
+    },
+    {
+      "subject_name": "Science",
+      "textbook": "Physics, Chemistry & Biology",
+      "chapters": [
+        {
+          "chapter_number": 1,
+          "chapter_title": "Physical World",
+          "topics": [
+            "Nature of Physics",
+            "Scientific Method",
+            "Fundamental Forces"
+          ]
+        },
+        {
+          "chapter_number": 2,
+          "chapter_title": "Units and Measurements",
+          "topics": [
+            "SI Units",
+            "Dimensions",
+            "Measurement Errors"
+          ]
+        },
+        {
+          "chapter_number": 3,
+          "chapter_title": "Structure of Atom",
+          "topics": [
+            "Atomic Models",
+            "Quantum Numbers",
+            "Electronic Configuration"
+          ]
+        },
+        {
+          "chapter_number": 4,
+          "chapter_title": "Chemical Bonding",
+          "topics": [
+            "Ionic Bond",
+            "Covalent Bond",
+            "Hybridization"
+          ]
+        },
+        {
+          "chapter_number": 5,
+          "chapter_title": "Cell: Structure and Function",
+          "topics": [
+            "Cell Organelles",
+            "Plant Cell",
+            "Animal Cell"
+          ]
+        },
+        {
+          "chapter_number": 6,
+          "chapter_title": "Plant Kingdom",
+          "topics": [
+            "Classification",
+            "Bryophytes",
+            "Gymnosperms"
+          ]
+        },
+        {
+          "chapter_number": 7,
+          "chapter_title": "Human Physiology",
+          "topics": [
+            "Digestive System",
+            "Respiratory System",
+            "Circulatory System"
+          ]
+        }
+      ]
+    },
+    {
+      "subject_name": "Social Science",
+      "textbook": "History, Geography, Political Science & Economics",
+      "chapters": [
+        {
+          "chapter_number": 1,
+          "chapter_title": "Writing and City Life",
+          "topics": [
+            "Mesopotamian Civilization",
+            "Urbanization",
+            "Trade"
+          ]
+        },
+        {
+          "chapter_number": 2,
+          "chapter_title": "An Empire Across Three Continents",
+          "topics": [
+            "Roman Empire",
+            "Administration",
+            "Society"
+          ]
+        },
+        {
+          "chapter_number": 3,
+          "chapter_title": "Fundamental Rights",
+          "topics": [
+            "Indian Constitution",
+            "Rights",
+            "Democracy"
+          ]
+        },
+        {
+          "chapter_number": 4,
+          "chapter_title": "Indian Economy",
+          "topics": [
+            "Economic Activities",
+            "Development",
+            "Resources"
+          ]
+        },
+        {
+          "chapter_number": 5,
+          "chapter_title": "Structure of Atmosphere",
+          "topics": [
+            "Atmospheric Layers",
+            "Weather",
+            "Climate"
+          ]
+        }
+      ]
+    },
+    {
+      "subject_name": "Environmental Studies (EVS)",
+      "textbook": "Environmental Education",
+      "chapters": [
+        {
+          "chapter_number": 1,
+          "chapter_title": "Environment and Ecology",
+          "topics": [
+            "Ecosystem",
+            "Food Chain",
+            "Ecological Balance"
+          ]
+        },
+        {
+          "chapter_number": 2,
+          "chapter_title": "Natural Resources",
+          "topics": [
+            "Forest Resources",
+            "Water Resources",
+            "Mineral Resources"
+          ]
+        },
+        {
+          "chapter_number": 3,
+          "chapter_title": "Biodiversity and Conservation",
+          "topics": [
+            "Wildlife",
+            "Conservation Methods",
+            "Protected Areas"
+          ]
+        },
+        {
+          "chapter_number": 4,
+          "chapter_title": "Environmental Pollution",
+          "topics": [
+            "Air Pollution",
+            "Water Pollution",
+            "Waste Management"
+          ]
+        },
+        {
+          "chapter_number": 5,
+          "chapter_title": "Sustainable Development",
+          "topics": [
+            "Renewable Resources",
+            "Climate Change",
+            "Sustainable Practices"
+          ]
+        }
+      ]
+    },
+    {
+      "subject_name": "Kannada",
+      "textbook": "Kannada Core",
+      "chapters": [
+        {
+          "chapter_number": 1,
+          "chapter_title": "ಪ್ರಕೃತಿ ಮತ್ತು ಜೀವನ",
+          "topics": [
+            "ಪ್ರಕೃತಿ ಸೌಂದರ್ಯ",
+            "ಪರಿಸರ ಸಂರಕ್ಷಣೆ",
+            "ಕಾವ್ಯ"
+          ]
+        },
+        {
+          "chapter_number": 2,
+          "chapter_title": "ಮಾನವ ಮೌಲ್ಯಗಳು",
+          "topics": [
+            "ನೈತಿಕತೆ",
+            "ಸಹಾನುಭೂತಿ",
+            "ಸಮಾಜ"
+          ]
+        },
+        {
+          "chapter_number": 3,
+          "chapter_title": "ವಿಜ್ಞಾನ ಮತ್ತು ತಂತ್ರಜ್ಞಾನ",
+          "topics": [
+            "ತಂತ್ರಜ್ಞಾನ",
+            "ಆವಿಷ್ಕಾರಗಳು",
+            "ಆಧುನಿಕ ಸಮಾಜ"
+          ]
+        },
+        {
+          "chapter_number": 4,
+          "chapter_title": "ಸಾಹಿತ್ಯ ಮತ್ತು ಸಂಸ್ಕೃತಿ",
+          "topics": [
+            "ಕನ್ನಡ ಸಾಹಿತ್ಯ",
+            "ಸಂಸ್ಕೃತಿ",
+            "ಪರಂಪರೆ"
+          ]
+        }
+      ]
+    }
+  ]
+}

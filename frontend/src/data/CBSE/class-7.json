@@ -1,0 +1,418 @@
+{
+  "board": "CBSE",
+  "academic_year": "2025-26",
+  "medium": "English Medium",
+  "class": "Class 7",
+  "source": "CBSE Academic & NCERT Curriculum",
+  "subjects": [
+    {
+      "subject_name": "English",
+      "textbook": "Poorvi",
+      "chapters": [
+        {
+          "chapter_number": 1,
+          "chapter_title": "Three Questions",
+          "topics": [
+            "Moral Values",
+            "Decision Making",
+            "Reading Comprehension"
+          ]
+        },
+        {
+          "chapter_number": 2,
+          "chapter_title": "A Gift of Chappals",
+          "topics": [
+            "Compassion",
+            "Family Relationships",
+            "Story Analysis"
+          ]
+        },
+        {
+          "chapter_number": 3,
+          "chapter_title": "Gopal and the Hilsa Fish",
+          "topics": [
+            "Humour",
+            "Problem Solving",
+            "Creative Thinking"
+          ]
+        },
+        {
+          "chapter_number": 4,
+          "chapter_title": "The Ashes That Made Trees Bloom",
+          "topics": [
+            "Japanese Folk Tale",
+            "Kindness",
+            "Nature"
+          ]
+        },
+        {
+          "chapter_number": 5,
+          "chapter_title": "Quality",
+          "topics": [
+            "Dedication",
+            "Hard Work",
+            "Character Study"
+          ]
+        },
+        {
+          "chapter_number": 6,
+          "chapter_title": "Expert Detectives",
+          "topics": [
+            "Observation Skills",
+            "Mystery",
+            "Critical Thinking"
+          ]
+        },
+        {
+          "chapter_number": 7,
+          "chapter_title": "The Invention of Vita-Wonk",
+          "topics": [
+            "Science Fiction",
+            "Imagination",
+            "Vocabulary"
+          ]
+        }
+      ]
+    },
+    {
+      "subject_name": "Hindi",
+      "textbook": "Malhar",
+      "chapters": [
+        {
+          "chapter_number": 1,
+          "chapter_title": "हम पंछी उन्मुक्त गगन के",
+          "topics": [
+            "स्वतंत्रता",
+            "कविता",
+            "भावार्थ"
+          ]
+        },
+        {
+          "chapter_number": 2,
+          "chapter_title": "दादी माँ",
+          "topics": [
+            "परिवार",
+            "संस्मरण",
+            "संवेदनशीलता"
+          ]
+        },
+        {
+          "chapter_number": 3,
+          "chapter_title": "हिमालय की बेटियाँ",
+          "topics": [
+            "प्रकृति",
+            "महिलाओं की भूमिका",
+            "पर्यावरण"
+          ]
+        },
+        {
+          "chapter_number": 4,
+          "chapter_title": "कठपुतली",
+          "topics": [
+            "कला",
+            "रचनात्मकता",
+            "कविता"
+          ]
+        },
+        {
+          "chapter_number": 5,
+          "chapter_title": "मिठाईवाला",
+          "topics": [
+            "बाल मनोविज्ञान",
+            "सामाजिक जीवन",
+            "संवाद"
+          ]
+        }
+      ]
+    },
+    {
+      "subject_name": "Mathematics",
+      "textbook": "Ganit Prakash",
+      "chapters": [
+        {
+          "chapter_number": 1,
+          "chapter_title": "Integers",
+          "topics": [
+            "Positive and Negative Numbers",
+            "Operations on Integers",
+            "Number Line"
+          ]
+        },
+        {
+          "chapter_number": 2,
+          "chapter_title": "Fractions and Decimals",
+          "topics": [
+            "Equivalent Fractions",
+            "Decimal Numbers",
+            "Operations"
+          ]
+        },
+        {
+          "chapter_number": 3,
+          "chapter_title": "Data Handling",
+          "topics": [
+            "Tables",
+            "Bar Graphs",
+            "Interpretation"
+          ]
+        },
+        {
+          "chapter_number": 4,
+          "chapter_title": "Simple Equations",
+          "topics": [
+            "Variables",
+            "Equation Solving",
+            "Applications"
+          ]
+        },
+        {
+          "chapter_number": 5,
+          "chapter_title": "Lines and Angles",
+          "topics": [
+            "Types of Angles",
+            "Parallel Lines",
+            "Transversals"
+          ]
+        },
+        {
+          "chapter_number": 6,
+          "chapter_title": "The Triangle and its Properties",
+          "topics": [
+            "Triangles",
+            "Angle Sum Property",
+            "Exterior Angles"
+          ]
+        },
+        {
+          "chapter_number": 7,
+          "chapter_title": "Comparing Quantities",
+          "topics": [
+            "Percentage",
+            "Profit and Loss",
+            "Simple Interest"
+          ]
+        },
+        {
+          "chapter_number": 8,
+          "chapter_title": "Rational Numbers",
+          "topics": [
+            "Representation",
+            "Operations",
+            "Properties"
+          ]
+        },
+        {
+          "chapter_number": 9,
+          "chapter_title": "Perimeter and Area",
+          "topics": [
+            "Area Calculation",
+            "Perimeter",
+            "Practical Applications"
+          ]
+        }
+      ]
+    },
+    {
+      "subject_name": "Science",
+      "textbook": "Curiosity",
+      "chapters": [
+        {
+          "chapter_number": 1,
+          "chapter_title": "Nutrition in Plants",
+          "topics": [
+            "Photosynthesis",
+            "Nutrients",
+            "Plant Nutrition"
+          ]
+        },
+        {
+          "chapter_number": 2,
+          "chapter_title": "Nutrition in Animals",
+          "topics": [
+            "Digestive System",
+            "Food Habits",
+            "Digestion"
+          ]
+        },
+        {
+          "chapter_number": 3,
+          "chapter_title": "Heat",
+          "topics": [
+            "Temperature",
+            "Heat Transfer",
+            "Thermometers"
+          ]
+        },
+        {
+          "chapter_number": 4,
+          "chapter_title": "Acids, Bases and Salts",
+          "topics": [
+            "Indicators",
+            "Neutralization",
+            "Properties"
+          ]
+        },
+        {
+          "chapter_number": 5,
+          "chapter_title": "Physical and Chemical Changes",
+          "topics": [
+            "Chemical Reactions",
+            "Rusting",
+            "Crystallization"
+          ]
+        },
+        {
+          "chapter_number": 6,
+          "chapter_title": "Respiration in Organisms",
+          "topics": [
+            "Breathing",
+            "Respiration Process",
+            "Human Respiratory System"
+          ]
+        },
+        {
+          "chapter_number": 7,
+          "chapter_title": "Transportation in Animals and Plants",
+          "topics": [
+            "Circulatory System",
+            "Blood",
+            "Transport in Plants"
+          ]
+        }
+      ]
+    },
+    {
+      "subject_name": "Social Science",
+      "textbook": "Exploring Society: India and Beyond",
+      "chapters": [
+        {
+          "chapter_number": 1,
+          "chapter_title": "Tracing Changes Through Time",
+          "topics": [
+            "History",
+            "Historical Sources",
+            "Medieval Period"
+          ]
+        },
+        {
+          "chapter_number": 2,
+          "chapter_title": "New Kings and Kingdoms",
+          "topics": [
+            "Kingdoms",
+            "Administration",
+            "Society"
+          ]
+        },
+        {
+          "chapter_number": 3,
+          "chapter_title": "The Delhi Sultans",
+          "topics": [
+            "Sultanate Period",
+            "Rulers",
+            "Expansion"
+          ]
+        },
+        {
+          "chapter_number": 4,
+          "chapter_title": "Our Environment",
+          "topics": [
+            "Natural Environment",
+            "Human Environment",
+            "Resources"
+          ]
+        },
+        {
+          "chapter_number": 5,
+          "chapter_title": "Inside Our Earth",
+          "topics": [
+            "Layers of Earth",
+            "Rocks",
+            "Minerals"
+          ]
+        },
+        {
+          "chapter_number": 6,
+          "chapter_title": "Democracy and Equality",
+          "topics": [
+            "Government",
+            "Equality",
+            "Citizenship"
+          ]
+        }
+      ]
+    },
+    {
+      "subject_name": "Environmental Studies (EVS)",
+      "chapters": [
+        {
+          "chapter_number": 1,
+          "chapter_title": "Environment and Ecosystems",
+          "topics": [
+            "Ecosystem",
+            "Food Chains",
+            "Conservation"
+          ]
+        },
+        {
+          "chapter_number": 2,
+          "chapter_title": "Natural Resources",
+          "topics": [
+            "Water Resources",
+            "Forests",
+            "Minerals"
+          ]
+        },
+        {
+          "chapter_number": 3,
+          "chapter_title": "Pollution and Conservation",
+          "topics": [
+            "Air Pollution",
+            "Water Pollution",
+            "Environmental Protection"
+          ]
+        }
+      ]
+    },
+    {
+      "subject_name": "Kannada",
+      "chapters": [
+        {
+          "chapter_number": 1,
+          "chapter_title": "ಪ್ರಕೃತಿ ಸೌಂದರ್ಯ",
+          "topics": [
+            "ಪ್ರಕೃತಿ",
+            "ಪರಿಸರ ಸಂರಕ್ಷಣೆ",
+            "ಕವನ ಅಧ್ಯಯನ"
+          ]
+        },
+        {
+          "chapter_number": 2,
+          "chapter_title": "ಸ್ನೇಹ",
+          "topics": [
+            "ಸ್ನೇಹದ ಮಹತ್ವ",
+            "ಮಾನವ ಸಂಬಂಧಗಳು",
+            "ಮೌಲ್ಯಗಳು"
+          ]
+        },
+        {
+          "chapter_number": 3,
+          "chapter_title": "ಧೈರ್ಯ ಮತ್ತು ಸಾಹಸ",
+          "topics": [
+            "ಆತ್ಮವಿಶ್ವಾಸ",
+            "ಸಾಹಸ ಕಥೆಗಳು",
+            "ಪ್ರೇರಣೆ"
+          ]
+        },
+        {
+          "chapter_number": 4,
+          "chapter_title": "ನಮ್ಮ ಸಮಾಜ",
+          "topics": [
+            "ಸಮಾಜ",
+            "ಜವಾಬ್ದಾರಿ",
+            "ಸಹಕಾರ"
+          ]
+        }
+      ]
+    }
+  ]
+}

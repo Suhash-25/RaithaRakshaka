@@ -1,5 +1,8 @@
 import time
 from typing import Dict, Optional, List
+import httpx
+import json
+from pathlib import Path
 
 from models.data_models import Student, Faculty, Subject, Attendance, Marks, Result
 from services.service import Service
@@ -307,3 +310,144 @@ async def get_ia_admin_analytics() -> Dict:
         return {"success": True, "data": data}
     except Exception as e:
         return {"success": False, "message": str(e)}
+
+LEARN_BASE = "http://localhost:8000"
+
+def _normalise_class_id(class_id: str) -> str:
+    raw = str(class_id or "10").strip().lower().replace("class", "").replace("-", "")
+    raw = raw.lstrip("0") or "10"
+    return raw
+
+def _normalise_subject(subject: str) -> str:
+    return str(subject or "mathematics").strip().lower()
+
+def _frontend_data_root() -> Path:
+    return Path(__file__).resolve().parents[2] / "frontend" / "src" / "data"
+
+async def fetch_topic_content(class_id: str, subject: str, chapter_id: str, topic_id: str) -> dict:
+    """
+    Reads from existing static JSON dataset — same source as /learn endpoints.
+    Returns: {title, content, questions[]} or empty dict on miss.
+    Never hallucinate — return only what exists in data files.
+    """
+    class_no = _normalise_class_id(class_id)
+    subject_key = _normalise_subject(subject)
+
+    direct_path = Path(__file__).resolve().parents[1] / "data" / class_no / subject_key / chapter_id / f"{topic_id}.json"
+    try:
+        with open(direct_path, "r", encoding="utf-8") as f:
+            return json.load(f)
+    except FileNotFoundError:
+        pass
+
+    catalog_paths = [
+        _frontend_data_root() / "State" / f"class {class_no}" / "knowledge.json",
+        _frontend_data_root() / "State" / f"class {class_no}" / "knowledge_enhanced.json",
+        _frontend_data_root() / "CBSE" / f"class-{class_no}.json",
+    ]
+    for path in catalog_paths:
+        try:
+            with open(path, "r", encoding="utf-8") as f:
+                catalog = json.load(f)
+        except FileNotFoundError:
+            continue
+
+        for subject_entry in catalog.get("subjects", []):
+            name = subject_entry.get("subject_name", "").strip().lower()
+            if subject_key not in name and name not in subject_key:
+                continue
+            chapters = []
+            for part in subject_entry.get("parts", []):
+                chapters.extend(part.get("chapters", []))
+            chapters.extend(subject_entry.get("chapters", []))
+            for chapter in chapters:
+                chapter_no = str(chapter.get("chapter_no") or chapter.get("chapter_number") or "1")
+                if chapter_id and chapter_id not in {f"ch{chapter_no}", chapter_no}:
+                    continue
+                concepts = chapter.get("concepts") or chapter.get("topics") or []
+                title = chapter.get("chapter_name") or chapter.get("chapter_title") or f"Chapter {chapter_no}"
+                selected = concepts[0] if concepts else title
+                if topic_id and topic_id not in {f"ch{chapter_no}-t1", selected}:
+                    selected = concepts[0] if concepts else title
+                content = "; ".join(concepts) if concepts else title
+                return {
+                    "title": selected,
+                    "content": content,
+                    "questions": [f"Explain {item}" for item in concepts[:5]],
+                }
+    return {}
+
+async def fetch_chapter_list(class_id: str, subject: str) -> list:
+    """Returns list of chapters from static JSON index."""
+    class_no = _normalise_class_id(class_id)
+    subject_key = _normalise_subject(subject)
+    try:
+        path = Path(__file__).resolve().parents[1] / "data" / class_no / subject_key / "index.json"
+        with open(path, "r", encoding="utf-8") as f:
+            return json.load(f)
+    except FileNotFoundError:
+        pass
+
+    path = _frontend_data_root() / "State" / f"class {class_no}" / "knowledge.json"
+    try:
+        with open(path, "r", encoding="utf-8") as f:
+            catalog = json.load(f)
+    except FileNotFoundError:
+        return []
+    chapters = []
+    for subject_entry in catalog.get("subjects", []):
+        name = subject_entry.get("subject_name", "").strip().lower()
+        if subject_key not in name and name not in subject_key:
+            continue
+        for part in subject_entry.get("parts", []):
+            chapters.extend(part.get("chapters", []))
+        chapters.extend(subject_entry.get("chapters", []))
+    return chapters
+
+def build_progress_record(
+    student_id: str,
+    anon_id: str,
+    class_id: str,
+    subject: str,
+    topic_id: str,
+    question: str,
+    answer: str,
+    score: int,
+    mastery_delta: int,
+    misconception: str | None,
+    misconception_type: str | None,
+    language: str,
+) -> dict:
+    """
+    Builds the exact record shape the ProgressPage IndexedDB expects.
+    Frontend saves this — backend just returns it.
+    """
+    from datetime import datetime
+    now = datetime.now()
+    created_at = int(now.timestamp() * 1000)
+    topic_label = topic_id.replace("-", " ").title()
+    subject_label = subject.title()
+    return {
+        "id": f"{student_id}_{topic_id}_{int(now.timestamp())}",
+        "student_id": student_id,
+        "anon_id": anon_id,
+        "class_id": class_id,
+        "subject": subject,
+        "subjectId": subject,
+        "subjectLabel": subject_label,
+        "topic_id": topic_id,
+        "topicId": topic_id,
+        "topicLabel": topic_label,
+        "question": question,
+        "answer": answer,
+        "score": score,
+        "masteryScore": score,
+        "mastery_delta": mastery_delta,
+        "misconception": misconception,
+        "misconception_type": misconception_type,
+        "misconceptionType": misconception_type or "Unclassified",
+        "language": language,
+        "timestamp": now.isoformat(),
+        "createdAt": created_at,
+        "window": now.strftime("%Y-%m-%d"),
+    }

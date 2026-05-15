@@ -101,6 +101,29 @@ export async function loginStudent(studentId, pin) {
 }
 
 /**
+ * Starts a student session without PIN verification.
+ * Used by the app login screen so local/offline entry always works.
+ * @param {string} studentId
+ * @returns {Promise<Object>} active student
+ */
+export async function forceLoginStudent(studentId) {
+  await setCurrentStudent(studentId)
+  const student = await getStudentById(studentId)
+
+  if (!student) {
+    throw new Error('Student not found')
+  }
+
+  return {
+    id: student.id,
+    name: student.name,
+    class: student.class,
+    language: student.language,
+    anon_id: student.anon_id,
+  }
+}
+
+/**
  * Gets the currently logged-in student.
  * @returns {Promise<Object|null>}
  */

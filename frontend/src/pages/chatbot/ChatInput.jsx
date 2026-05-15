@@ -4,7 +4,7 @@
  * Full Tailwind — zero inline styles.
  *
  * Props:
- *   value, onChange, onSubmit, onMic, onFileSelect
+ *   value, onChange, onSubmit, onMic, onMicStart, onMicEnd, onFileSelect
  *   micActive, loading, disabled, filePreview, onClearFile
  */
 
@@ -16,6 +16,8 @@ export default function ChatInput({
   onChange,
   onSubmit,
   onMic,
+  onMicStart,
+  onMicEnd,
   micActive = false,
   loading = false,
   disabled = false,
@@ -25,6 +27,7 @@ export default function ChatInput({
   placeholder = 'Ask anything…',
 }) {
   const fileRef = useRef(null)
+  const hasHoldMic = Boolean(onMicStart && onMicEnd)
 
   return (
     <form onSubmit={onSubmit} className="space-y-2">
@@ -106,9 +109,19 @@ export default function ChatInput({
         {onMic && (
           <button
             type="button"
-            onClick={onMic}
+            onClick={hasHoldMic ? undefined : onMic}
+            onPointerDown={hasHoldMic ? (e) => {
+              e.preventDefault()
+              onMicStart()
+            } : undefined}
+            onPointerUp={hasHoldMic ? (e) => {
+              e.preventDefault()
+              onMicEnd()
+            } : undefined}
+            onPointerCancel={hasHoldMic ? onMicEnd : undefined}
+            onPointerLeave={hasHoldMic && micActive ? onMicEnd : undefined}
             disabled={disabled || loading}
-            title={micActive ? 'Stop listening' : 'Voice input'}
+            title={micActive ? 'Release to send voice' : 'Hold for voice input'}
             className={`
               p-2 rounded-xl transition-all flex-shrink-0 disabled:opacity-40
               ${micActive

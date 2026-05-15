@@ -526,6 +526,8 @@ class Repo:
     # -------------------- USERS (auth via PG) -------------------- #
 
     async def insert_user(self, user_id: str, name: str, email: str, password_hash: str, role: str) -> dict:
+        email = email.strip().lower()
+        role = (role or "student").strip().lower()
         q = """
         INSERT INTO users (id, name, email, password_hash, role)
         VALUES ($1, $2, $3, $4, $5)
@@ -535,14 +537,24 @@ class Repo:
         return {"id": user_id, "name": name, "email": email, "role": role}
 
     async def get_user_by_email(self, email: str) -> Optional[dict]:
+        email = email.strip().lower()
         async with PostgresDB.pool.acquire() as conn:
-            row = await conn.fetchrow("SELECT * FROM users WHERE email=$1", email)
+            row = await conn.fetchrow("SELECT * FROM users WHERE LOWER(email)=$1", email)
         return row_to_dict(row) if row else None
 
     async def get_user_by_id(self, user_id: str) -> Optional[dict]:
         async with PostgresDB.pool.acquire() as conn:
             row = await conn.fetchrow("SELECT * FROM users WHERE id=$1", user_id)
         return row_to_dict(row) if row else None
+
+    async def update_user_password_hash(self, user_id: str, password_hash: str) -> bool:
+        async with PostgresDB.pool.acquire() as conn:
+            status = await conn.execute(
+                "UPDATE users SET password_hash=$1 WHERE id=$2",
+                password_hash,
+                user_id,
+            )
+        return status.endswith("1")
 
     # -------------------- STUDENT QUERIES -------------------- #
 

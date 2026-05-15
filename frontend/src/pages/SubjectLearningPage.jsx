@@ -2,23 +2,32 @@ import { useCallback, useEffect, useMemo, useState } from 'react'
 import { useNavigate, useParams } from 'react-router-dom'
 import {
   ArrowLeft, ArrowRight, BookOpen, BrainCircuit, CheckCircle2,
-  ChevronRight, Eye, Lightbulb, Play, XCircle, LoaderCircle
+  ChevronRight, ExternalLink, Eye, Lightbulb, Play, XCircle, LoaderCircle
 } from 'lucide-react'
 import PhysicsAnimationEngine from '@/components/physics/PhysicsAnimationEngine'
 import { getAnimation } from '@/components/physics/animations'
 import { loadCatalog, getCatalogChapter, getCatalogTopic } from '@/data/catalogRegistry'
+import { buildTopicDescription, buildVisualSearchUrl, buildVisualVideoUrl } from '@/data/syllabusBoards'
+import { useLearningSelection } from '@/context/LearningSelectionContext'
 import { saveMisconceptionResult } from '@/utils/misconceptionTracker'
+import { saveProgressEvent } from '@/utils/indexedDB'
+import { getMasteryScore } from '@/utils/progressAnalytics'
+import { useStudent } from '@/context/StudentContext'
 
 const STAGE_LABELS = ['Visual Explanation', 'Conceptual Questions', 'Misconception Check']
 
 export default function SubjectLearningPage() {
   const navigate = useNavigate()
   const { classId, subjectId, chapterId, topicId } = useParams()
+  const { selection } = useLearningSelection()
+  const { currentStudent } = useStudent()
+  const boardId = selection.boardId ?? 'state'
 
   const [catalog, setCatalog] = useState(null)
   const [isLoading, setIsLoading] = useState(true)
 
-  const [learningStage, setLearningStage] = useState(0) // 0=animation, 1=questions, 2=misconceptions
+  const [learningStage, setLearningStage] = useState(1) // 0=animation, 1=questions, 2=misconceptions
+  const [showVisualVideo, setShowVisualVideo] = useState(false)
   const [currentQ, setCurrentQ] = useState(0)
   const [answers, setAnswers] = useState({})
   const [showHints, setShowHints] = useState({})
@@ -28,14 +37,14 @@ export default function SubjectLearningPage() {
   useEffect(() => {
     let cancelled = false
     setIsLoading(true)
-    loadCatalog(classId, subjectId).then(loadedCatalog => {
+    loadCatalog(classId, subjectId, boardId).then(loadedCatalog => {
       if (!cancelled) {
         setCatalog(loadedCatalog)
         setIsLoading(false)
       }
     })
     return () => { cancelled = true }
-  }, [classId, subjectId])
+  }, [classId, subjectId, boardId])
 
   const chapter = useMemo(() => {
     return (catalog && chapterId) ? getCatalogChapter(catalog, chapterId) : null
@@ -48,6 +57,24 @@ export default function SubjectLearningPage() {
   const animation = useMemo(() => topic?.animationType ? getAnimation(topic.animationType) : null, [topic])
   const questions = topic?.questions ?? []
   const misconceptions = topic?.misconceptions ?? []
+  const topicDescription = useMemo(() => {
+    if (!topic || !chapter || !catalog) return ''
+    return topic.description || buildTopicDescription({
+      boardLabel: catalog.board ?? 'Syllabus',
+      classLabel: catalog.classLabel,
+      subjectName: catalog.subject,
+      chapterTitle: chapter.title,
+      topicName: topic.title,
+    })
+  }, [catalog, chapter, topic])
+  const visualQuery = `${catalog?.classLabel ?? classId} ${catalog?.subject ?? subjectId} ${chapter?.title ?? ''} ${topic?.title ?? ''} explanation`
+  const visualVideoUrl = topic?.visualVideoUrl || buildVisualVideoUrl(visualQuery)
+  const visualSearchUrl = topic?.visualSearchUrl || buildVisualSearchUrl(visualQuery)
+
+  useEffect(() => {
+    setLearningStage(1)
+    setShowVisualVideo(false)
+  }, [topicId])
 
   // Skip animation stage if no animation is defined for this topic
   useEffect(() => {
@@ -80,15 +107,37 @@ export default function SubjectLearningPage() {
     for (const m of misconceptions) {
       const selected = misconceptionAnswers[m.id]
       if (selected !== undefined) {
+        const isCorrect = selected === m.correctIndex
         await saveMisconceptionResult({
           chapterId, topicId, misconceptionId: m.id,
           probe: m.probe, selectedIndex: selected,
           correctIndex: m.correctIndex,
-          isCorrect: selected === m.correctIndex,
+          isCorrect,
         }).catch(() => {}) // IndexedDB may not be available
+        await saveProgressEvent({
+          student_id: currentStudent?.id ?? 'guest',
+          studentName: currentStudent?.name ?? 'Guest student',
+          responseId: `misconception:${topicId}:${m.id}:${Date.now()}`,
+          questionId: m.id,
+          questionText: m.probe,
+          subjectId,
+          subjectLabel: catalog?.subject,
+          classLabel: catalog?.classLabel,
+          chapterId,
+          chapterLabel: chapter?.title,
+          topicId,
+          topicLabel: topic?.title,
+          misconceptionType: isCorrect ? 'No misconception' : 'Quiz misconception',
+          confidence: 1,
+          confidenceLevel: isCorrect ? 'high' : 'medium',
+          masteryScore: getMasteryScore({ isCorrect }),
+          isCorrect,
+          selectedIndex: selected,
+          correctIndex: m.correctIndex,
+        }).catch(() => {})
       }
     }
-  }, [misconceptionAnswers, misconceptions, chapterId, topicId])
+  }, [catalog, chapter, chapterId, currentStudent, misconceptionAnswers, misconceptions, subjectId, topic, topicId])
 
   const checkAnswer = useCallback((question, answerText) => {
     if (!answerText?.trim()) return { score: 0, matched: [], missing: question.expectedConcepts }
@@ -143,6 +192,60 @@ export default function SubjectLearningPage() {
           Chapter {chapter.number}: {chapter.title}
         </p>
       </div>
+
+      <section className="mb-6 rounded-2xl border border-surface-border bg-surface-card/70 p-6">
+        <div className="flex flex-col gap-4 lg:flex-row lg:items-start lg:justify-between">
+          <div className="max-w-3xl">
+            <div className="mb-3 inline-flex rounded-full border border-surface-border bg-surface px-2.5 py-1 text-xs font-semibold text-surface-muted">
+              Text explanation first
+            </div>
+            <div className="space-y-3 text-sm leading-relaxed text-surface-muted">
+              {topicDescription.split('\n\n').map((paragraph) => (
+                <p key={paragraph}>{paragraph}</p>
+              ))}
+            </div>
+            {topic.keyPoints?.length > 0 && (
+              <div className="mt-5 grid gap-2 sm:grid-cols-3">
+                {topic.keyPoints.slice(0, 3).map((point) => (
+                  <div key={point} className="rounded-xl border border-surface-border bg-surface/60 px-3 py-2 text-xs leading-relaxed text-surface-muted">
+                    {point}
+                  </div>
+                ))}
+              </div>
+            )}
+          </div>
+
+          <button
+            type="button"
+            onClick={() => setShowVisualVideo((value) => !value)}
+            className="btn-secondary shrink-0"
+          >
+            <Play size={16} />
+            {showVisualVideo ? 'Hide visual video' : 'Visual video'}
+          </button>
+        </div>
+
+        {showVisualVideo && (
+          <div className="mt-5 overflow-hidden rounded-2xl border border-surface-border bg-surface">
+            <div className="flex items-center justify-between border-b border-surface-border px-4 py-3">
+              <p className="text-sm font-semibold text-surface-text">Visual understanding</p>
+              <a href={visualSearchUrl} target="_blank" rel="noreferrer" className="inline-flex items-center gap-1.5 text-xs font-semibold text-primary-500 hover:underline">
+                Open videos
+                <ExternalLink size={13} />
+              </a>
+            </div>
+            <div className="aspect-video w-full bg-surface-card">
+              <iframe
+                title={`${topic.title} visual explanation`}
+                src={visualVideoUrl}
+                className="h-full w-full"
+                allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+                allowFullScreen
+              />
+            </div>
+          </div>
+        )}
+      </section>
 
       <div className="mb-6 flex gap-2">
         {STAGE_LABELS.map((label, i) => {
@@ -321,7 +424,7 @@ export default function SubjectLearningPage() {
                     <button
                       type="button"
                       onClick={() => {
-                        setLearningStage(0); setCurrentQ(0); setAnswers({}); setShowHints({})
+                        setLearningStage(1); setCurrentQ(0); setAnswers({}); setShowHints({})
                         setMisconceptionAnswers({}); setMisconceptionSubmitted(false)
                         navigate(`/learn/${classId}/${subjectId}/chapters/${chapterId}/topics/${topicNav.prev.id}`)
                       }}
@@ -334,7 +437,7 @@ export default function SubjectLearningPage() {
                     <button
                       type="button"
                       onClick={() => {
-                        setLearningStage(0); setCurrentQ(0); setAnswers({}); setShowHints({})
+                        setLearningStage(1); setCurrentQ(0); setAnswers({}); setShowHints({})
                         setMisconceptionAnswers({}); setMisconceptionSubmitted(false)
                         navigate(`/learn/${classId}/${subjectId}/chapters/${chapterId}/topics/${topicNav.next.id}`)
                       }}
@@ -439,7 +542,7 @@ export default function SubjectLearningPage() {
                       <button
                         type="button"
                         onClick={() => {
-                          setLearningStage(0); setCurrentQ(0); setAnswers({}); setShowHints({})
+                          setLearningStage(1); setCurrentQ(0); setAnswers({}); setShowHints({})
                           setMisconceptionAnswers({}); setMisconceptionSubmitted(false)
                           navigate(`/learn/${classId}/${subjectId}/chapters/${chapterId}/topics/${topicNav.prev.id}`)
                         }}
@@ -452,7 +555,7 @@ export default function SubjectLearningPage() {
                       <button
                         type="button"
                         onClick={() => {
-                          setLearningStage(0); setCurrentQ(0); setAnswers({}); setShowHints({})
+                          setLearningStage(1); setCurrentQ(0); setAnswers({}); setShowHints({})
                           setMisconceptionAnswers({}); setMisconceptionSubmitted(false)
                           navigate(`/learn/${classId}/${subjectId}/chapters/${chapterId}/topics/${topicNav.next.id}`)
                         }}

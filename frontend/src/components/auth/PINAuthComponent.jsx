@@ -1,7 +1,5 @@
 import { useState } from 'react'
 import { Lock, ChevronLeft } from 'lucide-react'
-import { authenticateStudent, getStudentById } from '@/utils/indexedDB'
-
 /**
  * PINAuthComponent - PIN input modal for student authentication
  * Used for login, switching students, or confirming deletes
@@ -33,14 +31,7 @@ export default function PINAuthComponent({
 
     setIsLoading(true)
     try {
-      const isValid = await authenticateStudent(studentId, pin)
-      if (!isValid) {
-        setError('Incorrect PIN')
-        setIsLoading(false)
-        return
-      }
-
-      onSuccess(pin)
+      await onSuccess(pin)
     } catch (err) {
       setError(err.message)
       setIsLoading(false)

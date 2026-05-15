@@ -104,6 +104,7 @@ export function buildProgressSnapshot(events) {
     attempted,
     averageMastery,
     improvement,
+    prediction: buildPrediction(timeline, weakAreas),
     recentTimeline,
     misconceptionBreakdown,
     weakAreas,
@@ -122,4 +123,49 @@ function formatShortDate(timestamp) {
     month: 'short',
     day: 'numeric',
   }).format(new Date(timestamp))
+}
+
+function buildPrediction(timeline, weakAreas) {
+  if (timeline.length === 0) {
+    return {
+      nextMastery: 0,
+      trend: 'No attempts yet',
+      risk: 'Unknown',
+      riskLevel: 'medium',
+      confidence: 0,
+      recommendation: 'Complete a quiz or misconception check to start the prediction model.',
+      forecast: [],
+    }
+  }
+
+  const recent = timeline.slice(-6)
+  const scores = recent.map((event) => event.masteryScore)
+  const first = scores[0]
+  const last = scores[scores.length - 1]
+  const slope = scores.length > 1 ? (last - first) / (scores.length - 1) : 0
+  const nextMastery = clamp(Math.round(last + slope), 0, 100)
+  const lowRecent = scores.filter((score) => score < 55).length
+  const weakHigh = weakAreas.filter((area) => area.severity === 'high').length
+  const riskLevel = nextMastery < 45 || weakHigh >= 2 ? 'high' : nextMastery < 70 || lowRecent >= 2 ? 'medium' : 'low'
+  const trend = slope > 4 ? 'Rising' : slope < -4 ? 'Dropping' : 'Stable'
+  const focusArea = weakAreas[0]
+
+  return {
+    nextMastery,
+    trend,
+    risk: riskLevel === 'high' ? 'High revision need' : riskLevel === 'medium' ? 'Moderate revision need' : 'On track',
+    riskLevel,
+    confidence: Math.min(95, Math.max(35, 45 + recent.length * 8)),
+    recommendation: focusArea
+      ? `Practice ${focusArea.topicLabel} next; it has ${focusArea.averageScore}% average mastery and ${focusArea.attempts} attempt${focusArea.attempts === 1 ? '' : 's'}.`
+      : 'Keep practicing new topics to improve the prediction quality.',
+    forecast: Array.from({ length: 4 }).map((_, index) => ({
+      label: `Next ${index + 1}`,
+      score: clamp(Math.round(last + slope * (index + 1)), 0, 100),
+    })),
+  }
+}
+
+function clamp(value, min, max) {
+  return Math.max(min, Math.min(max, value))
 }

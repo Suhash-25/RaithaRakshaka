@@ -373,6 +373,9 @@ class Service:
     async def insert_user(self, user_id: str, name: str, email: str, password_hash: str, role: str) -> dict:
         return await self.repo.insert_user(user_id, name, email, password_hash, role)
 
+    async def update_user_password_hash(self, user_id: str, password_hash: str) -> bool:
+        return await self.repo.update_user_password_hash(user_id, password_hash)
+
     # -------------------- IA MARKS -------------------- #
 
     async def upload_ia_marks(self, faculty_id: str, subject_id: str,

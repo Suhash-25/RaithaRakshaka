@@ -1,0 +1,385 @@
+{
+  "board": "CBSE",
+  "academic_year": "2025-26",
+  "medium": "English Medium",
+  "class": "Class 2",
+  "source": "CBSE Academic + NCERT Textbooks",
+  "subjects": [
+    {
+      "subject_name": "English",
+      "textbook": "Mridang",
+      "chapters": [
+        {
+          "chapter_number": 1,
+          "chapter_title": "My Bicycle",
+          "topics": [
+            "Reading Skills",
+            "Vocabulary",
+            "Speaking Practice"
+          ]
+        },
+        {
+          "chapter_number": 2,
+          "chapter_title": "Picture Reading",
+          "topics": [
+            "Observation",
+            "Picture Interpretation",
+            "Sentence Formation"
+          ]
+        },
+        {
+          "chapter_number": 3,
+          "chapter_title": "It Is Fun",
+          "topics": [
+            "Fun Activities",
+            "Conversation",
+            "Listening Skills"
+          ]
+        },
+        {
+          "chapter_number": 4,
+          "chapter_title": "Seeing without Seeing",
+          "topics": [
+            "Sense Organs",
+            "Awareness",
+            "Imagination"
+          ]
+        },
+        {
+          "chapter_number": 5,
+          "chapter_title": "Come Back Soon",
+          "topics": [
+            "Travel",
+            "Feelings",
+            "Communication"
+          ]
+        },
+        {
+          "chapter_number": 6,
+          "chapter_title": "Between Home and School",
+          "topics": [
+            "Daily Journey",
+            "Road Safety",
+            "Community Places"
+          ]
+        },
+        {
+          "chapter_number": 7,
+          "chapter_title": "This is My Town",
+          "topics": [
+            "Town Life",
+            "Public Places",
+            "Local Community"
+          ]
+        },
+        {
+          "chapter_number": 8,
+          "chapter_title": "A Show of Clouds",
+          "topics": [
+            "Weather",
+            "Nature",
+            "Observation Skills"
+          ]
+        },
+        {
+          "chapter_number": 9,
+          "chapter_title": "My Name",
+          "topics": [
+            "Identity",
+            "Self Introduction",
+            "Language Practice"
+          ]
+        },
+        {
+          "chapter_number": 10,
+          "chapter_title": "The Crow",
+          "topics": [
+            "Birds",
+            "Story Reading",
+            "Moral Learning"
+          ]
+        },
+        {
+          "chapter_number": 11,
+          "chapter_title": "The Smart Monkey",
+          "topics": [
+            "Animals",
+            "Problem Solving",
+            "Story Understanding"
+          ]
+        },
+        {
+          "chapter_number": 12,
+          "chapter_title": "Little Drops of Water",
+          "topics": [
+            "Water Conservation",
+            "Poetry",
+            "Environmental Awareness"
+          ]
+        },
+        {
+          "chapter_number": 13,
+          "chapter_title": "We are all Indians",
+          "topics": [
+            "Unity in Diversity",
+            "National Identity",
+            "Values"
+          ]
+        }
+      ]
+    },
+    {
+      "subject_name": "Hindi",
+      "textbook": "Sarangi",
+      "chapters": [
+        {
+          "chapter_number": 1,
+          "chapter_title": "मेरा परिवार",
+          "topics": [
+            "परिवार",
+            "रिश्ते",
+            "संवाद"
+          ]
+        },
+        {
+          "chapter_number": 2,
+          "chapter_title": "खेल-खेल में",
+          "topics": [
+            "खेल",
+            "मित्रता",
+            "मनोरंजन"
+          ]
+        },
+        {
+          "chapter_number": 3,
+          "chapter_title": "पेड़-पौधे",
+          "topics": [
+            "प्रकृति",
+            "पर्यावरण",
+            "पौधों का महत्व"
+          ]
+        },
+        {
+          "chapter_number": 4,
+          "chapter_title": "जानवरों की दुनिया",
+          "topics": [
+            "पशु-पक्षी",
+            "पालतू जानवर",
+            "जंगल"
+          ]
+        },
+        {
+          "chapter_number": 5,
+          "chapter_title": "अच्छी आदतें",
+          "topics": [
+            "स्वच्छता",
+            "अनुशासन",
+            "दैनिक जीवन"
+          ]
+        }
+      ]
+    },
+    {
+      "subject_name": "Mathematics",
+      "textbook": "Joyful Mathematics",
+      "chapters": [
+        {
+          "chapter_number": 1,
+          "chapter_title": "A Day at the Beach",
+          "topics": [
+            "Counting in Groups",
+            "Number Sense",
+            "Grouping"
+          ]
+        },
+        {
+          "chapter_number": 2,
+          "chapter_title": "Shapes Around Us",
+          "topics": [
+            "3D Shapes",
+            "Object Identification",
+            "Geometry Basics"
+          ]
+        },
+        {
+          "chapter_number": 3,
+          "chapter_title": "Fun with Numbers",
+          "topics": [
+            "Numbers 1-100",
+            "Comparing Numbers",
+            "Place Value"
+          ]
+        },
+        {
+          "chapter_number": 4,
+          "chapter_title": "Shadow Story",
+          "topics": [
+            "2D Shapes",
+            "Patterns",
+            "Visual Thinking"
+          ]
+        },
+        {
+          "chapter_number": 5,
+          "chapter_title": "Playing with Lines",
+          "topics": [
+            "Lines",
+            "Directions",
+            "Spatial Understanding"
+          ]
+        },
+        {
+          "chapter_number": 6,
+          "chapter_title": "Decoration for Festival",
+          "topics": [
+            "Addition",
+            "Subtraction",
+            "Patterns"
+          ]
+        },
+        {
+          "chapter_number": 7,
+          "chapter_title": "Rani's Gift",
+          "topics": [
+            "Measurement",
+            "Length",
+            "Comparison"
+          ]
+        },
+        {
+          "chapter_number": 8,
+          "chapter_title": "Grouping and Sharing",
+          "topics": [
+            "Multiplication Basics",
+            "Division Basics",
+            "Equal Sharing"
+          ]
+        },
+        {
+          "chapter_number": 9,
+          "chapter_title": "Which Season is it?",
+          "topics": [
+            "Time",
+            "Seasons",
+            "Calendar"
+          ]
+        },
+        {
+          "chapter_number": 10,
+          "chapter_title": "Fun at the Fair",
+          "topics": [
+            "Money",
+            "Transactions",
+            "Counting Currency"
+          ]
+        },
+        {
+          "chapter_number": 11,
+          "chapter_title": "Data Handling",
+          "topics": [
+            "Tables",
+            "Graphs",
+            "Sorting Information"
+          ]
+        }
+      ]
+    },
+    {
+      "subject_name": "Environmental Studies",
+      "textbook": "Environmental Studies",
+      "chapters": [
+        {
+          "chapter_number": 1,
+          "chapter_title": "My Body",
+          "topics": [
+            "Body Parts",
+            "Sense Organs",
+            "Health and Hygiene"
+          ]
+        },
+        {
+          "chapter_number": 2,
+          "chapter_title": "My Family",
+          "topics": [
+            "Relationships",
+            "Helping Family",
+            "Family Values"
+          ]
+        },
+        {
+          "chapter_number": 3,
+          "chapter_title": "Food We Eat",
+          "topics": [
+            "Healthy Food",
+            "Balanced Diet",
+            "Eating Habits"
+          ]
+        },
+        {
+          "chapter_number": 4,
+          "chapter_title": "Plants and Animals",
+          "topics": [
+            "Domestic Animals",
+            "Wild Animals",
+            "Plant Care"
+          ]
+        },
+        {
+          "chapter_number": 5,
+          "chapter_title": "Water and Air",
+          "topics": [
+            "Sources of Water",
+            "Importance of Air",
+            "Clean Environment"
+          ]
+        }
+      ]
+    },
+    {
+      "subject_name": "General Knowledge",
+      "chapters": [
+        {
+          "chapter_number": 1,
+          "chapter_title": "Our Helpers",
+          "topics": [
+            "Community Helpers",
+            "Public Services",
+            "Respect for Workers"
+          ]
+        },
+        {
+          "chapter_number": 2,
+          "chapter_title": "India and Festivals",
+          "topics": [
+            "National Symbols",
+            "Festivals",
+            "Culture"
+          ]
+        }
+      ]
+    },
+    {
+      "subject_name": "Art and Physical Education",
+      "chapters": [
+        {
+          "chapter_number": 1,
+          "chapter_title": "Creative Arts",
+          "topics": [
+            "Drawing",
+            "Colouring",
+            "Craft Activities"
+          ]
+        },
+        {
+          "chapter_number": 2,
+          "chapter_title": "Physical Activities",
+          "topics": [
+            "Exercise",
+            "Games",
+            "Yoga Basics"
+          ]
+        }
+      ]
+    }
+  ]
+}

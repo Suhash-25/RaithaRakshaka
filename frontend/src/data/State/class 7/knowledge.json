@@ -1,0 +1,480 @@
+{
+  "board": "Karnataka Textbook Society (KTBS)",
+  "academic_year": "2025-26",
+  "class": "7",
+  "medium": "English",
+  "mediums_available": [
+    "English",
+    "Kannada",
+    "Hindi",
+    "Urdu",
+    "Tamil",
+    "Telugu",
+    "Marathi"
+  ],
+  "subjects": [
+    {
+      "subject_name": "Mathematics",
+      "official_books": [
+        "Mathematics Part 1",
+        "Mathematics Part 2"
+      ],
+      "parts": [
+        {
+          "part": "Part 1",
+          "chapters": [
+            {
+              "chapter_no": 1,
+              "chapter_name": "Integers",
+              "concepts": [
+                "Positive Integers",
+                "Negative Integers",
+                "Addition of Integers",
+                "Subtraction of Integers",
+                "Multiplication of Integers",
+                "Division of Integers"
+              ]
+            },
+            {
+              "chapter_no": 2,
+              "chapter_name": "Fractions and Decimals",
+              "concepts": [
+                "Equivalent Fractions",
+                "Addition of Fractions",
+                "Subtraction of Fractions",
+                "Multiplication of Fractions",
+                "Division of Fractions",
+                "Decimal Operations"
+              ]
+            },
+            {
+              "chapter_no": 3,
+              "chapter_name": "Data Handling",
+              "concepts": [
+                "Data Collection",
+                "Organization of Data",
+                "Bar Graphs",
+                "Double Bar Graphs",
+                "Interpretation of Data"
+              ]
+            },
+            {
+              "chapter_no": 4,
+              "chapter_name": "Simple Equations",
+              "concepts": [
+                "Variables",
+                "Algebraic Expressions",
+                "Linear Equations",
+                "Solving Equations"
+              ]
+            },
+            {
+              "chapter_no": 5,
+              "chapter_name": "Lines and Angles",
+              "concepts": [
+                "Intersecting Lines",
+                "Parallel Lines",
+                "Types of Angles",
+                "Transversal",
+                "Angle Properties"
+              ]
+            },
+            {
+              "chapter_no": 6,
+              "chapter_name": "The Triangle and Its Properties",
+              "concepts": [
+                "Types of Triangles",
+                "Angle Sum Property",
+                "Exterior Angle Property",
+                "Medians and Altitudes"
+              ]
+            }
+          ]
+        },
+        {
+          "part": "Part 2",
+          "chapters": [
+            {
+              "chapter_no": 7,
+              "chapter_name": "Congruence of Triangles",
+              "concepts": [
+                "Congruent Figures",
+                "Congruence Criteria",
+                "SSS Criterion",
+                "SAS Criterion",
+                "ASA Criterion"
+              ]
+            },
+            {
+              "chapter_no": 8,
+              "chapter_name": "Comparing Quantities",
+              "concepts": [
+                "Ratio",
+                "Percentage",
+                "Profit and Loss",
+                "Simple Interest",
+                "Discount"
+              ]
+            },
+            {
+              "chapter_no": 9,
+              "chapter_name": "Rational Numbers",
+              "concepts": [
+                "Positive Rational Numbers",
+                "Negative Rational Numbers",
+                "Operations on Rational Numbers"
+              ]
+            },
+            {
+              "chapter_no": 10,
+              "chapter_name": "Practical Geometry",
+              "concepts": [
+                "Construction of Triangles",
+                "Use of Compass",
+                "Geometrical Constructions"
+              ]
+            },
+            {
+              "chapter_no": 11,
+              "chapter_name": "Perimeter and Area",
+              "concepts": [
+                "Area of Triangle",
+                "Area of Parallelogram",
+                "Circumference of Circle",
+                "Area Calculations"
+              ]
+            },
+            {
+              "chapter_no": 12,
+              "chapter_name": "Algebraic Expressions",
+              "concepts": [
+                "Terms and Coefficients",
+                "Like Terms",
+                "Unlike Terms",
+                "Addition of Expressions",
+                "Subtraction of Expressions"
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "subject_name": "Science",
+      "official_books": [
+        "Science Part 1",
+        "Science Part 2"
+      ],
+      "chapters": [
+        {
+          "chapter_no": 1,
+          "chapter_name": "Nutrition in Plants",
+          "concepts": [
+            "Photosynthesis",
+            "Autotrophic Nutrition",
+            "Heterotrophic Nutrition",
+            "Saprotrophs",
+            "Parasites"
+          ]
+        },
+        {
+          "chapter_no": 2,
+          "chapter_name": "Nutrition in Animals",
+          "concepts": [
+            "Digestive System",
+            "Digestion",
+            "Absorption",
+            "Human Digestive Organs"
+          ]
+        },
+        {
+          "chapter_no": 3,
+          "chapter_name": "Fibre to Fabric",
+          "concepts": [
+            "Wool",
+            "Silk",
+            "Rearing of Sheep",
+            "Silkworm Life Cycle"
+          ]
+        },
+        {
+          "chapter_no": 4,
+          "chapter_name": "Heat",
+          "concepts": [
+            "Temperature",
+            "Thermometers",
+            "Transfer of Heat",
+            "Conduction",
+            "Convection",
+            "Radiation"
+          ]
+        },
+        {
+          "chapter_no": 5,
+          "chapter_name": "Acids, Bases and Salts",
+          "concepts": [
+            "Indicators",
+            "Acids",
+            "Bases",
+            "Neutralization"
+          ]
+        },
+        {
+          "chapter_no": 6,
+          "chapter_name": "Physical and Chemical Changes",
+          "concepts": [
+            "Physical Change",
+            "Chemical Change",
+            "Rusting",
+            "Crystallization"
+          ]
+        },
+        {
+          "chapter_no": 7,
+          "chapter_name": "Weather, Climate and Adaptations",
+          "concepts": [
+            "Weather",
+            "Climate",
+            "Adaptation",
+            "Climate Factors"
+          ]
+        },
+        {
+          "chapter_no": 8,
+          "chapter_name": "Winds, Storms and Cyclones",
+          "concepts": [
+            "Air Pressure",
+            "Cyclones",
+            "Storm Formation",
+            "Safety Measures"
+          ]
+        },
+        {
+          "chapter_no": 9,
+          "chapter_name": "Soil",
+          "concepts": [
+            "Soil Formation",
+            "Types of Soil",
+            "Soil Profile",
+            "Soil Conservation"
+          ]
+        },
+        {
+          "chapter_no": 10,
+          "chapter_name": "Respiration in Organisms",
+          "concepts": [
+            "Breathing",
+            "Respiration",
+            "Aerobic Respiration",
+            "Anaerobic Respiration"
+          ]
+        },
+        {
+          "chapter_no": 11,
+          "chapter_name": "Transportation in Animals and Plants",
+          "concepts": [
+            "Circulatory System",
+            "Blood",
+            "Heart",
+            "Transport in Plants"
+          ]
+        },
+        {
+          "chapter_no": 12,
+          "chapter_name": "Reproduction in Plants",
+          "concepts": [
+            "Modes of Reproduction",
+            "Sexual Reproduction",
+            "Asexual Reproduction",
+            "Pollination",
+            "Seed Dispersal"
+          ]
+        }
+      ]
+    },
+    {
+      "subject_name": "Social Science",
+      "official_books": [
+        "Social Science Part 1",
+        "Social Science Part 2"
+      ],
+      "sections": [
+        {
+          "section_name": "History",
+          "chapters": [
+            "Medieval India",
+            "Delhi Sultanate",
+            "Vijayanagara Empire",
+            "Mughals",
+            "Marathas"
+          ]
+        },
+        {
+          "section_name": "Geography",
+          "chapters": [
+            "Environment",
+            "Inside Our Earth",
+            "Air",
+            "Water",
+            "Natural Vegetation",
+            "Human Environment"
+          ]
+        },
+        {
+          "section_name": "Civics",
+          "chapters": [
+            "Democracy",
+            "State Government",
+            "Media",
+            "Gender Equality",
+            "Markets Around Us"
+          ]
+        }
+      ]
+    },
+    {
+      "subject_name": "English",
+      "official_books": [
+        "English First Language Part 1",
+        "English First Language Part 2",
+        "English Second Language Part 1",
+        "English Second Language Part 2"
+      ],
+      "concepts": [
+        {
+          "unit": "Reading Skills",
+          "topics": [
+            "Reading comprehension",
+            "Poetry appreciation",
+            "Theme analysis",
+            "Character analysis",
+            "Vocabulary development"
+          ]
+        },
+        {
+          "unit": "Grammar",
+          "topics": [
+            "Parts of Speech",
+            "Tenses",
+            "Voice",
+            "Direct and Indirect Speech",
+            "Sentence Transformation"
+          ]
+        },
+        {
+          "unit": "Writing Skills",
+          "topics": [
+            "Essay Writing",
+            "Letter Writing",
+            "Story Writing",
+            "Dialogue Writing",
+            "Report Writing"
+          ]
+        }
+      ]
+    },
+    {
+      "subject_name": "Kannada",
+      "official_books": [
+        "Kannada First Language Part 1",
+        "Kannada First Language Part 2",
+        "Kannada Second Language Part 1",
+        "Kannada Second Language Part 2"
+      ],
+      "concepts": [
+        {
+          "unit": "ಗದ್ಯ ಮತ್ತು ಪದ್ಯ",
+          "topics": [
+            "ಅರ್ಥಗ್ರಹಣ",
+            "ಭಾವಾರ್ಥ",
+            "ಪಾತ್ರ ವಿಶ್ಲೇಷಣೆ",
+            "ಮುಖ್ಯ ಅಂಶಗಳು"
+          ]
+        },
+        {
+          "unit": "ವ್ಯಾಕರಣ",
+          "topics": [
+            "ನಾಮಪದ",
+            "ಸರ್ವನಾಮ",
+            "ಕ್ರಿಯಾಪದ",
+            "ಸಂಧಿ",
+            "ಸಮಾಸ",
+            "ವಾಕ್ಯ ರಚನೆ"
+          ]
+        }
+      ]
+    },
+    {
+      "subject_name": "Hindi",
+      "official_books": [
+        "Hindi First Language Part 1",
+        "Hindi First Language Part 2"
+      ],
+      "concepts": [
+        {
+          "unit": "गद्य और पद्य",
+          "topics": [
+            "कहानी",
+            "कविता",
+            "भावार्थ",
+            "मुख्य विचार"
+          ]
+        },
+        {
+          "unit": "व्याकरण",
+          "topics": [
+            "संज्ञा",
+            "सर्वनाम",
+            "क्रिया",
+            "काल",
+            "वाक्य रचना"
+          ]
+        }
+      ]
+    },
+    {
+      "subject_name": "Physical Education",
+      "official_books": [
+        "Physical Education"
+      ],
+      "concepts": [
+        {
+          "unit": "Health and Fitness",
+          "topics": [
+            "Physical Fitness",
+            "Exercise",
+            "Games and Sports",
+            "Teamwork",
+            "Sportsmanship"
+          ]
+        }
+      ]
+    },
+    {
+      "subject_name": "Art Education",
+      "official_books": [
+        "Art Education"
+      ],
+      "concepts": [
+        {
+          "unit": "Art and Craft",
+          "topics": [
+            "Drawing",
+            "Painting",
+            "Craft Work",
+            "Origami",
+            "Creative Activities"
+          ]
+        }
+      ]
+    }
+  ],
+  "source_reference": {
+    "official_portal": "https://textbooks.karnataka.gov.in/textbooks/en/1000",
+    "verified_sources": [
+      "KTBS Textbook PDFs",
+      "KSEEB Chapter Listings",
+      "NCERT-Aligned Karnataka Curriculum"
+    ]
+  }
+}

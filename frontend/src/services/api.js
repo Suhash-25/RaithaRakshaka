@@ -1,5 +1,6 @@
 import axios from 'axios'
 import { analyzeResponseOffline, generateExplanationOffline } from '@/utils/offlineEngine'
+import { getCbseClass, getCbseOverview, getStateClass, getStateOverview } from '@/data/syllabusBoards'
 
 /**
  * api.js — Axios client pre-configured for the Pragna Vistara FastAPI backend.
@@ -73,53 +74,93 @@ client.interceptors.response.use(
 
 export async function hybridRegister(payload) {
   const { data } = await client.post('/auth/register', payload)
-  if (data.success && data.data?.access_token) {
-    localStorage.setItem('access_token', data.data.access_token)
+  const token = data.data?.access_token || data.data?.token
+  if (data.success && token) {
+    localStorage.setItem('access_token', token)
+    if (data.data?.role) localStorage.setItem('auth_role', data.data.role)
   }
   return data
 }
 
 export async function hybridLogin(email, password) {
   const { data } = await client.post('/auth/login', { email, password })
-  if (data.success && data.data?.access_token) {
-    localStorage.setItem('access_token', data.data.access_token)
+  const token = data.data?.access_token || data.data?.token
+  if (data.success && token) {
+    localStorage.setItem('access_token', token)
+    if (data.data?.role) localStorage.setItem('auth_role', data.data.role)
   }
   return data
 }
 
+const backendSyncs = new Map()
+
+function getLocalStudentEmail(student) {
+  const stableId = String(student.id || student.local_id || student.name || 'student')
+    .trim()
+    .toLowerCase()
+    .replace(/[^a-z0-9._-]/g, '-')
+  return `${stableId}@local.student`
+}
+
 export async function syncLocalUserToBackend(student) {
   const appMode = localStorage.getItem('appMode')
-  if (appMode !== 'online') return
+  if (appMode !== 'online' || !student?.id) return
+
+  const email = getLocalStudentEmail(student)
+  if (backendSyncs.has(email)) return backendSyncs.get(email)
   
-  try {
-    // Try to login first (assumes email is usn/name and password is pin)
-    const email = `${student.name.replace(/\s+/g, '').toLowerCase()}@local.student`
-    const password = student.pin || '1234'
+  const syncPromise = (async () => {
+    // Try to login first. Current-session sync can pass the PIN; background sync
+    // may not have it, so keep the previous default as a compatibility fallback.
+    const passwords = [...new Set([student.pin, '1234'].filter(Boolean).map(String))]
+    const hasCurrentPin = Boolean(student.pin)
     
     let res = null
-    try {
-      res = await client.post('/auth/login', { email, password })
-    } catch (e) {
-      // Login failed, try register
+    for (const password of passwords) {
+      try {
+        res = await client.post('/auth/login', { email, password })
+        if (res.data?.success) break
+      } catch (e) {
+        // Try the next known password, then register if none worked.
+      }
     }
+
+    if (!hasCurrentPin) return
     
     if (!res || !res.data?.success) {
-      // Register
-      res = await client.post('/auth/register', {
-        name: student.name,
-        email: email,
-        password: password,
-        role: 'student',
-        local_id: student.id,
-        usn: email
-      })
+      try {
+        res = await client.post('/auth/register', {
+          name: student.name,
+          email: email,
+          password: passwords[0],
+          role: 'student',
+          local_id: student.id,
+          usn: email
+        })
+      } catch (err) {
+        res = await client.post('/auth/login', { email, password: passwords[0] })
+      }
     }
     
-    if (res?.data?.success && res.data.data?.access_token) {
-      localStorage.setItem('access_token', res.data.data.access_token)
+    const token = res?.data?.data?.access_token || res?.data?.data?.token
+    if (res?.data?.success && token) {
+      localStorage.setItem('access_token', token)
+      if (res.data.data?.role) localStorage.setItem('auth_role', res.data.data.role)
     }
+  })()
+    .catch((err) => {
+      console.warn('Backend student sync skipped:', err.message)
+    })
+    .finally(() => {
+      backendSyncs.delete(email)
+    })
+
+  backendSyncs.set(email, syncPromise)
+
+  try {
+    await syncPromise
   } catch (err) {
-    console.error('Failed to sync local user to backend:', err)
+    console.warn('Backend student sync skipped:', err.message)
   }
 }
 
@@ -1495,18 +1536,22 @@ const FALLBACK_CATALOG = {
   ]
 }
 
-export async function getSyllabusCatalog() {
-  return FALLBACK_CATALOG
+export async function getSyllabusCatalog(boardId = 'state') {
+  return boardId === 'cbse' ? getCbseOverview() : getStateOverview()
 }
 
-export async function getSyllabusClass(classSlug) {
-  const foundClass = FALLBACK_CATALOG.classes.find(c => c.class_slug === classSlug)
+export async function getSyllabusClass(classSlug, boardId = 'state') {
+  const foundClass = boardId === 'cbse'
+    ? getCbseClass(classSlug)
+    : getStateClass(classSlug)
   if (!foundClass) throw new Error(`Class "${classSlug}" not found`)
   return foundClass
 }
 
-export async function getSyllabusSubject(classSlug, subjectSlug) {
-  const foundClass = FALLBACK_CATALOG.classes.find(c => c.class_slug === classSlug)
+export async function getSyllabusSubject(classSlug, subjectSlug, boardId = 'state') {
+  const foundClass = boardId === 'cbse'
+    ? getCbseClass(classSlug)
+    : getStateClass(classSlug)
   if (!foundClass) throw new Error(`Class "${classSlug}" not found`)
   const foundSubject = foundClass.subjects.find(s => s.subject_slug === subjectSlug)
   if (!foundSubject) throw new Error(`Subject "${subjectSlug}" not found in ${classSlug}`)

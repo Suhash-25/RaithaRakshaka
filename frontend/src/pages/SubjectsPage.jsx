@@ -12,6 +12,7 @@ export default function SubjectsPage() {
   const { selection, selectClass, selectSubject } = useLearningSelection()
 
   const classSlug = routeClassSlug ?? selection.classSlug
+  const boardId = selection.boardId ?? 'state'
 
   const [searchQuery, setSearchQuery] = useState('')
   const [classData, setClassData] = useState(null)
@@ -32,7 +33,7 @@ export default function SubjectsPage() {
       setError('')
 
       try {
-        const payload = await getSyllabusClass(classSlug)
+        const payload = await getSyllabusClass(classSlug, boardId)
         if (!cancelled) {
           setClassData(payload)
           await selectClass(
@@ -59,7 +60,7 @@ export default function SubjectsPage() {
     return () => {
       cancelled = true
     }
-  }, [classSlug, selectClass, selection.boardId, selection.boardLabel])
+  }, [classSlug, boardId, selectClass, selection.boardId, selection.boardLabel])
 
   const subjects = classData?.subjects ?? []
   const filteredSubjects = useMemo(() => {
@@ -84,7 +85,7 @@ export default function SubjectsPage() {
                             classSlug === 'class-ix' ? 'class-09' : classSlug
 
     // Intercept subjects that have an interactive catalog
-    if (hasCatalog(registryClassId, subject.subject_slug)) {
+    if (hasCatalog(registryClassId, subject.subject_slug, boardId)) {
       navigate(`/learn/${registryClassId}/${subject.subject_slug}`)
       return
     }
@@ -123,7 +124,7 @@ export default function SubjectsPage() {
                 {classData?.class_label ?? classSlug} Subjects
               </h1>
               <p className="mt-2 max-w-2xl text-surface-muted">
-                Open any subject to inspect textbooks, workbooks, and chapter maps.
+                Open any subject to inspect the {boardId === 'cbse' ? 'CBSE topic map' : 'State syllabus books, workbooks, and chapter maps'}.
               </p>
             </div>
             {isLoading && <LoaderCircle className="h-5 w-5 animate-spin text-primary-500" />}
@@ -200,12 +201,14 @@ export default function SubjectsPage() {
                   {subject.subject_label}
                 </h3>
                 <p className="mt-2 text-sm text-surface-muted">
-                  {subject.document_count} books | {subject.chapter_count} chapters
+                  {boardId === 'cbse'
+                    ? `${subject.chapter_count} chapters | ${subject.topic_count ?? 0} topics`
+                    : `${subject.document_count} books | ${subject.chapter_count} chapters`}
                 </p>
 
                 <div className="mt-5 flex items-center justify-between border-t border-surface-border pt-4 text-sm">
                   <span className="truncate text-surface-muted">
-                    {subject.documents.slice(0, 2).map((document) => document.document_title).join(' | ')}
+                    {(subject.documents ?? []).slice(0, 2).map((document) => document.document_title).join(' | ') || subject.textbook || 'Syllabus outline'}
                   </span>
                   <span className="ml-3 inline-flex items-center gap-1 font-semibold text-primary-500">
                     Open

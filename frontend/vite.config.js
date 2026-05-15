@@ -91,6 +91,7 @@ export default defineConfig({
       },
       workbox: {
         globPatterns: ['**/*.{js,css,html,svg,png,woff2,webmanifest}'],
+        maximumFileSizeToCacheInBytes: 5 * 1024 * 1024,
         cleanupOutdatedCaches: true,
         navigateFallback: '/index.html',
         navigateFallbackDenylist: [/^\/api\//],
@@ -161,6 +162,10 @@ export default defineConfig({
         changeOrigin: true,
       },
       '/auth': {
+        target: 'http://localhost:8000',
+        changeOrigin: true,
+      },
+      '/voice': {
         target: 'http://localhost:8000',
         changeOrigin: true,
       },

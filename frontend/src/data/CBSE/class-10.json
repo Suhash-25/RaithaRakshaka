@@ -1,0 +1,535 @@
+{
+  "board": "CBSE",
+  "academic_year": "2025-26",
+  "medium": "English Medium",
+  "class": "Class 10",
+  "source": "CBSE Academic & NCERT Curriculum",
+  "subjects": [
+    {
+      "subject_name": "English",
+      "textbook": "First Flight & Footprints Without Feet",
+      "chapters": [
+        {
+          "chapter_number": 1,
+          "chapter_title": "A Letter to God",
+          "topics": [
+            "Faith and Hope",
+            "Farmer's Life",
+            "Reading Comprehension"
+          ]
+        },
+        {
+          "chapter_number": 2,
+          "chapter_title": "Nelson Mandela: Long Walk to Freedom",
+          "topics": [
+            "Freedom Struggle",
+            "Leadership",
+            "Human Rights"
+          ]
+        },
+        {
+          "chapter_number": 3,
+          "chapter_title": "Two Stories about Flying",
+          "topics": [
+            "Fear and Courage",
+            "Flying Experience",
+            "Confidence Building"
+          ]
+        },
+        {
+          "chapter_number": 4,
+          "chapter_title": "From the Diary of Anne Frank",
+          "topics": [
+            "Diary Writing",
+            "World War",
+            "Teenage Emotions"
+          ]
+        },
+        {
+          "chapter_number": 5,
+          "chapter_title": "Glimpses of India",
+          "topics": [
+            "Indian Culture",
+            "Travel",
+            "Traditions"
+          ]
+        },
+        {
+          "chapter_number": 6,
+          "chapter_title": "Mijbil the Otter",
+          "topics": [
+            "Animals",
+            "Human-Animal Bond",
+            "Narrative Skills"
+          ]
+        },
+        {
+          "chapter_number": 7,
+          "chapter_title": "Madam Rides the Bus",
+          "topics": [
+            "Travel Experience",
+            "Independence",
+            "Observation"
+          ]
+        },
+        {
+          "chapter_number": 8,
+          "chapter_title": "The Sermon at Benares",
+          "topics": [
+            "Buddhism",
+            "Life and Death",
+            "Spirituality"
+          ]
+        }
+      ]
+    },
+    {
+      "subject_name": "Hindi",
+      "textbook": "Kshitij-II & Kritika-II",
+      "chapters": [
+        {
+          "chapter_number": 1,
+          "chapter_title": "सूरदास",
+          "topics": [
+            "भक्ति काव्य",
+            "कृष्ण भक्ति",
+            "काव्य सौंदर्य"
+          ]
+        },
+        {
+          "chapter_number": 2,
+          "chapter_title": "राम-लक्ष्मण-परशुराम संवाद",
+          "topics": [
+            "रामायण",
+            "संवाद शैली",
+            "चरित्र चित्रण"
+          ]
+        },
+        {
+          "chapter_number": 3,
+          "chapter_title": "आत्मकथ्य",
+          "topics": [
+            "आत्मविश्लेषण",
+            "भावनाएँ",
+            "कविता"
+          ]
+        },
+        {
+          "chapter_number": 4,
+          "chapter_title": "नेताजी का चश्मा",
+          "topics": [
+            "देशभक्ति",
+            "व्यंग्य",
+            "समाज"
+          ]
+        },
+        {
+          "chapter_number": 5,
+          "chapter_title": "बालगोबिन भगत",
+          "topics": [
+            "लोक संस्कृति",
+            "संत परंपरा",
+            "मानवता"
+          ]
+        },
+        {
+          "chapter_number": 6,
+          "chapter_title": "लखनवी अंदाज़",
+          "topics": [
+            "तहज़ीब",
+            "हास्य",
+            "संवाद"
+          ]
+        }
+      ]
+    },
+    {
+      "subject_name": "Mathematics",
+      "textbook": "Mathematics",
+      "chapters": [
+        {
+          "chapter_number": 1,
+          "chapter_title": "Real Numbers",
+          "topics": [
+            "Euclid Division Lemma",
+            "HCF and LCM",
+            "Irrational Numbers"
+          ]
+        },
+        {
+          "chapter_number": 2,
+          "chapter_title": "Polynomials",
+          "topics": [
+            "Zeroes of Polynomials",
+            "Relationship between Zeroes and Coefficients",
+            "Division Algorithm"
+          ]
+        },
+        {
+          "chapter_number": 3,
+          "chapter_title": "Pair of Linear Equations in Two Variables",
+          "topics": [
+            "Graphical Method",
+            "Substitution Method",
+            "Elimination Method"
+          ]
+        },
+        {
+          "chapter_number": 4,
+          "chapter_title": "Quadratic Equations",
+          "topics": [
+            "Factorization",
+            "Quadratic Formula",
+            "Nature of Roots"
+          ]
+        },
+        {
+          "chapter_number": 5,
+          "chapter_title": "Arithmetic Progressions",
+          "topics": [
+            "Sequence",
+            "Nth Term",
+            "Sum of AP"
+          ]
+        },
+        {
+          "chapter_number": 6,
+          "chapter_title": "Triangles",
+          "topics": [
+            "Similarity",
+            "Basic Proportionality Theorem",
+            "Area Theorems"
+          ]
+        },
+        {
+          "chapter_number": 7,
+          "chapter_title": "Coordinate Geometry",
+          "topics": [
+            "Distance Formula",
+            "Section Formula",
+            "Area of Triangle"
+          ]
+        },
+        {
+          "chapter_number": 8,
+          "chapter_title": "Introduction to Trigonometry",
+          "topics": [
+            "Trigonometric Ratios",
+            "Identities",
+            "Applications"
+          ]
+        },
+        {
+          "chapter_number": 9,
+          "chapter_title": "Circles",
+          "topics": [
+            "Tangents",
+            "Properties of Tangents",
+            "Theorems"
+          ]
+        },
+        {
+          "chapter_number": 10,
+          "chapter_title": "Surface Areas and Volumes",
+          "topics": [
+            "Cone",
+            "Sphere",
+            "Cylinder"
+          ]
+        },
+        {
+          "chapter_number": 11,
+          "chapter_title": "Statistics",
+          "topics": [
+            "Mean",
+            "Median",
+            "Mode"
+          ]
+        },
+        {
+          "chapter_number": 12,
+          "chapter_title": "Probability",
+          "topics": [
+            "Experimental Probability",
+            "Events",
+            "Outcomes"
+          ]
+        }
+      ]
+    },
+    {
+      "subject_name": "Science",
+      "textbook": "Science",
+      "chapters": [
+        {
+          "chapter_number": 1,
+          "chapter_title": "Chemical Reactions and Equations",
+          "topics": [
+            "Types of Reactions",
+            "Balancing Equations",
+            "Oxidation and Reduction"
+          ]
+        },
+        {
+          "chapter_number": 2,
+          "chapter_title": "Acids, Bases and Salts",
+          "topics": [
+            "pH Scale",
+            "Indicators",
+            "Neutralization"
+          ]
+        },
+        {
+          "chapter_number": 3,
+          "chapter_title": "Metals and Non-Metals",
+          "topics": [
+            "Properties",
+            "Reactivity Series",
+            "Corrosion"
+          ]
+        },
+        {
+          "chapter_number": 4,
+          "chapter_title": "Carbon and Its Compounds",
+          "topics": [
+            "Covalent Bonding",
+            "Hydrocarbons",
+            "Functional Groups"
+          ]
+        },
+        {
+          "chapter_number": 5,
+          "chapter_title": "Life Processes",
+          "topics": [
+            "Nutrition",
+            "Respiration",
+            "Transportation"
+          ]
+        },
+        {
+          "chapter_number": 6,
+          "chapter_title": "Control and Coordination",
+          "topics": [
+            "Nervous System",
+            "Hormones",
+            "Plant Movements"
+          ]
+        },
+        {
+          "chapter_number": 7,
+          "chapter_title": "How Do Organisms Reproduce",
+          "topics": [
+            "Asexual Reproduction",
+            "Sexual Reproduction",
+            "Human Reproduction"
+          ]
+        },
+        {
+          "chapter_number": 8,
+          "chapter_title": "Heredity and Evolution",
+          "topics": [
+            "Genetics",
+            "Inheritance",
+            "Evolution"
+          ]
+        },
+        {
+          "chapter_number": 9,
+          "chapter_title": "Light - Reflection and Refraction",
+          "topics": [
+            "Mirror Formula",
+            "Lens Formula",
+            "Refraction"
+          ]
+        },
+        {
+          "chapter_number": 10,
+          "chapter_title": "Electricity",
+          "topics": [
+            "Ohm's Law",
+            "Resistance",
+            "Electric Power"
+          ]
+        },
+        {
+          "chapter_number": 11,
+          "chapter_title": "Magnetic Effects of Electric Current",
+          "topics": [
+            "Magnetic Field",
+            "Electromagnetism",
+            "Electric Motor"
+          ]
+        },
+        {
+          "chapter_number": 12,
+          "chapter_title": "Our Environment",
+          "topics": [
+            "Ecosystem",
+            "Food Chains",
+            "Biodegradable Waste"
+          ]
+        }
+      ]
+    },
+    {
+      "subject_name": "Social Science",
+      "textbook": "India and the Contemporary World-II, Contemporary India-II, Democratic Politics-II, Understanding Economic Development",
+      "chapters": [
+        {
+          "chapter_number": 1,
+          "chapter_title": "The Rise of Nationalism in Europe",
+          "topics": [
+            "French Revolution",
+            "Nationalism",
+            "Unification of Germany and Italy"
+          ]
+        },
+        {
+          "chapter_number": 2,
+          "chapter_title": "Nationalism in India",
+          "topics": [
+            "Freedom Movement",
+            "Non-Cooperation Movement",
+            "Civil Disobedience"
+          ]
+        },
+        {
+          "chapter_number": 3,
+          "chapter_title": "Resources and Development",
+          "topics": [
+            "Resource Types",
+            "Land Resources",
+            "Sustainable Development"
+          ]
+        },
+        {
+          "chapter_number": 4,
+          "chapter_title": "Forest and Wildlife Resources",
+          "topics": [
+            "Biodiversity",
+            "Conservation",
+            "Wildlife Protection"
+          ]
+        },
+        {
+          "chapter_number": 5,
+          "chapter_title": "Water Resources",
+          "topics": [
+            "Water Scarcity",
+            "Rainwater Harvesting",
+            "Conservation"
+          ]
+        },
+        {
+          "chapter_number": 6,
+          "chapter_title": "Power Sharing",
+          "topics": [
+            "Federalism",
+            "Democracy",
+            "Political Systems"
+          ]
+        },
+        {
+          "chapter_number": 7,
+          "chapter_title": "Political Parties",
+          "topics": [
+            "Party System",
+            "National Parties",
+            "Regional Parties"
+          ]
+        },
+        {
+          "chapter_number": 8,
+          "chapter_title": "Development",
+          "topics": [
+            "Economic Development",
+            "Income",
+            "Human Development"
+          ]
+        },
+        {
+          "chapter_number": 9,
+          "chapter_title": "Money and Credit",
+          "topics": [
+            "Banking",
+            "Loans",
+            "Financial Institutions"
+          ]
+        }
+      ]
+    },
+    {
+      "subject_name": "Environmental Studies (EVS)",
+      "chapters": [
+        {
+          "chapter_number": 1,
+          "chapter_title": "Environment and Sustainability",
+          "topics": [
+            "Natural Resources",
+            "Conservation",
+            "Sustainable Living"
+          ]
+        },
+        {
+          "chapter_number": 2,
+          "chapter_title": "Pollution Control",
+          "topics": [
+            "Air Pollution",
+            "Water Pollution",
+            "Waste Management"
+          ]
+        },
+        {
+          "chapter_number": 3,
+          "chapter_title": "Climate and Ecosystem",
+          "topics": [
+            "Climate Change",
+            "Global Warming",
+            "Ecosystem Balance"
+          ]
+        }
+      ]
+    },
+    {
+      "subject_name": "Kannada",
+      "chapters": [
+        {
+          "chapter_number": 1,
+          "chapter_title": "ಪ್ರಕೃತಿ ಮತ್ತು ಜೀವನ",
+          "topics": [
+            "ಪರಿಸರ ಸಂರಕ್ಷಣೆ",
+            "ಪ್ರಕೃತಿ ಸೌಂದರ್ಯ",
+            "ಕಾವ್ಯ"
+          ]
+        },
+        {
+          "chapter_number": 2,
+          "chapter_title": "ಸ್ನೇಹ ಮತ್ತು ಮೌಲ್ಯಗಳು",
+          "topics": [
+            "ಸ್ನೇಹ",
+            "ಮಾನವೀಯತೆ",
+            "ನೈತಿಕ ಮೌಲ್ಯಗಳು"
+          ]
+        },
+        {
+          "chapter_number": 3,
+          "chapter_title": "ವಿಜ್ಞಾನ ಮತ್ತು ಸಮಾಜ",
+          "topics": [
+            "ತಂತ್ರಜ್ಞಾನ",
+            "ಸಮಾಜದ ಅಭಿವೃದ್ಧಿ",
+            "ಜ್ಞಾನ"
+          ]
+        },
+        {
+          "chapter_number": 4,
+          "chapter_title": "ಸಾಹಸ ಮತ್ತು ಆತ್ಮವಿಶ್ವಾಸ",
+          "topics": [
+            "ಧೈರ್ಯ",
+            "ಪ್ರೇರಣೆ",
+            "ಆತ್ಮವಿಶ್ವಾಸ"
+          ]
+        }
+      ]
+    }
+  ]
+}

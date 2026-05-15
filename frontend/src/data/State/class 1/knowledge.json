@@ -1,0 +1,311 @@
+{
+  "board": "Karnataka State Board",
+  "academic_year": "2025-26",
+  "class": "1",
+  "medium": "English",
+  "subjects": [
+    {
+      "subject_name": "English",
+      "category": "Language",
+      "concepts": [
+        {
+          "unit": "Alphabet Recognition",
+          "topics": [
+            "Capital Letters A-Z",
+            "Small Letters a-z",
+            "Letter Identification",
+            "Letter Sounds",
+            "Alphabet Sequencing"
+          ]
+        },
+        {
+          "unit": "Phonics",
+          "topics": [
+            "Vowel Sounds",
+            "Consonant Sounds",
+            "Beginning Sounds",
+            "Ending Sounds",
+            "Blending Letters",
+            "Simple Word Formation"
+          ]
+        },
+        {
+          "unit": "Vocabulary",
+          "topics": [
+            "Common Objects",
+            "Animals",
+            "Fruits",
+            "Vegetables",
+            "Colors",
+            "Shapes",
+            "Family Members",
+            "Classroom Objects"
+          ]
+        },
+        {
+          "unit": "Reading Skills",
+          "topics": [
+            "Picture Reading",
+            "Sight Words",
+            "Simple Sentences",
+            "Story Listening",
+            "Reading Aloud"
+          ]
+        },
+        {
+          "unit": "Writing Skills",
+          "topics": [
+            "Tracing Letters",
+            "Writing Alphabets",
+            "Copy Writing",
+            "Word Writing",
+            "Simple Sentence Writing"
+          ]
+        },
+        {
+          "unit": "Grammar Basics",
+          "topics": [
+            "Naming Words",
+            "Action Words",
+            "Singular and Plural",
+            "Use of A and An",
+            "Simple Opposites"
+          ]
+        }
+      ]
+    },
+    {
+      "subject_name": "Kannada",
+      "category": "Language",
+      "concepts": [
+        {
+          "unit": "ಅಕ್ಷರ ಪರಿಚಯ",
+          "topics": [
+            "ಸ್ವರಗಳು",
+            "ವ್ಯಂಜನಗಳು",
+            "ಅಕ್ಷರ ಗುರುತು",
+            "ಅಕ್ಷರ ಉಚ್ಚಾರಣೆ"
+          ]
+        },
+        {
+          "unit": "ಪದ ರಚನೆ",
+          "topics": [
+            "ಸರಳ ಪದಗಳು",
+            "ಎರಡು ಅಕ್ಷರ ಪದಗಳು",
+            "ಮೂರು ಅಕ್ಷರ ಪದಗಳು",
+            "ಚಿತ್ರ ಪದಗಳು"
+          ]
+        },
+        {
+          "unit": "ಓದು ಕೌಶಲ್ಯ",
+          "topics": [
+            "ಚಿತ್ರ ಓದು",
+            "ಸರಳ ವಾಕ್ಯಗಳು",
+            "ಕಥೆ ಕೇಳುವುದು",
+            "ಜೋರಾಗಿ ಓದುವುದು"
+          ]
+        },
+        {
+          "unit": "ಬರಹ ಕೌಶಲ್ಯ",
+          "topics": [
+            "ಅಕ್ಷರ ಬರೆಯುವುದು",
+            "ಪದ ಬರೆಯುವುದು",
+            "ನಕಲು ಬರಹ",
+            "ಸರಳ ವಾಕ್ಯ ಬರಹ"
+          ]
+        },
+        {
+          "unit": "ಪದಸಂಪತ್ತು",
+          "topics": [
+            "ಪ್ರಾಣಿಗಳು",
+            "ಹಣ್ಣುಗಳು",
+            "ಬಣ್ಣಗಳು",
+            "ಕುಟುಂಬದ ಸದಸ್ಯರು",
+            "ದೈನಂದಿನ ವಸ್ತುಗಳು"
+          ]
+        }
+      ]
+    },
+    {
+      "subject_name": "Mathematics",
+      "category": "Core Subject",
+      "concepts": [
+        {
+          "unit": "Numbers",
+          "topics": [
+            "Counting Numbers 1-100",
+            "Number Recognition",
+            "Missing Numbers",
+            "Before and After Numbers",
+            "Number Names",
+            "Ascending Order",
+            "Descending Order"
+          ]
+        },
+        {
+          "unit": "Basic Operations",
+          "topics": [
+            "Single Digit Addition",
+            "Single Digit Subtraction",
+            "Addition Using Objects",
+            "Subtraction Using Objects"
+          ]
+        },
+        {
+          "unit": "Shapes",
+          "topics": [
+            "Circle",
+            "Square",
+            "Triangle",
+            "Rectangle",
+            "Shape Identification"
+          ]
+        },
+        {
+          "unit": "Measurement",
+          "topics": [
+            "Long and Short",
+            "Heavy and Light",
+            "Tall and Short",
+            "Big and Small"
+          ]
+        },
+        {
+          "unit": "Patterns",
+          "topics": [
+            "Color Patterns",
+            "Shape Patterns",
+            "Number Patterns",
+            "Object Sequencing"
+          ]
+        },
+        {
+          "unit": "Time and Money",
+          "topics": [
+            "Day and Night",
+            "Days of the Week",
+            "Basic Coins",
+            "Simple Currency Recognition"
+          ]
+        }
+      ]
+    },
+    {
+      "subject_name": "Environmental Studies",
+      "category": "EVS",
+      "concepts": [
+        {
+          "unit": "Myself",
+          "topics": [
+            "Body Parts",
+            "Personal Hygiene",
+            "Good Habits",
+            "Feelings and Emotions"
+          ]
+        },
+        {
+          "unit": "Family and Friends",
+          "topics": [
+            "Family Members",
+            "Relationships",
+            "Helping Each Other",
+            "Friends and Sharing"
+          ]
+        },
+        {
+          "unit": "Food",
+          "topics": [
+            "Healthy Food",
+            "Fruits and Vegetables",
+            "Eating Habits",
+            "Water Importance"
+          ]
+        },
+        {
+          "unit": "Animals and Birds",
+          "topics": [
+            "Domestic Animals",
+            "Wild Animals",
+            "Birds Around Us",
+            "Animal Sounds"
+          ]
+        },
+        {
+          "unit": "Plants",
+          "topics": [
+            "Trees and Plants",
+            "Flowers",
+            "Uses of Plants",
+            "Plant Care"
+          ]
+        },
+        {
+          "unit": "Our Surroundings",
+          "topics": [
+            "Home",
+            "School",
+            "Neighborhood",
+            "Cleanliness",
+            "Road Safety"
+          ]
+        },
+        {
+          "unit": "Weather and Seasons",
+          "topics": [
+            "Sunny Day",
+            "Rainy Day",
+            "Winter Season",
+            "Clothes for Seasons"
+          ]
+        }
+      ]
+    },
+    {
+      "subject_name": "Art Education",
+      "category": "Co-Curricular",
+      "concepts": [
+        {
+          "unit": "Drawing and Coloring",
+          "topics": [
+            "Basic Drawing",
+            "Coloring Objects",
+            "Nature Drawing",
+            "Creative Art"
+          ]
+        },
+        {
+          "unit": "Craft",
+          "topics": [
+            "Paper Folding",
+            "Cut and Paste",
+            "Simple Craft Activities"
+          ]
+        }
+      ]
+    },
+    {
+      "subject_name": "Physical Education",
+      "category": "Co-Curricular",
+      "concepts": [
+        {
+          "unit": "Physical Activities",
+          "topics": [
+            "Running",
+            "Jumping",
+            "Stretching",
+            "Balance Activities"
+          ]
+        },
+        {
+          "unit": "Health and Fitness",
+          "topics": [
+            "Cleanliness",
+            "Exercise Habits",
+            "Team Play",
+            "Safety Habits"
+          ]
+        }
+      ]
+    }
+  ]
+}

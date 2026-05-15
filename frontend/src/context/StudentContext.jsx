@@ -1,6 +1,5 @@
 import { createContext, useContext, useEffect, useState, useCallback } from 'react'
 import { getCurrentStudent, listStudents } from '@/services/studentManagement'
-import { syncLocalUserToBackend } from '@/services/api'
 
 const StudentContext = createContext(null)
 
@@ -49,13 +48,6 @@ export function StudentProvider({ children }) {
       active = false
     }
   }, [])
-
-  // Sync current student to backend when possible
-  useEffect(() => {
-    if (currentStudent) {
-      syncLocalUserToBackend(currentStudent)
-    }
-  }, [currentStudent])
 
   const updateCurrentStudent = useCallback((student) => {
     setCurrentStudent(student)

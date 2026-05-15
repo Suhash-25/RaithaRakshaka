@@ -1,0 +1,463 @@
+{
+  "board": "CBSE",
+  "academic_year": "2025-26",
+  "medium": "English Medium",
+  "class": "Class 8",
+  "source": "CBSE Academic & NCERT Curriculum",
+  "subjects": [
+    {
+      "subject_name": "English",
+      "textbook": "Honeydew / Poorvi",
+      "chapters": [
+        {
+          "chapter_number": 1,
+          "chapter_title": "The Best Christmas Present in the World",
+          "topics": [
+            "War and Peace",
+            "Letter Writing",
+            "Reading Comprehension"
+          ]
+        },
+        {
+          "chapter_number": 2,
+          "chapter_title": "The Tsunami",
+          "topics": [
+            "Natural Disasters",
+            "Survival Stories",
+            "Empathy"
+          ]
+        },
+        {
+          "chapter_number": 3,
+          "chapter_title": "Glimpses of the Past",
+          "topics": [
+            "Indian History",
+            "Freedom Struggle",
+            "Historical Events"
+          ]
+        },
+        {
+          "chapter_number": 4,
+          "chapter_title": "Bepin Choudhury's Lapse of Memory",
+          "topics": [
+            "Humour",
+            "Mystery",
+            "Character Analysis"
+          ]
+        },
+        {
+          "chapter_number": 5,
+          "chapter_title": "The Summit Within",
+          "topics": [
+            "Adventure",
+            "Mountaineering",
+            "Self Confidence"
+          ]
+        },
+        {
+          "chapter_number": 6,
+          "chapter_title": "This is Jody's Fawn",
+          "topics": [
+            "Compassion",
+            "Nature",
+            "Human-Animal Bond"
+          ]
+        },
+        {
+          "chapter_number": 7,
+          "chapter_title": "A Visit to Cambridge",
+          "topics": [
+            "Science",
+            "Stephen Hawking",
+            "Determination"
+          ]
+        },
+        {
+          "chapter_number": 8,
+          "chapter_title": "A Short Monsoon Diary",
+          "topics": [
+            "Rainy Season",
+            "Nature Observation",
+            "Diary Writing"
+          ]
+        }
+      ]
+    },
+    {
+      "subject_name": "Hindi",
+      "textbook": "Vasant",
+      "chapters": [
+        {
+          "chapter_number": 1,
+          "chapter_title": "ध्वनि",
+          "topics": [
+            "कविता",
+            "प्रकृति",
+            "भावार्थ"
+          ]
+        },
+        {
+          "chapter_number": 2,
+          "chapter_title": "लाख की चूड़ियाँ",
+          "topics": [
+            "ग्रामीण जीवन",
+            "परंपरा",
+            "संवेदनशीलता"
+          ]
+        },
+        {
+          "chapter_number": 3,
+          "chapter_title": "बस की यात्रा",
+          "topics": [
+            "यात्रा वर्णन",
+            "हास्य",
+            "अनुभव"
+          ]
+        },
+        {
+          "chapter_number": 4,
+          "chapter_title": "दीवानों की हस्ती",
+          "topics": [
+            "प्रेरणा",
+            "आत्मविश्वास",
+            "कविता"
+          ]
+        },
+        {
+          "chapter_number": 5,
+          "chapter_title": "भगवान के डाकिए",
+          "topics": [
+            "प्रकृति",
+            "संदेश",
+            "काव्य सौंदर्य"
+          ]
+        },
+        {
+          "chapter_number": 6,
+          "chapter_title": "क्या निराश हुआ जाए",
+          "topics": [
+            "सकारात्मक सोच",
+            "जीवन मूल्य",
+            "प्रेरणा"
+          ]
+        }
+      ]
+    },
+    {
+      "subject_name": "Mathematics",
+      "textbook": "Mathematics",
+      "chapters": [
+        {
+          "chapter_number": 1,
+          "chapter_title": "Rational Numbers",
+          "topics": [
+            "Properties",
+            "Operations",
+            "Number Representation"
+          ]
+        },
+        {
+          "chapter_number": 2,
+          "chapter_title": "Linear Equations in One Variable",
+          "topics": [
+            "Variables",
+            "Equation Solving",
+            "Applications"
+          ]
+        },
+        {
+          "chapter_number": 3,
+          "chapter_title": "Understanding Quadrilaterals",
+          "topics": [
+            "Types of Quadrilaterals",
+            "Properties",
+            "Angle Sum Property"
+          ]
+        },
+        {
+          "chapter_number": 4,
+          "chapter_title": "Practical Geometry",
+          "topics": [
+            "Construction",
+            "Triangles",
+            "Quadrilaterals"
+          ]
+        },
+        {
+          "chapter_number": 5,
+          "chapter_title": "Data Handling",
+          "topics": [
+            "Graphs",
+            "Probability",
+            "Interpretation"
+          ]
+        },
+        {
+          "chapter_number": 6,
+          "chapter_title": "Squares and Square Roots",
+          "topics": [
+            "Perfect Squares",
+            "Square Roots",
+            "Applications"
+          ]
+        },
+        {
+          "chapter_number": 7,
+          "chapter_title": "Cubes and Cube Roots",
+          "topics": [
+            "Perfect Cubes",
+            "Cube Roots",
+            "Applications"
+          ]
+        },
+        {
+          "chapter_number": 8,
+          "chapter_title": "Comparing Quantities",
+          "topics": [
+            "Percentage",
+            "Profit and Loss",
+            "Compound Interest"
+          ]
+        },
+        {
+          "chapter_number": 9,
+          "chapter_title": "Algebraic Expressions",
+          "topics": [
+            "Terms and Factors",
+            "Identities",
+            "Operations"
+          ]
+        },
+        {
+          "chapter_number": 10,
+          "chapter_title": "Mensuration",
+          "topics": [
+            "Area",
+            "Volume",
+            "Surface Area"
+          ]
+        }
+      ]
+    },
+    {
+      "subject_name": "Science",
+      "textbook": "Science",
+      "chapters": [
+        {
+          "chapter_number": 1,
+          "chapter_title": "Crop Production and Management",
+          "topics": [
+            "Agriculture",
+            "Irrigation",
+            "Storage"
+          ]
+        },
+        {
+          "chapter_number": 2,
+          "chapter_title": "Microorganisms",
+          "topics": [
+            "Bacteria",
+            "Fungi",
+            "Useful and Harmful Effects"
+          ]
+        },
+        {
+          "chapter_number": 3,
+          "chapter_title": "Synthetic Fibres and Plastics",
+          "topics": [
+            "Types of Fibres",
+            "Plastics",
+            "Environmental Impact"
+          ]
+        },
+        {
+          "chapter_number": 4,
+          "chapter_title": "Metals and Non-Metals",
+          "topics": [
+            "Physical Properties",
+            "Chemical Properties",
+            "Uses"
+          ]
+        },
+        {
+          "chapter_number": 5,
+          "chapter_title": "Coal and Petroleum",
+          "topics": [
+            "Fossil Fuels",
+            "Conservation",
+            "Natural Resources"
+          ]
+        },
+        {
+          "chapter_number": 6,
+          "chapter_title": "Combustion and Flame",
+          "topics": [
+            "Types of Combustion",
+            "Fuel",
+            "Fire Safety"
+          ]
+        },
+        {
+          "chapter_number": 7,
+          "chapter_title": "Conservation of Plants and Animals",
+          "topics": [
+            "Deforestation",
+            "Wildlife Protection",
+            "Biodiversity"
+          ]
+        },
+        {
+          "chapter_number": 8,
+          "chapter_title": "Cell - Structure and Functions",
+          "topics": [
+            "Cell Organelles",
+            "Plant Cell",
+            "Animal Cell"
+          ]
+        }
+      ]
+    },
+    {
+      "subject_name": "Social Science",
+      "textbook": "Our Pasts / Resources and Development / Social and Political Life",
+      "chapters": [
+        {
+          "chapter_number": 1,
+          "chapter_title": "How, When and Where",
+          "topics": [
+            "Modern History",
+            "Historical Sources",
+            "Colonial India"
+          ]
+        },
+        {
+          "chapter_number": 2,
+          "chapter_title": "From Trade to Territory",
+          "topics": [
+            "East India Company",
+            "British Expansion",
+            "Colonial Rule"
+          ]
+        },
+        {
+          "chapter_number": 3,
+          "chapter_title": "Ruling the Countryside",
+          "topics": [
+            "Revenue Systems",
+            "Peasants",
+            "Agriculture"
+          ]
+        },
+        {
+          "chapter_number": 4,
+          "chapter_title": "Resources",
+          "topics": [
+            "Natural Resources",
+            "Human Resources",
+            "Conservation"
+          ]
+        },
+        {
+          "chapter_number": 5,
+          "chapter_title": "Land, Soil, Water and Vegetation",
+          "topics": [
+            "Land Resources",
+            "Soil Conservation",
+            "Natural Vegetation"
+          ]
+        },
+        {
+          "chapter_number": 6,
+          "chapter_title": "The Indian Constitution",
+          "topics": [
+            "Fundamental Rights",
+            "Secularism",
+            "Democracy"
+          ]
+        },
+        {
+          "chapter_number": 7,
+          "chapter_title": "Understanding Laws",
+          "topics": [
+            "Legal System",
+            "Justice",
+            "Rights and Duties"
+          ]
+        }
+      ]
+    },
+    {
+      "subject_name": "Environmental Studies (EVS)",
+      "chapters": [
+        {
+          "chapter_number": 1,
+          "chapter_title": "Environment and Sustainability",
+          "topics": [
+            "Natural Resources",
+            "Sustainable Development",
+            "Conservation"
+          ]
+        },
+        {
+          "chapter_number": 2,
+          "chapter_title": "Pollution and Protection",
+          "topics": [
+            "Air Pollution",
+            "Water Pollution",
+            "Environmental Protection"
+          ]
+        },
+        {
+          "chapter_number": 3,
+          "chapter_title": "Biodiversity",
+          "topics": [
+            "Ecosystems",
+            "Wildlife",
+            "Conservation Methods"
+          ]
+        }
+      ]
+    },
+    {
+      "subject_name": "Kannada",
+      "chapters": [
+        {
+          "chapter_number": 1,
+          "chapter_title": "ಪ್ರಕೃತಿ ಸೌಂದರ್ಯ",
+          "topics": [
+            "ಪ್ರಕೃತಿ",
+            "ಪರಿಸರ ಸಂರಕ್ಷಣೆ",
+            "ಕವನ"
+          ]
+        },
+        {
+          "chapter_number": 2,
+          "chapter_title": "ಸ್ನೇಹದ ಮಹತ್ವ",
+          "topics": [
+            "ಸ್ನೇಹ",
+            "ಮಾನವ ಸಂಬಂಧಗಳು",
+            "ಮೌಲ್ಯಗಳು"
+          ]
+        },
+        {
+          "chapter_number": 3,
+          "chapter_title": "ಸಾಹಸ ಮತ್ತು ಧೈರ್ಯ",
+          "topics": [
+            "ಆತ್ಮವಿಶ್ವಾಸ",
+            "ಸಾಹಸ ಕಥೆಗಳು",
+            "ಪ್ರೇರಣೆ"
+          ]
+        },
+        {
+          "chapter_number": 4,
+          "chapter_title": "ನಮ್ಮ ಸಮಾಜ",
+          "topics": [
+            "ಸಮಾಜ",
+            "ಜವಾಬ್ದಾರಿ",
+            "ಸಹಕಾರ"
+          ]
+        }
+      ]
+    }
+  ]
+}

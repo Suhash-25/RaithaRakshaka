@@ -1,0 +1,409 @@
+{
+  "board": "CBSE",
+  "academic_year": "2025-26",
+  "medium": "English Medium",
+  "class": "Class 6",
+  "source": "CBSE Academic & NCERT Curriculum",
+  "subjects": [
+    {
+      "subject_name": "English",
+      "textbook": "Poorvi",
+      "chapters": [
+        {
+          "chapter_number": 1,
+          "chapter_title": "Fables and Folk Tales",
+          "topics": [
+            "Story Reading",
+            "Moral Values",
+            "Vocabulary Building"
+          ]
+        },
+        {
+          "chapter_number": 2,
+          "chapter_title": "Friendship",
+          "topics": [
+            "Relationships",
+            "Communication Skills",
+            "Character Analysis"
+          ]
+        },
+        {
+          "chapter_number": 3,
+          "chapter_title": "Nature Around Us",
+          "topics": [
+            "Environment",
+            "Observation Skills",
+            "Poetry Appreciation"
+          ]
+        },
+        {
+          "chapter_number": 4,
+          "chapter_title": "Adventure and Courage",
+          "topics": [
+            "Travel Stories",
+            "Decision Making",
+            "Creative Writing"
+          ]
+        },
+        {
+          "chapter_number": 5,
+          "chapter_title": "Animals and Birds",
+          "topics": [
+            "Wildlife",
+            "Habitats",
+            "Environmental Awareness"
+          ]
+        },
+        {
+          "chapter_number": 6,
+          "chapter_title": "Helping Others",
+          "topics": [
+            "Empathy",
+            "Social Responsibility",
+            "Values"
+          ]
+        }
+      ]
+    },
+    {
+      "subject_name": "Hindi",
+      "textbook": "Malhar",
+      "chapters": [
+        {
+          "chapter_number": 1,
+          "chapter_title": "नई शुरुआत",
+          "topics": [
+            "भाषा विकास",
+            "पठन कौशल",
+            "शब्दावली"
+          ]
+        },
+        {
+          "chapter_number": 2,
+          "chapter_title": "मित्रता",
+          "topics": [
+            "दोस्ती",
+            "संवाद",
+            "नैतिक मूल्य"
+          ]
+        },
+        {
+          "chapter_number": 3,
+          "chapter_title": "प्रकृति और पर्यावरण",
+          "topics": [
+            "पेड़-पौधे",
+            "पर्यावरण संरक्षण",
+            "कविता"
+          ]
+        },
+        {
+          "chapter_number": 4,
+          "chapter_title": "साहस और आत्मविश्वास",
+          "topics": [
+            "प्रेरणादायक प्रसंग",
+            "व्यक्तित्व विकास",
+            "आत्मविश्वास"
+          ]
+        },
+        {
+          "chapter_number": 5,
+          "chapter_title": "हमारा समाज",
+          "topics": [
+            "सामाजिक जीवन",
+            "कर्तव्य",
+            "सहयोग"
+          ]
+        }
+      ]
+    },
+    {
+      "subject_name": "Mathematics",
+      "textbook": "Ganit Prakash",
+      "chapters": [
+        {
+          "chapter_number": 1,
+          "chapter_title": "Patterns in Mathematics",
+          "topics": [
+            "Number Patterns",
+            "Shapes and Patterns",
+            "Logical Thinking"
+          ]
+        },
+        {
+          "chapter_number": 2,
+          "chapter_title": "Whole Numbers",
+          "topics": [
+            "Number System",
+            "Place Value",
+            "Operations"
+          ]
+        },
+        {
+          "chapter_number": 3,
+          "chapter_title": "Playing with Numbers",
+          "topics": [
+            "Factors",
+            "Multiples",
+            "Prime Numbers"
+          ]
+        },
+        {
+          "chapter_number": 4,
+          "chapter_title": "Basic Geometrical Ideas",
+          "topics": [
+            "Points and Lines",
+            "Angles",
+            "Shapes"
+          ]
+        },
+        {
+          "chapter_number": 5,
+          "chapter_title": "Understanding Elementary Shapes",
+          "topics": [
+            "Triangles",
+            "Quadrilaterals",
+            "Polygons"
+          ]
+        },
+        {
+          "chapter_number": 6,
+          "chapter_title": "Integers",
+          "topics": [
+            "Positive Numbers",
+            "Negative Numbers",
+            "Operations on Integers"
+          ]
+        },
+        {
+          "chapter_number": 7,
+          "chapter_title": "Fractions",
+          "topics": [
+            "Equivalent Fractions",
+            "Comparison",
+            "Operations"
+          ]
+        },
+        {
+          "chapter_number": 8,
+          "chapter_title": "Decimals",
+          "topics": [
+            "Decimal Numbers",
+            "Place Value",
+            "Applications"
+          ]
+        },
+        {
+          "chapter_number": 9,
+          "chapter_title": "Data Handling",
+          "topics": [
+            "Tables",
+            "Graphs",
+            "Interpretation"
+          ]
+        }
+      ]
+    },
+    {
+      "subject_name": "Science",
+      "textbook": "Curiosity",
+      "chapters": [
+        {
+          "chapter_number": 1,
+          "chapter_title": "Food and Its Sources",
+          "topics": [
+            "Nutrients",
+            "Balanced Diet",
+            "Food Sources"
+          ]
+        },
+        {
+          "chapter_number": 2,
+          "chapter_title": "Components of Food",
+          "topics": [
+            "Proteins",
+            "Carbohydrates",
+            "Vitamins and Minerals"
+          ]
+        },
+        {
+          "chapter_number": 3,
+          "chapter_title": "Fibre to Fabric",
+          "topics": [
+            "Natural Fibres",
+            "Cotton",
+            "Fabric Making"
+          ]
+        },
+        {
+          "chapter_number": 4,
+          "chapter_title": "Sorting Materials",
+          "topics": [
+            "Properties of Materials",
+            "Classification",
+            "Uses of Materials"
+          ]
+        },
+        {
+          "chapter_number": 5,
+          "chapter_title": "The Living Organisms",
+          "topics": [
+            "Habitats",
+            "Adaptations",
+            "Characteristics of Living Things"
+          ]
+        },
+        {
+          "chapter_number": 6,
+          "chapter_title": "Motion and Measurement",
+          "topics": [
+            "Types of Motion",
+            "Measurement Tools",
+            "Units"
+          ]
+        },
+        {
+          "chapter_number": 7,
+          "chapter_title": "Light, Shadows and Reflections",
+          "topics": [
+            "Sources of Light",
+            "Shadows",
+            "Reflection"
+          ]
+        }
+      ]
+    },
+    {
+      "subject_name": "Social Science",
+      "textbook": "Exploring Society: India and Beyond",
+      "chapters": [
+        {
+          "chapter_number": 1,
+          "chapter_title": "Understanding Diversity",
+          "topics": [
+            "Culture",
+            "Traditions",
+            "Unity in Diversity"
+          ]
+        },
+        {
+          "chapter_number": 2,
+          "chapter_title": "The Earth and the Solar System",
+          "topics": [
+            "Planets",
+            "Solar System",
+            "Earth"
+          ]
+        },
+        {
+          "chapter_number": 3,
+          "chapter_title": "Maps and Globes",
+          "topics": [
+            "Map Reading",
+            "Directions",
+            "Symbols"
+          ]
+        },
+        {
+          "chapter_number": 4,
+          "chapter_title": "Early Human Life",
+          "topics": [
+            "Stone Age",
+            "Hunter Gatherers",
+            "Discovery of Fire"
+          ]
+        },
+        {
+          "chapter_number": 5,
+          "chapter_title": "Government and Democracy",
+          "topics": [
+            "Democracy",
+            "Government",
+            "Citizenship"
+          ]
+        },
+        {
+          "chapter_number": 6,
+          "chapter_title": "Rural and Urban Life",
+          "topics": [
+            "Village Life",
+            "City Life",
+            "Occupations"
+          ]
+        }
+      ]
+    },
+    {
+      "subject_name": "Environmental Studies (EVS)",
+      "chapters": [
+        {
+          "chapter_number": 1,
+          "chapter_title": "Environment Around Us",
+          "topics": [
+            "Natural Resources",
+            "Clean Environment",
+            "Conservation"
+          ]
+        },
+        {
+          "chapter_number": 2,
+          "chapter_title": "Water and Air",
+          "topics": [
+            "Water Sources",
+            "Air Pollution",
+            "Conservation"
+          ]
+        },
+        {
+          "chapter_number": 3,
+          "chapter_title": "Plants and Animals",
+          "topics": [
+            "Biodiversity",
+            "Habitats",
+            "Food Chains"
+          ]
+        }
+      ]
+    },
+    {
+      "subject_name": "Kannada",
+      "chapters": [
+        {
+          "chapter_number": 1,
+          "chapter_title": "ನಮ್ಮ ಶಾಲೆ",
+          "topics": [
+            "ಶಾಲಾ ಜೀವನ",
+            "ಸ್ನೇಹ",
+            "ಶಿಸ್ತಿನ ಮಹತ್ವ"
+          ]
+        },
+        {
+          "chapter_number": 2,
+          "chapter_title": "ಪ್ರಕೃತಿ",
+          "topics": [
+            "ಪರಿಸರ",
+            "ಮರಗಳು",
+            "ಪ್ರಕೃತಿ ಸಂರಕ್ಷಣೆ"
+          ]
+        },
+        {
+          "chapter_number": 3,
+          "chapter_title": "ಧೈರ್ಯ ಮತ್ತು ಸಾಹಸ",
+          "topics": [
+            "ಸಾಹಸ ಕಥೆಗಳು",
+            "ಆತ್ಮವಿಶ್ವಾಸ",
+            "ನೈತಿಕ ಮೌಲ್ಯಗಳು"
+          ]
+        },
+        {
+          "chapter_number": 4,
+          "chapter_title": "ನಮ್ಮ ಸಮಾಜ",
+          "topics": [
+            "ಸಮಾಜ",
+            "ಸಹಕಾರ",
+            "ಜವಾಬ್ದಾರಿ"
+          ]
+        }
+      ]
+    }
+  ]
+}

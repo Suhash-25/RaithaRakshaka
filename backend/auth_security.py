@@ -1,11 +1,12 @@
 # backend/auth_security.py
 
 import os
+import hmac
 from datetime import datetime, timedelta
 from typing import Optional
 
+import bcrypt
 from jose import JWTError, jwt
-from passlib.context import CryptContext
 
 SECRET_KEY = os.getenv("SECRET_KEY", "change_this_to_a_long_random_secret_string")
 REFRESH_SECRET_KEY = os.getenv("REFRESH_SECRET_KEY", "refresh_change_this_to_a_long_random_secret")
@@ -13,14 +14,13 @@ ALGORITHM = "HS256"
 ACCESS_TOKEN_EXPIRE_MINUTES = 15
 REFRESH_TOKEN_EXPIRE_DAYS = 7
 
-pwd_context = CryptContext(schemes=["bcrypt"], deprecated="auto")
-
 MAX_PASSWORD_BYTES = 72
 
 
 def _normalize_password(password: str) -> str:
     if password is None:
         return ""
+    password = str(password).strip()
     pwd_bytes = password.encode("utf-8")
     if len(pwd_bytes) > MAX_PASSWORD_BYTES:
         pwd_bytes = pwd_bytes[:MAX_PASSWORD_BYTES]
@@ -30,12 +30,35 @@ def _normalize_password(password: str) -> str:
 
 def hash_password(password: str) -> str:
     password = _normalize_password(password)
-    return pwd_context.hash(password)
+    return bcrypt.hashpw(password.encode("utf-8"), bcrypt.gensalt()).decode("utf-8")
+
+
+def _is_bcrypt_hash(value: str) -> bool:
+    return value.startswith(("$2a$", "$2b$", "$2y$"))
 
 
 def verify_password(plain_password: str, hashed_password: str) -> bool:
     plain_password = _normalize_password(plain_password)
-    return pwd_context.verify(plain_password, hashed_password)
+    stored_password = (hashed_password or "").strip()
+    if not stored_password:
+        return False
+
+    if _is_bcrypt_hash(stored_password):
+        try:
+            return bcrypt.checkpw(plain_password.encode("utf-8"), stored_password.encode("utf-8"))
+        except (ValueError, TypeError):
+            return False
+
+    # Backward compatibility for older local/dev databases that stored
+    # password_hash as plain text before bcrypt was wired in.
+    return hmac.compare_digest(plain_password, stored_password)
+
+
+def password_needs_rehash(hashed_password: str) -> bool:
+    stored_password = (hashed_password or "").strip()
+    if not stored_password:
+        return False
+    return not _is_bcrypt_hash(stored_password)
 
 
 def create_access_token(data: dict, expires_minutes: int = ACCESS_TOKEN_EXPIRE_MINUTES) -> str:

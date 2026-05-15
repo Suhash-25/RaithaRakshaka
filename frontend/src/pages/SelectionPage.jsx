@@ -1,14 +1,14 @@
 import { useEffect, useMemo, useState } from 'react'
 import { useNavigate } from 'react-router-dom'
-import { ArrowRight, BookOpenText, CheckCircle2, Layers3, LoaderCircle, School2 } from 'lucide-react'
+import { ArrowRight, CheckCircle2, LoaderCircle, School2 } from 'lucide-react'
 import { getSyllabusCatalog } from '@/services/api'
 import { useLearningSelection } from '@/context/LearningSelectionContext'
-import { formatCompactNumber, getLevelMeta, getSubjectVisual, groupClassesByLevel } from '@/utils/syllabus'
+import { getLevelMeta, getSubjectVisual, groupClassesByLevel } from '@/utils/syllabus'
+import { BOARD_META } from '@/data/syllabusBoards'
 
 const BOARDS = [
   { id: 'state', label: 'State Board', enabled: true },
-  { id: 'cbse', label: 'CBSE', enabled: false },
-  { id: 'icse', label: 'ICSE', enabled: false },
+  { id: 'cbse', label: 'CBSE', enabled: true },
 ]
 
 const EMPTY_LEVEL = { classes: [] }
@@ -34,7 +34,7 @@ export default function SelectionPage() {
       setError('')
 
       try {
-        const nextCatalog = await getSyllabusCatalog()
+        const nextCatalog = await getSyllabusCatalog(selectedBoard)
         if (!cancelled) {
           setCatalog(nextCatalog)
         }
@@ -54,7 +54,7 @@ export default function SelectionPage() {
     return () => {
       cancelled = true
     }
-  }, [])
+  }, [selectedBoard])
 
   const levelGroups = useMemo(
     () => groupClassesByLevel(catalog?.classes ?? []),
@@ -94,7 +94,7 @@ export default function SelectionPage() {
             Syllabus Curriculum
           </h1>
           <p className="mt-3 max-w-3xl text-surface-muted">
-            Pick a class to open its syllabus dashboard.
+            Pick State or CBSE, then open a class to browse only that board's syllabus.
           </p>
         </div>
       </section>
@@ -104,7 +104,7 @@ export default function SelectionPage() {
           <div className="max-w-2xl">
             <p className="text-sm font-semibold text-surface-text">Board</p>
             <p className="mt-1 text-sm text-surface-muted">
-              The extracted dataset currently covers the State Board syllabus. Other boards can be added once their PDFs are processed.
+              {BOARD_META[selectedBoard]?.description ?? 'Choose the syllabus board before selecting a class.'}
             </p>
           </div>
 
@@ -274,7 +274,7 @@ export default function SelectionPage() {
         <button
           type="button"
           onClick={handleContinue}
-          disabled={!selectedClass || selectedBoard !== 'state'}
+          disabled={!selectedClass}
           className="btn-primary"
         >
           View Subjects

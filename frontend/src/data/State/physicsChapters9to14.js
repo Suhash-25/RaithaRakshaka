@@ -1,7 +1,7 @@
 /** Chapters 9–14 of Class 12 Physics NCERT */
 export const CHAPTERS_9_TO_14 = [
-  { id:'ch9', number:9, title:'Ray Optics and Optical Instruments', topics:[
-    { id:'ch9-t1', title:'Reflection and Refraction', duration:'14 min', difficulty:'foundation', animationType:'rayOptics',
+  { id:'ch9', number: 9, title: "Ray Optics and Optical Instruments", topics:[
+    { id:'ch9-t1', title: "Reflection and Refraction", duration:'14 min', difficulty:'foundation', animationType:'rayOptics',
       learningObjectives: ['Apply Snell\'s law to calculate angle of refraction', 'Explain total internal reflection with real-world examples', 'Calculate apparent depth using refractive index'],
       mcq: [
         { id:'ch9-t1-mcq1', text:'When light passes from water (n=1.33) to air (n=1), the refracted ray bends:', options:['Toward the normal','Away from the normal','Does not bend','Along the normal'], correctIndex:1, explanation:'Light bends away from normal when going from denser (water) to rarer (air) medium.' },
@@ -17,7 +17,7 @@ export const CHAPTERS_9_TO_14 = [
         { id:'ch9-t1-m1', probe:'Light always bends toward the normal when entering any new medium. True?', options:['True','False — it bends toward normal only when entering a denser medium'], correctIndex:1, correction:'Light bends toward the normal only when going from a rarer to denser medium. It bends away when going from denser to rarer.', detectKeywords:['always toward normal'] },
       ],
     },
-    { id:'ch9-t2', title:'Total Internal Reflection', duration:'12 min', difficulty:'core', animationType:'rayOptics',
+    { id:'ch9-t2', title: "Total Internal Reflection", duration:'12 min', difficulty:'core', animationType:'rayOptics',
       learningObjectives: ['State the conditions for total internal reflection', 'Derive the critical angle formula', 'Explain applications like optical fibre and mirage'],
       questions:[
         { id:'ch9-t2-q1', text:'What conditions are necessary for total internal reflection? Why can\'t it occur when light goes from rarer to denser medium?', hint:'Think about the critical angle.', expectedConcepts:['denser to rarer','angle > critical angle','no refracted ray'], estimatedTime:'4 min' },
@@ -26,7 +26,7 @@ export const CHAPTERS_9_TO_14 = [
         { id:'ch9-t2-m1', probe:'Total internal reflection can occur when light travels from air to glass. True?', options:['True','False — it only occurs from denser to rarer medium'], correctIndex:1, correction:'TIR requires light to travel from an optically denser to a rarer medium at an angle exceeding the critical angle.', detectKeywords:['air to glass','rarer to denser'] },
       ],
     },
-    { id:'ch9-t3', title:'Lenses and Mirror Formula', duration:'15 min', difficulty:'core', animationType:'rayOptics',
+    { id:'ch9-t3', title: "Lenses and Mirror Formula", duration:'15 min', difficulty:'core', animationType:'rayOptics',
       learningObjectives: ['Apply mirror and lens formulae to locate images', 'Derive the lens-maker\'s formula', 'Determine magnification and nature of image'],
       numerical: [
         { id:'ch9-t3-num1', text:'An object is placed 30 cm from a convex lens of focal length 20 cm. Find the image distance.', answer:60, unit:'cm', solution:'1/v - 1/u = 1/f → 1/v = 1/20 - 1/(-30) = 1/20 + 1/30 = 5/60 = 1/12. Wait, 1/v = 1/f + 1/u = 1/20 + 1/30 ... Actually using 1/v - 1/u = 1/f: 1/v = 1/20 + 1/(-30) ... Let me recalculate: 1/v = 1/f + 1/u = 1/20 - 1/30 = 1/60. v = 60 cm.', hint:'Use lens formula: 1/v - 1/u = 1/f' },
@@ -39,7 +39,7 @@ export const CHAPTERS_9_TO_14 = [
         { id:'ch9-t3-m1', probe:'A convex lens always forms a magnified image. True?', options:['True','False — it depends on object position'], correctIndex:1, correction:'A convex lens forms diminished images when object is beyond 2F, same size at 2F, and magnified between F and 2F.', detectKeywords:['always magnified','always bigger'] },
       ],
     },
-    { id:'ch9-t4', title:'Prism and Dispersion', duration:'12 min', difficulty:'core', animationType:'rayOptics',
+    { id:'ch9-t4', title: "Prism and Dispersion", duration:'12 min', difficulty:'core', animationType:'rayOptics',
       learningObjectives: ['Explain dispersion of white light through a prism', 'Relate deviation to wavelength/refractive index'],
       mcq: [
         { id:'ch9-t4-mcq1', text:'In dispersion by a prism, which colour deviates the most?', options:['Red','Yellow','Green','Violet'], correctIndex:3, explanation:'Violet has the shortest wavelength and highest refractive index, causing maximum deviation.' },
@@ -51,7 +51,7 @@ export const CHAPTERS_9_TO_14 = [
         { id:'ch9-t4-m1', probe:'The prism adds color to white light. True?', options:['True — prism creates colors','False — white light already contains all colors; the prism separates them'], correctIndex:1, correction:'White light is a mixture of all visible wavelengths. The prism separates them because each wavelength refracts differently.', detectKeywords:['creates color','adds color','prism makes color'] },
       ],
     },
-    { id:'ch9-t5', title:'Optical Instruments — Microscope', duration:'12 min', difficulty:'advanced', animationType:'rayOptics',
+    { id:'ch9-t5', title: "Optical Instruments — Microscope", duration:'12 min', difficulty:'advanced', animationType:'rayOptics',
       learningObjectives: ['Explain magnifying power of simple and compound microscopes', 'Derive expression for total magnification'],
       questions:[
         { id:'ch9-t5-q1', text:'Explain the working of a compound microscope. Why does it use two convex lenses?', hint:'Objective creates a magnified real image; eyepiece magnifies it further.', expectedConcepts:['two-stage magnification','objective near object','eyepiece as magnifier'], estimatedTime:'4 min' },
@@ -60,7 +60,7 @@ export const CHAPTERS_9_TO_14 = [
         { id:'ch9-t5-m1', probe:'A single convex lens gives the same magnification as a compound microscope. True?', options:['True','False — compound microscope multiplies magnifications of two lenses'], correctIndex:1, correction:'A compound microscope achieves much higher magnification by multiplying the individual magnifications of objective and eyepiece.', detectKeywords:['single lens same'] },
       ],
     },
-    { id:'ch9-t6', title:'Optical Instruments — Telescope', duration:'12 min', difficulty:'advanced', animationType:'rayOptics',
+    { id:'ch9-t6', title: "Optical Instruments — Telescope", duration:'12 min', difficulty:'advanced', animationType:'rayOptics',
       learningObjectives: ['Compare refracting and reflecting telescopes', 'Explain why large aperture improves resolution and brightness'],
       questions:[
         { id:'ch9-t6-q1', text:'In an astronomical telescope, the objective has a large aperture and large focal length. Explain why both are important.', hint:'Large aperture collects more light; large focal length gives higher magnification.', expectedConcepts:['light gathering','angular magnification = fo/fe','resolving power'], estimatedTime:'4 min' },
@@ -70,8 +70,8 @@ export const CHAPTERS_9_TO_14 = [
       ],
     },
   ]},
-  { id:'ch10', number:10, title:'Wave Optics', topics:[
-    { id:'ch10-t1', title:'Huygens Principle', duration:'12 min', difficulty:'foundation', animationType:'waveOptics',
+  { id:'ch10', number: 10, title: "Wave Optics", topics:[
+    { id:'ch10-t1', title: "Huygens Principle", duration:'12 min', difficulty:'foundation', animationType:'waveOptics',
       learningObjectives: ['State Huygens\' principle of secondary wavelets', 'Use Huygens\' construction to explain reflection and refraction'],
       questions:[
         { id:'ch10-t1-q1', text:'State Huygens principle. How does it explain the laws of reflection and refraction?', hint:'Each point on a wavefront acts as a source of secondary wavelets.', expectedConcepts:['secondary wavelets','new wavefront as envelope','explains refraction by speed change'], estimatedTime:'4 min' },
@@ -80,7 +80,7 @@ export const CHAPTERS_9_TO_14 = [
         { id:'ch10-t1-m1', probe:'Huygens principle works only for light waves. True?', options:['True','False — it applies to all types of waves'], correctIndex:1, correction:'Huygens principle is a general wave construction applicable to sound, water, and all other waves too.', detectKeywords:['only light','only for light'] },
       ],
     },
-    { id:'ch10-t2', title:'Young\'s Double Slit Experiment', duration:'16 min', difficulty:'core', animationType:'waveOptics',
+    { id:'ch10-t2', title: "Young's Double Slit Experiment", duration:'16 min', difficulty:'core', animationType:'waveOptics',
       learningObjectives: ['Derive the expression for fringe width', 'Explain conditions for constructive and destructive interference'],
       mcq: [
         { id:'ch10-t2-mcq1', text:'In YDSE, if the wavelength is doubled, the fringe width:', options:['Halves','Doubles','Remains same','Quadruples'], correctIndex:1, explanation:'β = λD/d. Doubling λ doubles β.' },
@@ -96,7 +96,8 @@ export const CHAPTERS_9_TO_14 = [
         { id:'ch10-t2-m1', probe:'Interference proves that light is a particle. True?', options:['True','False — interference is a wave phenomenon'], correctIndex:1, correction:'Interference (constructive and destructive superposition) is a definitive wave property. It was key evidence for the wave nature of light.', detectKeywords:['particle','proves particle'] },
       ],
     },
-    { id:'ch10-t3', title:'Diffraction', duration:'14 min', difficulty:'core', animationType:'waveOptics',
+    { id:'ch10-t3', title: "Diffraction",
+          description: "The study of Diffraction forms a cornerstone of our understanding in Physics, particularly within the domain of Wave Optics. This topic introduces fundamental concepts that bridge theoretical knowledge with practical, everyday applications. Developing a strong grasp of these principles early on sets the stage for advanced learning.\n\nUnderstanding the core elements of Diffraction requires focused attention on its primary characteristics within Wave Optics. Students engage in comprehensive learning that encompasses both theoretical definitions and practical implications. This structured learning pathway ensures a deep and lasting comprehension of the subject material.\n\nTo illustrate, observing the application of Diffraction in practical environments highlights its importance. The concepts from Wave Optics are not just academic exercises; they are tools used by professionals and individuals every day to navigate and make sense of complex systems.\n\nUltimately, the knowledge gained from studying Diffraction serves as a lifelong intellectual asset. By thoroughly understanding Wave Optics, learners are well-prepared to tackle future academic challenges with resilience and competence.", duration:'14 min', difficulty:'core', animationType:'waveOptics',
       learningObjectives: ['Distinguish diffraction from interference', 'Explain single-slit diffraction pattern'],
       questions:[
         { id:'ch10-t3-q1', text:'How is diffraction different from interference? Why is diffraction more noticeable when slit width is comparable to wavelength?', hint:'Diffraction is bending around obstacles.', expectedConcepts:['bending around edges','single slit vs double slit','slit width ≈ wavelength'], estimatedTime:'4 min' },
@@ -105,7 +106,8 @@ export const CHAPTERS_9_TO_14 = [
         { id:'ch10-t3-m1', probe:'Diffraction only occurs with light, not with sound or water waves. True?', options:['True','False — all waves exhibit diffraction'], correctIndex:1, correction:'Diffraction is a universal wave phenomenon. Sound diffracts around corners, and water waves diffract around barriers.', detectKeywords:['only light','light only'] },
       ],
     },
-    { id:'ch10-t4', title:'Polarization', duration:'12 min', difficulty:'core', animationType:'waveOptics',
+    { id:'ch10-t4', title: "Polarization",
+          description: "The study of Polarization forms a cornerstone of our understanding in Physics, particularly within the domain of Wave Optics. This topic introduces fundamental concepts that bridge theoretical knowledge with practical, everyday applications. Developing a strong grasp of these principles early on sets the stage for advanced learning.\n\nUnderstanding the core elements of Polarization requires focused attention on its primary characteristics within Wave Optics. Students engage in comprehensive learning that encompasses both theoretical definitions and practical implications. This structured learning pathway ensures a deep and lasting comprehension of the subject material.\n\nA real-world example of Polarization can be seen in everyday problem-solving scenarios. When faced with a challenge related to Wave Optics, applying the structured methods learned in this topic allows for quick and accurate resolutions, demonstrating the immense value of this knowledge.\n\nTo conclude, Polarization is an indispensable part of the Physics curriculum. The insights developed during the exploration of Wave Optics will continually support a student's academic and personal growth.", duration:'12 min', difficulty:'core', animationType:'waveOptics',
       learningObjectives: ['Explain polarization as proof of transverse nature', 'State Malus\' law and Brewster\'s law'],
       mcq: [
         { id:'ch10-t4-mcq1', text:'Polarization is possible only for:', options:['Longitudinal waves','Transverse waves','Both types','Sound waves'], correctIndex:1, explanation:'Only transverse waves can be polarized; longitudinal waves oscillate along propagation direction.' },
@@ -117,7 +119,7 @@ export const CHAPTERS_9_TO_14 = [
         { id:'ch10-t4-m1', probe:'Both transverse and longitudinal waves can be polarized. True?', options:['True','False — only transverse waves can be polarized'], correctIndex:1, correction:'Polarization restricts oscillation to one plane, which is only possible for transverse waves. Longitudinal waves oscillate along the propagation direction and cannot be polarized.', detectKeywords:['longitudinal can be polarized','both types'] },
       ],
     },
-    { id:'ch10-t5', title:'Resolving Power', duration:'10 min', difficulty:'advanced', animationType:'waveOptics',
+    { id:'ch10-t5', title: "Resolving Power", duration:'10 min', difficulty:'advanced', animationType:'waveOptics',
       learningObjectives: ['Define resolving power of microscope and telescope', 'Apply Rayleigh criterion'],
       questions:[
         { id:'ch10-t5-q1', text:'What limits the resolving power of a microscope? How can it be improved?', hint:'Rayleigh criterion and numerical aperture.', expectedConcepts:['diffraction limit','smaller wavelength better','larger aperture better'], estimatedTime:'3 min' },
@@ -127,8 +129,9 @@ export const CHAPTERS_9_TO_14 = [
       ],
     },
   ]},
-  { id:'ch11', number:11, title:'Dual Nature of Radiation and Matter', topics:[
-    { id:'ch11-t1', title:'Photoelectric Effect', duration:'15 min', difficulty:'foundation', animationType:'photoelectric',
+  { id:'ch11', number: 11, title: "Dual Nature of Radiation and Matter", topics:[
+    { id:'ch11-t1', title: "Photoelectric Effect",
+          description: "In the realm of Physics, the concept of Photoelectric Effect stands out as a critical building block. Associated with Dual Nature of Radiation and Matter, this subject matter encourages analytical thinking and deeper cognitive engagement. Students exploring this topic will discover how interconnected and structured our learning systems truly are.\n\nUnderstanding the core elements of Photoelectric Effect requires focused attention on its primary characteristics within Dual Nature of Radiation and Matter. Students engage in comprehensive learning that encompasses both theoretical definitions and practical implications. This structured learning pathway ensures a deep and lasting comprehension of the subject material.\n\nTo illustrate, observing the application of Photoelectric Effect in practical environments highlights its importance. The concepts from Dual Nature of Radiation and Matter are not just academic exercises; they are tools used by professionals and individuals every day to navigate and make sense of complex systems.\n\nIn summary, mastering Photoelectric Effect empowers students with the confidence and skills necessary to excel in Physics. The journey through Dual Nature of Radiation and Matter guarantees a comprehensive educational experience that goes far beyond the classroom.", duration:'15 min', difficulty:'foundation', animationType:'photoelectric',
       learningObjectives: ['State the experimental observations of photoelectric effect', 'Write and explain Einstein\'s photoelectric equation', 'Explain why wave theory fails to explain photoelectric effect'],
       mcq: [
         { id:'ch11-t1-mcq1', text:'The stopping potential in photoelectric effect depends on:', options:['Intensity of light','Frequency of light','Area of metal surface','Distance of source'], correctIndex:1, explanation:'Stopping potential depends on KE_max of photoelectrons, which depends on frequency (E = hf − φ), not intensity.' },
@@ -144,7 +147,7 @@ export const CHAPTERS_9_TO_14 = [
         { id:'ch11-t1-m1', probe:'Brighter light always causes photoelectric emission regardless of color/frequency. True?', options:['True — more light means more energy','False — frequency must exceed threshold regardless of intensity'], correctIndex:1, correction:'No matter how intense, light below the threshold frequency cannot cause photoemission. Each photon must individually have enough energy.', detectKeywords:['brighter always works','more light always'] },
       ],
     },
-    { id:'ch11-t2', title:'Wave-Particle Duality', duration:'12 min', difficulty:'core', animationType:'photoelectric',
+    { id:'ch11-t2', title: "Wave-Particle Duality", duration:'12 min', difficulty:'core', animationType:'photoelectric',
       learningObjectives: ['State de Broglie\'s hypothesis', 'Calculate de Broglie wavelength of particles'],
       numerical: [
         { id:'ch11-t2-num1', text:'Calculate the de Broglie wavelength of an electron accelerated through 100 V. (m = 9.1×10⁻³¹ kg)', answer:0.123, unit:'nm', solution:'λ = h/√(2meV) = 6.63×10⁻³⁴/√(2×9.1×10⁻³¹×1.6×10⁻¹⁹×100) = 1.23×10⁻¹⁰ m = 0.123 nm', hint:'λ = h/√(2meV)' },
@@ -156,7 +159,7 @@ export const CHAPTERS_9_TO_14 = [
         { id:'ch11-t2-m1', probe:'Only microscopic particles like electrons have wave nature. A cricket ball also has a wavelength. True?', options:['False — only electrons have waves','True — all matter has a wavelength, but for large objects it is immeasurably small'], correctIndex:1, correction:'De Broglie\'s hypothesis applies to ALL matter. A cricket ball has a wavelength, but it is so tiny (~10⁻³⁴ m) that wave effects are undetectable.', detectKeywords:['only electrons','only microscopic'] },
       ],
     },
-    { id:'ch11-t3', title:'Davisson-Germer Experiment', duration:'10 min', difficulty:'core', animationType:'photoelectric',
+    { id:'ch11-t3', title: "Davisson-Germer Experiment", duration:'10 min', difficulty:'core', animationType:'photoelectric',
       learningObjectives: ['Describe the experimental setup and results', 'Explain how it confirmed de Broglie\'s hypothesis'],
       questions:[
         { id:'ch11-t3-q1', text:'How did the Davisson-Germer experiment confirm de Broglie\'s hypothesis?', hint:'Electron diffraction pattern matched predicted wavelength.', expectedConcepts:['electron diffraction','nickel crystal','wavelength matched de Broglie'], estimatedTime:'4 min' },
@@ -165,7 +168,7 @@ export const CHAPTERS_9_TO_14 = [
         { id:'ch11-t3-m1', probe:'The Davisson-Germer experiment proved electrons are only waves, not particles. True?', options:['True','False — it showed electrons have wave properties too, confirming duality'], correctIndex:1, correction:'The experiment confirmed wave-particle duality: electrons exhibit wave behavior (diffraction) while still being particles.', detectKeywords:['only waves','not particles'] },
       ],
     },
-    { id:'ch11-t4', title:'Photon Properties', duration:'10 min', difficulty:'advanced', animationType:'photoelectric',
+    { id:'ch11-t4', title: "Photon Properties", duration:'10 min', difficulty:'advanced', animationType:'photoelectric',
       learningObjectives: ['Describe energy, momentum, and zero rest mass of photons', 'Apply E = hf and p = h/λ'],
       questions:[
         { id:'ch11-t4-q1', text:'A photon has energy E = hf. Does it have mass? Explain the relationship between photon momentum and wavelength.', hint:'Photons are massless but carry momentum p = h/λ.', expectedConcepts:['zero rest mass','p = h/λ = E/c','massless but has momentum'], estimatedTime:'3 min' },
@@ -175,8 +178,8 @@ export const CHAPTERS_9_TO_14 = [
       ],
     },
   ]},
-  { id:'ch12', number:12, title:'Atoms', topics:[
-    { id:'ch12-t1', title:'Rutherford\'s Model and Alpha Scattering', duration:'14 min', difficulty:'foundation', animationType:'atomModel',
+  { id:'ch12', number: 12, title: "Atoms", topics:[
+    { id:'ch12-t1', title: "Rutherford's Model and Alpha Scattering", duration:'14 min', difficulty:'foundation', animationType:'atomModel',
       learningObjectives: ['Describe Rutherford\'s alpha scattering experiment', 'Draw conclusions about atomic structure from the results'],
       questions:[
         { id:'ch12-t1-q1', text:'In Rutherford\'s alpha scattering experiment, most alpha particles pass straight through the gold foil. What does this tell us about atomic structure?', hint:'Most of the atom is empty space.', expectedConcepts:['mostly empty space','small dense nucleus','positive charge concentrated'], estimatedTime:'3 min' },
@@ -185,7 +188,7 @@ export const CHAPTERS_9_TO_14 = [
         { id:'ch12-t1-m1', probe:'In Rutherford\'s model, electrons orbit the nucleus in fixed stable orbits. True?', options:['True','False — Rutherford\'s model could not explain stable orbits; that was Bohr\'s contribution'], correctIndex:1, correction:'Rutherford\'s model predicted electrons should spiral into the nucleus (radiating energy). Bohr introduced quantized stable orbits.', detectKeywords:['Rutherford stable orbits','Rutherford explained orbits'] },
       ],
     },
-    { id:'ch12-t2', title:'Bohr\'s Model of Hydrogen Atom', duration:'16 min', difficulty:'core', animationType:'atomModel',
+    { id:'ch12-t2', title: "Bohr's Model of Hydrogen Atom", duration:'16 min', difficulty:'core', animationType:'atomModel',
       learningObjectives: ['State Bohr\'s postulates', 'Derive the expression for energy levels of hydrogen', 'Calculate transition energies and corresponding wavelengths'],
       mcq: [
         { id:'ch12-t2-mcq1', text:'The energy of an electron in the nth orbit of hydrogen is:', options:['Proportional to n²','-13.6/n² eV','Proportional to n','-13.6n² eV'], correctIndex:1, explanation:'En = -13.6/n² eV. Energy becomes less negative (increases) as n increases.' },
@@ -198,7 +201,7 @@ export const CHAPTERS_9_TO_14 = [
         { id:'ch12-t2-m1', probe:'In Bohr\'s model, the electron can orbit at any distance from the nucleus. True?', options:['True — any distance is allowed','False — only specific discrete orbits are allowed'], correctIndex:1, correction:'Bohr\'s key insight was that only specific orbits (where angular momentum is quantized) are allowed. This explained discrete spectral lines.', detectKeywords:['any distance','any orbit','continuous orbits'] },
       ],
     },
-    { id:'ch12-t3', title:'Hydrogen Spectrum', duration:'12 min', difficulty:'core', animationType:'atomModel',
+    { id:'ch12-t3', title: "Hydrogen Spectrum", duration:'12 min', difficulty:'core', animationType:'atomModel',
       learningObjectives: ['Name spectral series and their spectral regions', 'Apply the Rydberg formula to calculate wavelengths'],
       numerical: [
         { id:'ch12-t3-num1', text:'Calculate the wavelength of the first line of the Balmer series (transition n=3 to n=2). R = 1.097×10⁷ /m', answer:656, unit:'nm', solution:'1/λ = R(1/2² - 1/3²) = R(1/4 - 1/9) = R × 5/36 = 1.097×10⁷ × 5/36 = 1.524×10⁶. λ = 656 nm', hint:'Use Rydberg formula: 1/λ = R(1/n₁² - 1/n₂²)' },
@@ -210,7 +213,7 @@ export const CHAPTERS_9_TO_14 = [
         { id:'ch12-t3-m1', probe:'Hydrogen emits a continuous spectrum of all colors. True?', options:['True','False — hydrogen emits discrete spectral lines at specific wavelengths'], correctIndex:1, correction:'Hydrogen produces a line spectrum (discrete wavelengths) because electrons transition between quantized energy levels.', detectKeywords:['continuous spectrum','all colors','all wavelengths'] },
       ],
     },
-    { id:'ch12-t4', title:'Limitations of Bohr\'s Model', duration:'10 min', difficulty:'advanced', animationType:'atomModel',
+    { id:'ch12-t4', title: "Limitations of Bohr's Model", duration:'10 min', difficulty:'advanced', animationType:'atomModel',
       learningObjectives: ['Identify the shortcomings of Bohr\'s model', 'Explain why quantum mechanics was needed'],
       questions:[
         { id:'ch12-t4-q1', text:'Why does Bohr\'s model fail for atoms with more than one electron? What improvements does quantum mechanics provide?', hint:'Electron-electron interactions are not accounted for.', expectedConcepts:['only works for hydrogen-like','no multi-electron','quantum mechanics uses wavefunctions'], estimatedTime:'4 min' },
@@ -220,8 +223,8 @@ export const CHAPTERS_9_TO_14 = [
       ],
     },
   ]},
-  { id:'ch13', number:13, title:'Nuclei', topics:[
-    { id:'ch13-t1', title:'Nuclear Size and Composition', duration:'12 min', difficulty:'foundation', animationType:'nuclearPhysics',
+  { id:'ch13', number: 13, title: "Nuclei", topics:[
+    { id:'ch13-t1', title: "Nuclear Size and Composition", duration:'12 min', difficulty:'foundation', animationType:'nuclearPhysics',
       learningObjectives: ['Relate nuclear radius to mass number using R = R₀A^(1/3)', 'Explain why nuclear density is constant'],
       questions:[
         { id:'ch13-t1-q1', text:'The radius of a nucleus is given by R = R₀A^(1/3). What does this tell us about nuclear density?', hint:'Volume ∝ A, mass ∝ A, so density is constant.', expectedConcepts:['density is constant','independent of A','~10¹⁷ kg/m³'], estimatedTime:'3 min' },
@@ -230,7 +233,7 @@ export const CHAPTERS_9_TO_14 = [
         { id:'ch13-t1-m1', probe:'Heavier nuclei are denser than lighter ones. True?', options:['True','False — nuclear density is approximately constant for all nuclei'], correctIndex:1, correction:'Since R ∝ A^(1/3), volume ∝ A, and mass ∝ A, the density m/V is approximately the same for all nuclei.', detectKeywords:['heavier denser','larger more dense'] },
       ],
     },
-    { id:'ch13-t2', title:'Mass-Energy Equivalence and Binding Energy', duration:'15 min', difficulty:'core', animationType:'nuclearPhysics',
+    { id:'ch13-t2', title: "Mass-Energy Equivalence and Binding Energy", duration:'15 min', difficulty:'core', animationType:'nuclearPhysics',
       learningObjectives: ['Define mass defect and relate it to binding energy', 'Interpret the binding energy per nucleon curve', 'Explain stability conditions using BE/A'],
       mcq: [
         { id:'ch13-t2-mcq1', text:'Which element has the highest binding energy per nucleon?', options:['Hydrogen','Helium','Iron (Fe-56)','Uranium'], correctIndex:2, explanation:'Iron-56 has the maximum BE/A (≈8.8 MeV), making it the most stable nucleus.' },
@@ -243,7 +246,7 @@ export const CHAPTERS_9_TO_14 = [
         { id:'ch13-t2-m1', probe:'Mass defect means some nucleons disappear when a nucleus is formed. True?', options:['True — nucleons are lost','False — all nucleons remain; mass is converted to binding energy'], correctIndex:1, correction:'No nucleons disappear. The "missing mass" is converted to energy (E=mc²) that holds the nucleus together.', detectKeywords:['nucleons disappear','nucleons lost','missing nucleons'] },
       ],
     },
-    { id:'ch13-t3', title:'Radioactivity — Alpha, Beta, Gamma', duration:'14 min', difficulty:'core', animationType:'nuclearPhysics',
+    { id:'ch13-t3', title: "Radioactivity — Alpha, Beta, Gamma", duration:'14 min', difficulty:'core', animationType:'nuclearPhysics',
       learningObjectives: ['Compare properties of alpha, beta, and gamma radiation', 'Write nuclear reaction equations for each type'],
       mcq: [
         { id:'ch13-t3-mcq1', text:'Which radiation has the highest penetrating power?', options:['Alpha','Beta','Gamma','All are equal'], correctIndex:2, explanation:'Gamma rays are most penetrating (can pass through lead), while alpha is stopped by paper.' },
@@ -255,7 +258,7 @@ export const CHAPTERS_9_TO_14 = [
         { id:'ch13-t3-m1', probe:'Gamma rays are the most ionizing form of radiation. True?', options:['True — gamma is most dangerous','False — alpha particles have the highest ionizing power'], correctIndex:1, correction:'Alpha particles, being heavy and doubly charged, have the highest ionizing power. Gamma rays are most penetrating but least ionizing.', detectKeywords:['gamma most ionizing','gamma strongest ionization'] },
       ],
     },
-    { id:'ch13-t4', title:'Radioactive Decay Law and Half-life', duration:'14 min', difficulty:'core', animationType:'nuclearPhysics',
+    { id:'ch13-t4', title: "Radioactive Decay Law and Half-life", duration:'14 min', difficulty:'core', animationType:'nuclearPhysics',
       learningObjectives: ['Derive the radioactive decay law N = N₀e^(−λt)', 'Calculate remaining activity after n half-lives'],
       numerical: [
         { id:'ch13-t4-num1', text:'A radioactive sample has activity 800 Bq. After 3 half-lives, what is its activity?', answer:100, unit:'Bq', solution:'After 3 half-lives: A = 800 × (1/2)³ = 800/8 = 100 Bq', hint:'A = A₀ × (1/2)^n' },
@@ -267,7 +270,7 @@ export const CHAPTERS_9_TO_14 = [
         { id:'ch13-t4-m1', probe:'After two half-lives, all the radioactive material has decayed. True?', options:['True','False — after 2 half-lives, 1/4 still remains'], correctIndex:1, correction:'After each half-life, half the remaining material decays. After 2 half-lives: 1/2 × 1/2 = 1/4 remains. It never fully reaches zero.', detectKeywords:['all decayed','nothing left','completely gone'] },
       ],
     },
-    { id:'ch13-t5', title:'Nuclear Fission and Fusion', duration:'14 min', difficulty:'advanced', animationType:'nuclearPhysics',
+    { id:'ch13-t5', title: "Nuclear Fission and Fusion", duration:'14 min', difficulty:'advanced', animationType:'nuclearPhysics',
       learningObjectives: ['Compare fission and fusion processes', 'Explain why fusion requires high temperatures (Coulomb barrier)', 'Relate both to the BE/A curve'],
       questions:[
         { id:'ch13-t5-q1', text:'Why does nuclear fusion require extremely high temperatures while fission can be initiated by slow neutrons?', hint:'Protons repel each other — you need energy to overcome Coulomb barrier.', expectedConcepts:['Coulomb barrier','thermal energy overcomes repulsion','neutrons are neutral no barrier'], estimatedTime:'4 min' },
@@ -277,8 +280,8 @@ export const CHAPTERS_9_TO_14 = [
       ],
     },
   ]},
-  { id:'ch14', number:14, title:'Semiconductor Electronics', topics:[
-    { id:'ch14-t1', title:'Intrinsic and Extrinsic Semiconductors', duration:'14 min', difficulty:'foundation', animationType:'semiconductor',
+  { id:'ch14', number: 14, title: "Semiconductor Electronics", topics:[
+    { id:'ch14-t1', title: "Intrinsic and Extrinsic Semiconductors", duration:'14 min', difficulty:'foundation', animationType:'semiconductor',
       learningObjectives: ['Distinguish intrinsic from extrinsic semiconductors', 'Explain n-type and p-type doping mechanisms'],
       mcq: [
         { id:'ch14-t1-mcq1', text:'In a p-type semiconductor, the majority charge carriers are:', options:['Electrons','Holes','Protons','Neutrons'], correctIndex:1, explanation:'p-type doping with trivalent atoms creates holes as majority carriers.' },
@@ -290,7 +293,7 @@ export const CHAPTERS_9_TO_14 = [
         { id:'ch14-t1-m1', probe:'An n-type semiconductor is negatively charged. True?', options:['True — it has extra electrons','False — it is electrically neutral; the extra electrons come with extra protons in the dopant'], correctIndex:1, correction:'Doping adds neutral atoms. The semiconductor remains electrically neutral. "n-type" refers to the type of majority charge carrier, not overall charge.', detectKeywords:['negatively charged','net negative','has negative charge'] },
       ],
     },
-    { id:'ch14-t2', title:'p-n Junction Diode', duration:'15 min', difficulty:'core', animationType:'semiconductor',
+    { id:'ch14-t2', title: "p-n Junction Diode", duration:'15 min', difficulty:'core', animationType:'semiconductor',
       learningObjectives: ['Explain formation of depletion region', 'Analyze forward and reverse bias V-I characteristics', 'Identify threshold/knee voltage'],
       questions:[
         { id:'ch14-t2-q1', text:'Explain the formation of the depletion region at a p-n junction. Why does current flow easily in forward bias but not in reverse bias?', hint:'The depletion region acts as a barrier.', expectedConcepts:['diffusion of carriers','immobile ions form barrier','forward bias narrows depletion','reverse bias widens'], estimatedTime:'4 min' },
@@ -300,7 +303,7 @@ export const CHAPTERS_9_TO_14 = [
         { id:'ch14-t2-m1', probe:'No current flows through a reverse-biased diode. True?', options:['True — zero current','False — a very small reverse saturation current flows due to minority carriers'], correctIndex:1, correction:'A small reverse saturation current flows due to thermally generated minority carriers. It is very small but not zero.', detectKeywords:['zero current','no current at all','absolutely zero'] },
       ],
     },
-    { id:'ch14-t3', title:'Diode as Rectifier', duration:'12 min', difficulty:'core', animationType:'semiconductor',
+    { id:'ch14-t3', title: "Diode as Rectifier", duration:'12 min', difficulty:'core', animationType:'semiconductor',
       learningObjectives: ['Compare half-wave and full-wave rectification', 'Explain the role of filter capacitors'],
       questions:[
         { id:'ch14-t3-q1', text:'Explain how a full-wave rectifier works using two diodes and a center-tapped transformer. Why is it preferred over half-wave?', hint:'Both halves of AC cycle are utilized.', expectedConcepts:['both halves used','smoother output','higher efficiency'], estimatedTime:'4 min' },
@@ -309,7 +312,7 @@ export const CHAPTERS_9_TO_14 = [
         { id:'ch14-t3-m1', probe:'A rectifier converts DC to AC. True?', options:['True','False — a rectifier converts AC to DC'], correctIndex:1, correction:'A rectifier converts AC to pulsating DC. The reverse process (DC to AC) is done by an inverter.', detectKeywords:['DC to AC','converts direct to alternating'] },
       ],
     },
-    { id:'ch14-t4', title:'Transistor and its Characteristics', duration:'16 min', difficulty:'advanced', animationType:'semiconductor',
+    { id:'ch14-t4', title: "Transistor and its Characteristics", duration:'16 min', difficulty:'advanced', animationType:'semiconductor',
       learningObjectives: ['Explain transistor action in common-emitter configuration', 'Define current gain β and voltage gain'],
       questions:[
         { id:'ch14-t4-q1', text:'In a common-emitter transistor circuit, explain why a small change in base current causes a large change in collector current.', hint:'Current amplification factor β.', expectedConcepts:['β = IC/IB','thin base region','most carriers reach collector','amplification'], estimatedTime:'4 min' },
@@ -318,7 +321,8 @@ export const CHAPTERS_9_TO_14 = [
         { id:'ch14-t4-m1', probe:'A transistor generates extra current to amplify signals. True?', options:['True — it creates current','False — it controls a larger current from the power supply using a small input current'], correctIndex:1, correction:'A transistor does not create energy. It uses a small base current to control a much larger current flowing from the power supply through the collector.', detectKeywords:['generates current','creates current','makes extra'] },
       ],
     },
-    { id:'ch14-t5', title:'Logic Gates', duration:'12 min', difficulty:'core', animationType:'semiconductor',
+    { id:'ch14-t5', title: "Logic Gates",
+          description: "In the realm of Physics, the concept of Logic Gates stands out as a critical building block. Associated with Semiconductor Electronics, this subject matter encourages analytical thinking and deeper cognitive engagement. Students exploring this topic will discover how interconnected and structured our learning systems truly are.\n\nThe detailed examination of Logic Gates reveals the intricate layers of Semiconductor Electronics. Through guided study, students unpack complex concepts, translating them into easily digestible pieces of knowledge. This process is essential for achieving academic excellence and conceptual clarity.\n\nTo illustrate, observing the application of Logic Gates in practical environments highlights its importance. The concepts from Semiconductor Electronics are not just academic exercises; they are tools used by professionals and individuals every day to navigate and make sense of complex systems.\n\nTo conclude, Logic Gates is an indispensable part of the Physics curriculum. The insights developed during the exploration of Semiconductor Electronics will continually support a student's academic and personal growth.", duration:'12 min', difficulty:'core', animationType:'semiconductor',
       learningObjectives: ['Draw truth tables for basic logic gates (AND, OR, NOT, NAND, NOR)', 'Explain why NAND and NOR are called universal gates'],
       mcq: [
         { id:'ch14-t5-mcq1', text:'The universal gates are:', options:['AND, OR','NOT, XOR','NAND, NOR','AND, NOT'], correctIndex:2, explanation:'NAND and NOR are universal because any logic function can be built using only NAND or only NOR gates.' },

@@ -4,8 +4,10 @@ import { Shield, User, Lock, Plus, ArrowRight, LogOut, CheckCircle, Server, Clou
 import LanguageSwitcher from '@/components/language/LanguageSwitcher'
 import PINAuthComponent from '@/components/auth/PINAuthComponent'
 import { listStudents, loginStudent, registerStudent } from '@/services/studentManagement'
+import { syncLocalUserToBackend } from '@/services/api'
 import { useAppMode } from '@/context/AppModeContext'
 import { useAuthSessionCtx } from '@/context/AuthSessionContext'
+import { useStudent } from '@/context/StudentContext'
 import { getAnonId } from '@/utils/identity'
 import logoImage from '@/assets/logo.png'
 
@@ -20,6 +22,7 @@ export default function LoginPage() {
 
   const { appMode } = useAppMode()
   const { isAuthenticated, isInitialising } = useAuthSessionCtx()
+  const { updateCurrentStudent, refreshStudentList } = useStudent()
 
   // Registration form
   const [registerForm, setRegisterForm] = useState({
@@ -49,21 +52,48 @@ export default function LoginPage() {
     }
   }
 
+  const saveLocalAuth = (student) => {
+    localStorage.setItem('access_token', `local-${student.id}-${Date.now()}`)
+    localStorage.setItem('auth_user', JSON.stringify({
+      id: student.id,
+      name: student.name,
+      role: 'student',
+      mode: 'local',
+    }))
+  }
+
+  const syncAfterEntry = (student, pin) => {
+    if (navigator.onLine === false) return
+
+    setTimeout(() => {
+      syncLocalUserToBackend({ ...student, pin }).catch(() => {})
+    }, 0)
+  }
+
+  const enterStudent = async (studentId, pin) => {
+    setIsLoading(true)
+    setError('')
+    try {
+      const student = await loginStudent(studentId, pin)
+      updateCurrentStudent(student)
+      saveLocalAuth(student)
+      getAnonId().catch(() => {})
+      navigate('/selection', { replace: true })
+      syncAfterEntry(student, pin)
+    } catch (err) {
+      setError('Invalid PIN')
+      setIsLoading(false)
+      throw err
+    }
+  }
+
   const handleSelectStudent = (student) => {
     setSelectedStudent(student)
     setShowPINAuth(true)
   }
 
   const handlePINSuccess = async (pin) => {
-    setIsLoading(true)
-    try {
-      await loginStudent(selectedStudent.id, pin)
-      await getAnonId()
-      navigate('/selection')
-    } catch (err) {
-      setError('Invalid PIN')
-      setIsLoading(false)
-    }
+    await enterStudent(selectedStudent.id, pin)
   }
 
   const handleRegisterStudent = async (e) => {
@@ -80,12 +110,17 @@ export default function LoginPage() {
         throw new Error('PIN must be at least 4 digits')
       }
 
-      await registerStudent(registerForm)
-      await loadStudents()
+      const student = await registerStudent(registerForm)
+      updateCurrentStudent(student)
+      saveLocalAuth(student)
+      getAnonId().catch(() => {})
+      navigate('/selection', { replace: true })
+      syncAfterEntry(student, registerForm.pin)
+      loadStudents()
+      refreshStudentList()
       setRegisterForm({ name: '', class: '', pin: '', language: 'en' })
-      setView('student-select')
     } catch (err) {
-      setError(err.message)
+      setError(err.message || 'Could not create student')
     } finally {
       setIsLoading(false)
     }

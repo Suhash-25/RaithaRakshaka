@@ -13,6 +13,7 @@ from auth_security import (
     decode_access_token,
     decode_refresh_token,
     hash_password,
+    password_needs_rehash,
     verify_password,
 )
 from services.service import Service
@@ -71,6 +72,7 @@ def get_current_user(role: Optional[str] = None) -> Callable:
 
 @router.post("/register", response_model=UserRead)
 async def register_user(user_in: UserCreate):
+    user_in.email = user_in.email.strip().lower()
     existing = await service.get_user_by_email(user_in.email)
     if existing:
         raise HTTPException(
@@ -103,6 +105,7 @@ from auth_schemas import StudentRegister
 
 @router.post("/register-student")
 async def register_student_self(req: StudentRegister):
+    req.email = req.email.strip().lower()
     # STEP 1: Find student by USN
     student = await repo.get_student_by_usn(req.usn)
     if not student:
@@ -162,6 +165,7 @@ from auth_schemas import FacultyRegister
 
 @router.post("/register-faculty")
 async def register_faculty_self(req: FacultyRegister):
+    req.email = req.email.strip().lower()
     # STEP 1: Find faculty
     faculty = await repo.get_faculty_by_code(req.faculty_code)
     if not faculty:
@@ -205,12 +209,16 @@ async def register_faculty_self(req: FacultyRegister):
 
 @router.post("/login", response_model=Token)
 async def login(user_in: UserLogin):
-    user = await service.get_user_by_email(user_in.email)
-    if not user or not verify_password(user_in.password, user["password_hash"]):
+    email = user_in.email.strip().lower()
+    user = await service.get_user_by_email(email)
+    if not user or not verify_password(user_in.password, user.get("password_hash", "")):
         raise HTTPException(
             status_code=status.HTTP_401_UNAUTHORIZED,
             detail="Incorrect email or password",
         )
+
+    if password_needs_rehash(user.get("password_hash", "")):
+        await service.update_user_password_hash(user["id"], hash_password(user_in.password))
 
     # Dynamic HOD role override on login
     if user["role"] == "faculty":

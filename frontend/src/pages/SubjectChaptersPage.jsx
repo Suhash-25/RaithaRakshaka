@@ -2,10 +2,13 @@ import { useEffect, useMemo, useState } from 'react'
 import { useNavigate, useParams } from 'react-router-dom'
 import { ArrowLeft, ArrowRight, BookOpen, ChevronDown, ChevronRight, Search, LoaderCircle } from 'lucide-react'
 import { loadCatalog, getCatalogChapter } from '@/data/catalogRegistry'
+import { useLearningSelection } from '@/context/LearningSelectionContext'
 
 export default function SubjectChaptersPage() {
   const navigate = useNavigate()
   const { classId, subjectId, chapterId } = useParams()
+  const { selection } = useLearningSelection()
+  const boardId = selection.boardId ?? 'state'
   
   const [catalog, setCatalog] = useState(null)
   const [isLoading, setIsLoading] = useState(true)
@@ -16,7 +19,7 @@ export default function SubjectChaptersPage() {
     let cancelled = false
     setIsLoading(true)
     
-    loadCatalog(classId, subjectId).then(loadedCatalog => {
+    loadCatalog(classId, subjectId, boardId).then(loadedCatalog => {
       if (!cancelled) {
         setCatalog(loadedCatalog)
         setIsLoading(false)
@@ -24,7 +27,7 @@ export default function SubjectChaptersPage() {
     })
     
     return () => { cancelled = true }
-  }, [classId, subjectId])
+  }, [classId, subjectId, boardId])
 
   const chapters = catalog?.chapters ?? []
   const singleChapter = useMemo(() => {
@@ -125,7 +128,7 @@ export default function SubjectChaptersPage() {
         <h1 className="text-4xl font-display font-bold text-surface-text">{catalog.subject}</h1>
         <p className="mt-2 text-surface-muted">
           {chapters.length} chapters • {chapters.reduce((s, c) => s + c.topics.length, 0)} topics •
-          Interactive animations, questions, and misconception probes
+          Text-first topic descriptions with optional visual learning on demand
         </p>
       </div>
 

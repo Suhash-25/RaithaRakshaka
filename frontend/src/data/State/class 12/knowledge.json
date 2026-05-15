@@ -1,0 +1,721 @@
+{
+  "board": "Department of Pre-University Education (DPUE), Karnataka",
+  "academic_year": "2025-26",
+  "class": "12",
+  "system": "2nd PUC",
+  "mediums_available": [
+    "English",
+    "Kannada",
+    "Hindi",
+    "Urdu",
+    "Tamil",
+    "Telugu",
+    "Marathi"
+  ],
+  "streams": [
+    {
+      "stream_name": "Science",
+      "subjects": [
+        {
+          "subject_name": "Physics",
+          "official_books": [
+            "Physics Part 1",
+            "Physics Part 2"
+          ],
+          "chapters": [
+            {
+              "chapter_no": 1,
+              "chapter_name": "Electric Charges and Fields",
+              "concepts": [
+                "Coulomb's Law",
+                "Electric Field",
+                "Electric Field Lines",
+                "Electric Flux",
+                "Gauss Law"
+              ],
+              "formulas": [
+                "F = kq1q2/r²",
+                "E = F/q"
+              ]
+            },
+            {
+              "chapter_no": 2,
+              "chapter_name": "Electrostatic Potential and Capacitance",
+              "concepts": [
+                "Electric Potential",
+                "Capacitance",
+                "Capacitors in Series and Parallel"
+              ]
+            },
+            {
+              "chapter_no": 3,
+              "chapter_name": "Current Electricity",
+              "concepts": [
+                "Electric Current",
+                "Resistance",
+                "Ohm's Law",
+                "Kirchhoff's Laws",
+                "Wheatstone Bridge"
+              ]
+            },
+            {
+              "chapter_no": 4,
+              "chapter_name": "Moving Charges and Magnetism",
+              "concepts": [
+                "Magnetic Field",
+                "Lorentz Force",
+                "Cyclotron",
+                "Ampere's Circuital Law"
+              ]
+            },
+            {
+              "chapter_no": 5,
+              "chapter_name": "Magnetism and Matter",
+              "concepts": [
+                "Bar Magnet",
+                "Magnetic Properties",
+                "Earth Magnetism"
+              ]
+            },
+            {
+              "chapter_no": 6,
+              "chapter_name": "Electromagnetic Induction",
+              "concepts": [
+                "Faraday's Laws",
+                "Lenz Law",
+                "Self Induction",
+                "Mutual Induction"
+              ]
+            },
+            {
+              "chapter_no": 7,
+              "chapter_name": "Alternating Current",
+              "concepts": [
+                "AC Voltage",
+                "Reactance",
+                "Impedance",
+                "Transformer"
+              ]
+            },
+            {
+              "chapter_no": 8,
+              "chapter_name": "Ray Optics and Optical Instruments",
+              "concepts": [
+                "Reflection",
+                "Refraction",
+                "Lens Formula",
+                "Optical Instruments"
+              ]
+            },
+            {
+              "chapter_no": 9,
+              "chapter_name": "Wave Optics",
+              "concepts": [
+                "Interference",
+                "Diffraction",
+                "Polarization"
+              ]
+            },
+            {
+              "chapter_no": 10,
+              "chapter_name": "Dual Nature of Radiation and Matter",
+              "concepts": [
+                "Photoelectric Effect",
+                "de Broglie Hypothesis"
+              ]
+            },
+            {
+              "chapter_no": 11,
+              "chapter_name": "Atoms",
+              "concepts": [
+                "Bohr Model",
+                "Atomic Spectra",
+                "Energy Levels"
+              ]
+            },
+            {
+              "chapter_no": 12,
+              "chapter_name": "Nuclei",
+              "concepts": [
+                "Radioactivity",
+                "Nuclear Reactions",
+                "Mass Defect"
+              ]
+            },
+            {
+              "chapter_no": 13,
+              "chapter_name": "Semiconductor Electronics",
+              "concepts": [
+                "Diodes",
+                "Transistors",
+                "Logic Gates"
+              ]
+            }
+          ]
+        },
+        {
+          "subject_name": "Chemistry",
+          "official_books": [
+            "Chemistry Part 1",
+            "Chemistry Part 2"
+          ],
+          "chapters": [
+            {
+              "chapter_no": 1,
+              "chapter_name": "Solid State",
+              "concepts": [
+                "Crystal Lattice",
+                "Unit Cell",
+                "Packing Efficiency",
+                "Defects in Solids"
+              ]
+            },
+            {
+              "chapter_no": 2,
+              "chapter_name": "Solutions",
+              "concepts": [
+                "Types of Solutions",
+                "Raoult's Law",
+                "Colligative Properties"
+              ]
+            },
+            {
+              "chapter_no": 3,
+              "chapter_name": "Electrochemistry",
+              "concepts": [
+                "Electrochemical Cells",
+                "Nernst Equation",
+                "Conductance"
+              ]
+            },
+            {
+              "chapter_no": 4,
+              "chapter_name": "Chemical Kinetics",
+              "concepts": [
+                "Rate of Reaction",
+                "Order of Reaction",
+                "Activation Energy"
+              ]
+            },
+            {
+              "chapter_no": 5,
+              "chapter_name": "Surface Chemistry",
+              "concepts": [
+                "Adsorption",
+                "Catalysis",
+                "Colloids"
+              ]
+            },
+            {
+              "chapter_no": 6,
+              "chapter_name": "General Principles and Processes of Isolation of Elements",
+              "concepts": [
+                "Metallurgy",
+                "Extraction",
+                "Refining"
+              ]
+            },
+            {
+              "chapter_no": 7,
+              "chapter_name": "p-Block Elements",
+              "concepts": [
+                "Group 15 Elements",
+                "Group 16 Elements",
+                "Group 17 Elements"
+              ]
+            },
+            {
+              "chapter_no": 8,
+              "chapter_name": "d and f Block Elements",
+              "concepts": [
+                "Transition Elements",
+                "Lanthanides",
+                "Actinides"
+              ]
+            },
+            {
+              "chapter_no": 9,
+              "chapter_name": "Coordination Compounds",
+              "concepts": [
+                "Ligands",
+                "Coordination Number",
+                "Isomerism"
+              ]
+            },
+            {
+              "chapter_no": 10,
+              "chapter_name": "Haloalkanes and Haloarenes",
+              "concepts": [
+                "Preparation",
+                "Properties",
+                "Reactions"
+              ]
+            },
+            {
+              "chapter_no": 11,
+              "chapter_name": "Alcohols Phenols and Ethers",
+              "concepts": [
+                "Preparation",
+                "Physical Properties",
+                "Chemical Reactions"
+              ]
+            },
+            {
+              "chapter_no": 12,
+              "chapter_name": "Aldehydes Ketones and Carboxylic Acids",
+              "concepts": [
+                "Functional Groups",
+                "Reactivity",
+                "Preparation"
+              ]
+            },
+            {
+              "chapter_no": 13,
+              "chapter_name": "Biomolecules",
+              "concepts": [
+                "Proteins",
+                "Carbohydrates",
+                "Vitamins",
+                "DNA"
+              ]
+            }
+          ]
+        },
+        {
+          "subject_name": "Mathematics",
+          "official_books": [
+            "Mathematics Part 1",
+            "Mathematics Part 2"
+          ],
+          "chapters": [
+            {
+              "chapter_no": 1,
+              "chapter_name": "Relations and Functions",
+              "concepts": [
+                "Types of Relations",
+                "Functions",
+                "Composition of Functions"
+              ]
+            },
+            {
+              "chapter_no": 2,
+              "chapter_name": "Inverse Trigonometric Functions",
+              "concepts": [
+                "Domain",
+                "Range",
+                "Properties"
+              ]
+            },
+            {
+              "chapter_no": 3,
+              "chapter_name": "Matrices",
+              "concepts": [
+                "Matrix Operations",
+                "Transpose",
+                "Inverse Matrix"
+              ]
+            },
+            {
+              "chapter_no": 4,
+              "chapter_name": "Determinants",
+              "concepts": [
+                "Properties of Determinants",
+                "Minors and Cofactors"
+              ]
+            },
+            {
+              "chapter_no": 5,
+              "chapter_name": "Continuity and Differentiability",
+              "concepts": [
+                "Limits",
+                "Continuity",
+                "Differentiation"
+              ]
+            },
+            {
+              "chapter_no": 6,
+              "chapter_name": "Applications of Derivatives",
+              "concepts": [
+                "Maxima and Minima",
+                "Tangents and Normals"
+              ]
+            },
+            {
+              "chapter_no": 7,
+              "chapter_name": "Integrals",
+              "concepts": [
+                "Indefinite Integrals",
+                "Definite Integrals",
+                "Properties"
+              ]
+            },
+            {
+              "chapter_no": 8,
+              "chapter_name": "Differential Equations",
+              "concepts": [
+                "Formation",
+                "Solution of Differential Equations"
+              ]
+            },
+            {
+              "chapter_no": 9,
+              "chapter_name": "Vector Algebra",
+              "concepts": [
+                "Vectors",
+                "Dot Product",
+                "Cross Product"
+              ]
+            },
+            {
+              "chapter_no": 10,
+              "chapter_name": "Three Dimensional Geometry",
+              "concepts": [
+                "Direction Cosines",
+                "Line in Space",
+                "Distance Formula"
+              ]
+            },
+            {
+              "chapter_no": 11,
+              "chapter_name": "Linear Programming",
+              "concepts": [
+                "Optimization",
+                "Constraints",
+                "Feasible Region"
+              ]
+            },
+            {
+              "chapter_no": 12,
+              "chapter_name": "Probability",
+              "concepts": [
+                "Conditional Probability",
+                "Bayes Theorem",
+                "Random Variables"
+              ]
+            }
+          ]
+        },
+        {
+          "subject_name": "Biology",
+          "official_books": [
+            "Biology Part 1",
+            "Biology Part 2"
+          ],
+          "chapters": [
+            {
+              "chapter_no": 1,
+              "chapter_name": "Reproduction in Organisms",
+              "concepts": [
+                "Asexual Reproduction",
+                "Sexual Reproduction",
+                "Life Span"
+              ]
+            },
+            {
+              "chapter_no": 2,
+              "chapter_name": "Human Reproduction",
+              "concepts": [
+                "Male Reproductive System",
+                "Female Reproductive System",
+                "Fertilization"
+              ]
+            },
+            {
+              "chapter_no": 3,
+              "chapter_name": "Genetics and Evolution",
+              "concepts": [
+                "Inheritance",
+                "DNA",
+                "Mutation",
+                "Evolution"
+              ]
+            },
+            {
+              "chapter_no": 4,
+              "chapter_name": "Biotechnology",
+              "concepts": [
+                "Genetic Engineering",
+                "Bioprocessing",
+                "Applications"
+              ]
+            },
+            {
+              "chapter_no": 5,
+              "chapter_name": "Ecology",
+              "concepts": [
+                "Ecosystem",
+                "Food Chain",
+                "Biodiversity",
+                "Conservation"
+              ]
+            }
+          ]
+        },
+        {
+          "subject_name": "Computer Science",
+          "official_books": [
+            "Computer Science"
+          ],
+          "chapters": [
+            {
+              "chapter_no": 1,
+              "chapter_name": "Functions in Python",
+              "concepts": [
+                "Function Definition",
+                "Arguments",
+                "Recursion"
+              ]
+            },
+            {
+              "chapter_no": 2,
+              "chapter_name": "File Handling",
+              "concepts": [
+                "Text Files",
+                "Binary Files",
+                "CSV Files"
+              ]
+            },
+            {
+              "chapter_no": 3,
+              "chapter_name": "Database Concepts",
+              "concepts": [
+                "SQL",
+                "DBMS",
+                "Queries",
+                "Normalization"
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "stream_name": "Commerce",
+      "subjects": [
+        {
+          "subject_name": "Accountancy",
+          "official_books": [
+            "Accountancy Part 1",
+            "Accountancy Part 2"
+          ],
+          "chapters": [
+            {
+              "chapter_no": 1,
+              "chapter_name": "Financial Statements",
+              "concepts": [
+                "Balance Sheet",
+                "Trading Account",
+                "Profit and Loss Account"
+              ]
+            },
+            {
+              "chapter_no": 2,
+              "chapter_name": "Cash Flow Statement",
+              "concepts": [
+                "Operating Activities",
+                "Investing Activities",
+                "Financing Activities"
+              ]
+            },
+            {
+              "chapter_no": 3,
+              "chapter_name": "Accounting Ratios",
+              "concepts": [
+                "Liquidity Ratios",
+                "Profitability Ratios",
+                "Solvency Ratios"
+              ]
+            }
+          ]
+        },
+        {
+          "subject_name": "Business Studies",
+          "official_books": [
+            "Business Studies"
+          ],
+          "chapters": [
+            {
+              "chapter_no": 1,
+              "chapter_name": "Nature and Significance of Management",
+              "concepts": [
+                "Management",
+                "Objectives",
+                "Functions of Management"
+              ]
+            },
+            {
+              "chapter_no": 2,
+              "chapter_name": "Principles of Management",
+              "concepts": [
+                "Fayol Principles",
+                "Scientific Management"
+              ]
+            },
+            {
+              "chapter_no": 3,
+              "chapter_name": "Marketing",
+              "concepts": [
+                "Marketing Mix",
+                "Product",
+                "Price",
+                "Promotion"
+              ]
+            }
+          ]
+        },
+        {
+          "subject_name": "Economics",
+          "official_books": [
+            "Economics"
+          ],
+          "chapters": [
+            {
+              "chapter_no": 1,
+              "chapter_name": "National Income",
+              "concepts": [
+                "GDP",
+                "GNP",
+                "National Income Aggregates"
+              ]
+            },
+            {
+              "chapter_no": 2,
+              "chapter_name": "Money and Banking",
+              "concepts": [
+                "Functions of Money",
+                "Commercial Banks",
+                "Central Bank"
+              ]
+            },
+            {
+              "chapter_no": 3,
+              "chapter_name": "Government Budget",
+              "concepts": [
+                "Revenue Budget",
+                "Capital Budget",
+                "Fiscal Deficit"
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "stream_name": "Arts",
+      "subjects": [
+        {
+          "subject_name": "History",
+          "official_books": [
+            "History"
+          ],
+          "chapters": [
+            {
+              "chapter_no": 1,
+              "chapter_name": "Modern India",
+              "concepts": [
+                "British Rule",
+                "Freedom Movement",
+                "Nationalism"
+              ]
+            },
+            {
+              "chapter_no": 2,
+              "chapter_name": "World History",
+              "concepts": [
+                "World Wars",
+                "Russian Revolution",
+                "Cold War"
+              ]
+            }
+          ]
+        },
+        {
+          "subject_name": "Political Science",
+          "official_books": [
+            "Political Science"
+          ],
+          "chapters": [
+            {
+              "chapter_no": 1,
+              "chapter_name": "Indian Constitution",
+              "concepts": [
+                "Fundamental Rights",
+                "Directive Principles",
+                "Federalism"
+              ]
+            },
+            {
+              "chapter_no": 2,
+              "chapter_name": "International Relations",
+              "concepts": [
+                "United Nations",
+                "Globalization",
+                "Foreign Policy"
+              ]
+            }
+          ]
+        },
+        {
+          "subject_name": "Sociology",
+          "official_books": [
+            "Sociology"
+          ],
+          "chapters": [
+            {
+              "chapter_no": 1,
+              "chapter_name": "Social Change",
+              "concepts": [
+                "Modernization",
+                "Urbanization",
+                "Industrialization"
+              ]
+            },
+            {
+              "chapter_no": 2,
+              "chapter_name": "Indian Society",
+              "concepts": [
+                "Caste",
+                "Religion",
+                "Diversity"
+              ]
+            }
+          ]
+        },
+        {
+          "subject_name": "Psychology",
+          "official_books": [
+            "Psychology"
+          ],
+          "chapters": [
+            {
+              "chapter_no": 1,
+              "chapter_name": "Introduction to Psychology",
+              "concepts": [
+                "Behavior",
+                "Mental Processes",
+                "Branches of Psychology"
+              ]
+            },
+            {
+              "chapter_no": 2,
+              "chapter_name": "Learning",
+              "concepts": [
+                "Conditioning",
+                "Memory",
+                "Motivation"
+              ]
+            }
+          ]
+        }
+      ]
+    }
+  ],
+  "source_reference": {
+    "official_portal": "https://pue.karnataka.gov.in/new-page/TEXT%20BOOKS/en",
+    "verified_sources": [
+      "DPUE Karnataka Textbooks",
+      "NCERT-Aligned Karnataka PUC Curriculum",
+      "KSEAB PUC Syllabus"
+    ]
+  }
+}

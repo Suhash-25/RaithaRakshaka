@@ -1,0 +1,561 @@
+{
+  "board": "CBSE",
+  "academic_year": "2025-26",
+  "medium": "English Medium",
+  "class": "Class 5",
+  "source": "CBSE Academic & NCERT Curriculum",
+  "subjects": [
+    {
+      "subject_name": "English",
+      "textbook": "Santoor",
+      "chapters": [
+        {
+          "chapter_number": 1,
+          "chapter_title": "Papa's Spectacles",
+          "topics": [
+            "Family Relationships",
+            "Observation Skills",
+            "Reading Comprehension"
+          ]
+        },
+        {
+          "chapter_number": 2,
+          "chapter_title": "Gone with the Scooter",
+          "topics": [
+            "Travel and Adventure",
+            "Story Reading",
+            "Vocabulary Development"
+          ]
+        },
+        {
+          "chapter_number": 3,
+          "chapter_title": "The Rainbow",
+          "topics": [
+            "Nature",
+            "Colours",
+            "Poetry Appreciation"
+          ]
+        },
+        {
+          "chapter_number": 4,
+          "chapter_title": "The Wise Parrot",
+          "topics": [
+            "Wisdom",
+            "Moral Stories",
+            "Critical Thinking"
+          ]
+        },
+        {
+          "chapter_number": 5,
+          "chapter_title": "The Frog",
+          "topics": [
+            "Animals",
+            "Poetry",
+            "Environmental Awareness"
+          ]
+        },
+        {
+          "chapter_number": 6,
+          "chapter_title": "What a Tank",
+          "topics": [
+            "Water Conservation",
+            "Community Awareness",
+            "Creative Writing"
+          ]
+        },
+        {
+          "chapter_number": 7,
+          "chapter_title": "Gilli Danda",
+          "topics": [
+            "Traditional Games",
+            "Sportsmanship",
+            "Indian Culture"
+          ]
+        },
+        {
+          "chapter_number": 8,
+          "chapter_title": "The Decision of the Panchayat",
+          "topics": [
+            "Village Administration",
+            "Justice",
+            "Community Life"
+          ]
+        },
+        {
+          "chapter_number": 9,
+          "chapter_title": "Vocation",
+          "topics": [
+            "Occupations",
+            "Dreams and Aspirations",
+            "Poetry"
+          ]
+        },
+        {
+          "chapter_number": 10,
+          "chapter_title": "Glass Bangles",
+          "topics": [
+            "Indian Handicrafts",
+            "Culture",
+            "Art and Craft"
+          ]
+        }
+      ]
+    },
+    {
+      "subject_name": "Hindi",
+      "textbook": "Veena",
+      "chapters": [
+        {
+          "chapter_number": 1,
+          "chapter_title": "किरण",
+          "topics": [
+            "प्रकृति",
+            "कविता",
+            "भाषा कौशल"
+          ]
+        },
+        {
+          "chapter_number": 2,
+          "chapter_title": "न्याय की कुर्सी",
+          "topics": [
+            "न्याय",
+            "सामाजिक मूल्य",
+            "संवाद"
+          ]
+        },
+        {
+          "chapter_number": 3,
+          "chapter_title": "चाँद का कुर्ता",
+          "topics": [
+            "कल्पना",
+            "कविता",
+            "रचनात्मक सोच"
+          ]
+        },
+        {
+          "chapter_number": 4,
+          "chapter_title": "साङकेन",
+          "topics": [
+            "त्योहार",
+            "संस्कृति",
+            "परंपरा"
+          ]
+        },
+        {
+          "chapter_number": 5,
+          "chapter_title": "सुंदरिया",
+          "topics": [
+            "पशु प्रेम",
+            "संवेदनशीलता",
+            "कहानी"
+          ]
+        },
+        {
+          "chapter_number": 6,
+          "chapter_title": "चतुर चित्रकार",
+          "topics": [
+            "कला",
+            "रचनात्मकता",
+            "कल्पनाशक्ति"
+          ]
+        },
+        {
+          "chapter_number": 7,
+          "chapter_title": "मेरा बचपन",
+          "topics": [
+            "बचपन",
+            "संस्मरण",
+            "जीवन अनुभव"
+          ]
+        },
+        {
+          "chapter_number": 8,
+          "chapter_title": "काजीरंगा राष्ट्रीय उद्यान की यात्रा",
+          "topics": [
+            "वन्यजीव",
+            "यात्रा वर्णन",
+            "पर्यावरण संरक्षण"
+          ]
+        },
+        {
+          "chapter_number": 9,
+          "chapter_title": "न्याय",
+          "topics": [
+            "ईमानदारी",
+            "नैतिक शिक्षा",
+            "जीवन मूल्य"
+          ]
+        },
+        {
+          "chapter_number": 10,
+          "chapter_title": "तीन मछलियाँ",
+          "topics": [
+            "मित्रता",
+            "समझदारी",
+            "लोककथा"
+          ]
+        }
+      ]
+    },
+    {
+      "subject_name": "Mathematics",
+      "textbook": "Maths Mela",
+      "chapters": [
+        {
+          "chapter_number": 1,
+          "chapter_title": "We the Travellers - I",
+          "topics": [
+            "Large Numbers",
+            "Place Value",
+            "Estimation"
+          ]
+        },
+        {
+          "chapter_number": 2,
+          "chapter_title": "Fractions",
+          "topics": [
+            "Equivalent Fractions",
+            "Comparison",
+            "Operations on Fractions"
+          ]
+        },
+        {
+          "chapter_number": 3,
+          "chapter_title": "Angles as Turns",
+          "topics": [
+            "Angles",
+            "Clockwise and Anticlockwise",
+            "Measurement"
+          ]
+        },
+        {
+          "chapter_number": 4,
+          "chapter_title": "We the Travellers - II",
+          "topics": [
+            "Distance",
+            "Maps",
+            "Travel Calculations"
+          ]
+        },
+        {
+          "chapter_number": 5,
+          "chapter_title": "Far and Near",
+          "topics": [
+            "Measurement",
+            "Length",
+            "Unit Conversion"
+          ]
+        },
+        {
+          "chapter_number": 6,
+          "chapter_title": "The Dairy Farm",
+          "topics": [
+            "Multiplication",
+            "Division",
+            "Word Problems"
+          ]
+        },
+        {
+          "chapter_number": 7,
+          "chapter_title": "Shapes and Patterns",
+          "topics": [
+            "Geometry",
+            "Patterns",
+            "Symmetry"
+          ]
+        },
+        {
+          "chapter_number": 8,
+          "chapter_title": "Weight and Capacity",
+          "topics": [
+            "Mass",
+            "Capacity",
+            "Measurement Units"
+          ]
+        },
+        {
+          "chapter_number": 9,
+          "chapter_title": "Coconut Farm",
+          "topics": [
+            "Area",
+            "Perimeter",
+            "Practical Applications"
+          ]
+        },
+        {
+          "chapter_number": 10,
+          "chapter_title": "Symmetrical Designs",
+          "topics": [
+            "Symmetry",
+            "Patterns",
+            "Art Integration"
+          ]
+        },
+        {
+          "chapter_number": 11,
+          "chapter_title": "Grandmother's Quilt",
+          "topics": [
+            "Shapes",
+            "Area Concepts",
+            "Patterns"
+          ]
+        },
+        {
+          "chapter_number": 12,
+          "chapter_title": "Racing Seconds",
+          "topics": [
+            "Time",
+            "Stopwatch",
+            "Speed Basics"
+          ]
+        },
+        {
+          "chapter_number": 13,
+          "chapter_title": "Animal Jumps",
+          "topics": [
+            "Data Comparison",
+            "Measurement",
+            "Graphs"
+          ]
+        },
+        {
+          "chapter_number": 14,
+          "chapter_title": "Maps and Locations",
+          "topics": [
+            "Direction",
+            "Coordinates",
+            "Map Reading"
+          ]
+        },
+        {
+          "chapter_number": 15,
+          "chapter_title": "Data Through Pictures",
+          "topics": [
+            "Pictographs",
+            "Data Handling",
+            "Interpretation"
+          ]
+        }
+      ]
+    },
+    {
+      "subject_name": "Science",
+      "chapters": [
+        {
+          "chapter_number": 1,
+          "chapter_title": "Plants Around Us",
+          "topics": [
+            "Plant Parts",
+            "Photosynthesis Basics",
+            "Plant Growth"
+          ]
+        },
+        {
+          "chapter_number": 2,
+          "chapter_title": "Animals and Their Habitats",
+          "topics": [
+            "Adaptation",
+            "Food Habits",
+            "Habitats"
+          ]
+        },
+        {
+          "chapter_number": 3,
+          "chapter_title": "Matter and Materials",
+          "topics": [
+            "States of Matter",
+            "Properties",
+            "Everyday Materials"
+          ]
+        },
+        {
+          "chapter_number": 4,
+          "chapter_title": "Force and Energy",
+          "topics": [
+            "Push and Pull",
+            "Forms of Energy",
+            "Simple Machines"
+          ]
+        }
+      ]
+    },
+    {
+      "subject_name": "Environmental Studies (EVS)",
+      "textbook": "Our Wondrous World",
+      "chapters": [
+        {
+          "chapter_number": 1,
+          "chapter_title": "Water - The Essence of Life",
+          "topics": [
+            "Water Sources",
+            "Water Conservation",
+            "Importance of Water"
+          ]
+        },
+        {
+          "chapter_number": 2,
+          "chapter_title": "Journey of a River",
+          "topics": [
+            "Rivers",
+            "Water Cycle",
+            "Environment"
+          ]
+        },
+        {
+          "chapter_number": 3,
+          "chapter_title": "The Mystery of Food",
+          "topics": [
+            "Nutrition",
+            "Balanced Diet",
+            "Healthy Eating"
+          ]
+        },
+        {
+          "chapter_number": 4,
+          "chapter_title": "Our School - A Happy Place",
+          "topics": [
+            "School Environment",
+            "Responsibilities",
+            "Community"
+          ]
+        },
+        {
+          "chapter_number": 5,
+          "chapter_title": "Our Vibrant Country",
+          "topics": [
+            "Indian Diversity",
+            "Culture",
+            "Festivals"
+          ]
+        },
+        {
+          "chapter_number": 6,
+          "chapter_title": "Some Unique Places",
+          "topics": [
+            "Landforms",
+            "Tourist Places",
+            "Geography Basics"
+          ]
+        },
+        {
+          "chapter_number": 7,
+          "chapter_title": "Energy - How Things Work",
+          "topics": [
+            "Energy Sources",
+            "Machines",
+            "Electricity Basics"
+          ]
+        },
+        {
+          "chapter_number": 8,
+          "chapter_title": "Clothes - How Things are Made",
+          "topics": [
+            "Fibres",
+            "Fabric Production",
+            "Traditional Clothing"
+          ]
+        },
+        {
+          "chapter_number": 9,
+          "chapter_title": "Rhythms of Nature",
+          "topics": [
+            "Seasons",
+            "Climate",
+            "Nature Cycles"
+          ]
+        },
+        {
+          "chapter_number": 10,
+          "chapter_title": "Earth - Our Shared Home",
+          "topics": [
+            "Environment Protection",
+            "Natural Resources",
+            "Sustainability"
+          ]
+        }
+      ]
+    },
+    {
+      "subject_name": "Social Science",
+      "chapters": [
+        {
+          "chapter_number": 1,
+          "chapter_title": "Our Country India",
+          "topics": [
+            "States and Capitals",
+            "National Symbols",
+            "Unity in Diversity"
+          ]
+        },
+        {
+          "chapter_number": 2,
+          "chapter_title": "Indian Culture and Heritage",
+          "topics": [
+            "Festivals",
+            "Traditions",
+            "Languages"
+          ]
+        },
+        {
+          "chapter_number": 3,
+          "chapter_title": "Maps and Directions",
+          "topics": [
+            "Map Reading",
+            "Cardinal Directions",
+            "Globe"
+          ]
+        },
+        {
+          "chapter_number": 4,
+          "chapter_title": "Community Helpers",
+          "topics": [
+            "Occupations",
+            "Public Services",
+            "Responsibilities"
+          ]
+        }
+      ]
+    },
+    {
+      "subject_name": "Kannada",
+      "chapters": [
+        {
+          "chapter_number": 1,
+          "chapter_title": "ನಮ್ಮ ಮನೆ",
+          "topics": [
+            "ಕುಟುಂಬ",
+            "ಸಂಬಂಧಗಳು",
+            "ಮೌಲ್ಯಗಳು"
+          ]
+        },
+        {
+          "chapter_number": 2,
+          "chapter_title": "ಪ್ರಕೃತಿ ಸೌಂದರ್ಯ",
+          "topics": [
+            "ಮರಗಳು",
+            "ಪರಿಸರ",
+            "ಪ್ರಕೃತಿ ಪ್ರೀತಿ"
+          ]
+        },
+        {
+          "chapter_number": 3,
+          "chapter_title": "ಆಟ ಮತ್ತು ಮೋಜು",
+          "topics": [
+            "ಆಟಗಳು",
+            "ಸ್ನೇಹ",
+            "ಮನರಂಜನೆ"
+          ]
+        },
+        {
+          "chapter_number": 4,
+          "chapter_title": "ನಮ್ಮ ದೇಶ",
+          "topics": [
+            "ಭಾರತ",
+            "ಹಬ್ಬಗಳು",
+            "ಸಂಸ್ಕೃತಿ"
+          ]
+        }
+      ]
+    }
+  ]
+}

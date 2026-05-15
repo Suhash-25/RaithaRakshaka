@@ -2,6 +2,8 @@ import { useEffect, useState } from 'react'
 import { RefreshCw, X } from 'lucide-react'
 
 export default function PWAInstallPrompt() {
+  return null
+
   const [installEvent, setInstallEvent] = useState(null)
   const [isInstalled, setIsInstalled] = useState(false)
   const [updateReady, setUpdateReady] = useState(false)

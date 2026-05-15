@@ -1,0 +1,295 @@
+{
+  "board": "CBSE",
+  "academic_year": "2025-26",
+  "medium": "English Medium",
+  "class": "Class 3",
+  "source": "CBSE Academic + NCERT Textbooks",
+  "subjects": [
+    {
+      "subject_name": "English",
+      "textbook": "Santoor",
+      "chapters": [
+        {
+          "chapter_number": 1,
+          "chapter_title": "Learning Together",
+          "topics": [
+            "Friendship",
+            "Classroom Activities",
+            "Reading Skills"
+          ]
+        },
+        {
+          "chapter_number": 2,
+          "chapter_title": "My Beautiful World",
+          "topics": [
+            "Nature",
+            "Environment",
+            "Observation Skills"
+          ]
+        },
+        {
+          "chapter_number": 3,
+          "chapter_title": "Food and Fun",
+          "topics": [
+            "Healthy Food",
+            "Conversation",
+            "Vocabulary"
+          ]
+        },
+        {
+          "chapter_number": 4,
+          "chapter_title": "Travel and Adventure",
+          "topics": [
+            "Means of Transport",
+            "Journey",
+            "Story Reading"
+          ]
+        },
+        {
+          "chapter_number": 5,
+          "chapter_title": "Animals Around Us",
+          "topics": [
+            "Domestic Animals",
+            "Wild Animals",
+            "Animal Care"
+          ]
+        },
+        {
+          "chapter_number": 6,
+          "chapter_title": "Helping Others",
+          "topics": [
+            "Kindness",
+            "Community Helpers",
+            "Values"
+          ]
+        }
+      ]
+    },
+    {
+      "subject_name": "Hindi",
+      "textbook": "Veena",
+      "chapters": [
+        {
+          "chapter_number": 1,
+          "chapter_title": "हमारा परिवार",
+          "topics": [
+            "परिवार",
+            "रिश्ते",
+            "संवाद कौशल"
+          ]
+        },
+        {
+          "chapter_number": 2,
+          "chapter_title": "खेल और मस्ती",
+          "topics": [
+            "खेल",
+            "मित्रता",
+            "मनोरंजन"
+          ]
+        },
+        {
+          "chapter_number": 3,
+          "chapter_title": "प्रकृति का संसार",
+          "topics": [
+            "पेड़-पौधे",
+            "जानवर",
+            "पर्यावरण"
+          ]
+        },
+        {
+          "chapter_number": 4,
+          "chapter_title": "अच्छी आदतें",
+          "topics": [
+            "स्वच्छता",
+            "अनुशासन",
+            "दैनिक दिनचर्या"
+          ]
+        },
+        {
+          "chapter_number": 5,
+          "chapter_title": "हमारा देश",
+          "topics": [
+            "राष्ट्रीय प्रतीक",
+            "त्योहार",
+            "संस्कृति"
+          ]
+        }
+      ]
+    },
+    {
+      "subject_name": "Mathematics",
+      "textbook": "Math-Mela Class 3",
+      "chapters": [
+        {
+          "chapter_number": 1,
+          "chapter_title": "Fun with Numbers",
+          "topics": [
+            "3-Digit Numbers",
+            "Place Value",
+            "Number Comparison"
+          ]
+        },
+        {
+          "chapter_number": 2,
+          "chapter_title": "Addition and Subtraction",
+          "topics": [
+            "Carry Over",
+            "Borrowing",
+            "Word Problems"
+          ]
+        },
+        {
+          "chapter_number": 3,
+          "chapter_title": "Multiplication",
+          "topics": [
+            "Repeated Addition",
+            "Tables",
+            "Applications"
+          ]
+        },
+        {
+          "chapter_number": 4,
+          "chapter_title": "Division",
+          "topics": [
+            "Equal Sharing",
+            "Grouping",
+            "Simple Division"
+          ]
+        },
+        {
+          "chapter_number": 5,
+          "chapter_title": "Shapes and Patterns",
+          "topics": [
+            "2D Shapes",
+            "3D Shapes",
+            "Patterns"
+          ]
+        },
+        {
+          "chapter_number": 6,
+          "chapter_title": "Measurement",
+          "topics": [
+            "Length",
+            "Weight",
+            "Capacity"
+          ]
+        },
+        {
+          "chapter_number": 7,
+          "chapter_title": "Time and Money",
+          "topics": [
+            "Clock Reading",
+            "Currency",
+            "Transactions"
+          ]
+        },
+        {
+          "chapter_number": 8,
+          "chapter_title": "Data Handling",
+          "topics": [
+            "Tables",
+            "Pictographs",
+            "Interpretation"
+          ]
+        }
+      ]
+    },
+    {
+      "subject_name": "Environmental Studies",
+      "textbook": "The World Around Us",
+      "chapters": [
+        {
+          "chapter_number": 1,
+          "chapter_title": "My Family and Friends",
+          "topics": [
+            "Relationships",
+            "Helping Others",
+            "Family Values"
+          ]
+        },
+        {
+          "chapter_number": 2,
+          "chapter_title": "Plants and Animals",
+          "topics": [
+            "Plant Types",
+            "Animal Habitats",
+            "Food Habits"
+          ]
+        },
+        {
+          "chapter_number": 3,
+          "chapter_title": "Food and Water",
+          "topics": [
+            "Balanced Diet",
+            "Sources of Water",
+            "Water Conservation"
+          ]
+        },
+        {
+          "chapter_number": 4,
+          "chapter_title": "Travel and Communication",
+          "topics": [
+            "Transport",
+            "Communication Methods",
+            "Road Safety"
+          ]
+        },
+        {
+          "chapter_number": 5,
+          "chapter_title": "Our Environment",
+          "topics": [
+            "Cleanliness",
+            "Pollution",
+            "Environmental Protection"
+          ]
+        }
+      ]
+    },
+    {
+      "subject_name": "General Knowledge",
+      "chapters": [
+        {
+          "chapter_number": 1,
+          "chapter_title": "Our India",
+          "topics": [
+            "States and Capitals",
+            "National Symbols",
+            "Famous Places"
+          ]
+        },
+        {
+          "chapter_number": 2,
+          "chapter_title": "Science Around Us",
+          "topics": [
+            "Basic Science Facts",
+            "Technology",
+            "Discoveries"
+          ]
+        }
+      ]
+    },
+    {
+      "subject_name": "Art and Physical Education",
+      "chapters": [
+        {
+          "chapter_number": 1,
+          "chapter_title": "Creative Arts",
+          "topics": [
+            "Drawing",
+            "Painting",
+            "Craft Work"
+          ]
+        },
+        {
+          "chapter_number": 2,
+          "chapter_title": "Health and Fitness",
+          "topics": [
+            "Games",
+            "Exercise",
+            "Yoga"
+          ]
+        }
+      ]
+    }
+  ]
+}

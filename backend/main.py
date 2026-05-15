@@ -19,7 +19,7 @@ from db import PostgresDB
 from apscheduler.schedulers.asyncio import AsyncIOScheduler
 import json
 from pydantic import BaseModel
-from auth_security import hash_password, verify_password, create_access_token, decode_access_token
+from auth_security import hash_password, password_needs_rehash, verify_password, create_access_token, decode_access_token
 from fastapi import Request, HTTPException, Depends
 from fastapi.security import OAuth2PasswordBearer
 
@@ -90,7 +90,7 @@ app.add_middleware(
 
 @app.get("/health")
 async def health_check():
-    return {"status": "online"}
+    return {"status": "ok"}
 
 class AuthRegister(BaseModel):
     name: str
@@ -104,23 +104,60 @@ class AuthLogin(BaseModel):
     email: str
     password: str
 
+VALID_USER_ROLES = {"student", "faculty", "hod", "admin"}
+
+def normalize_user_role(role: str | None) -> str:
+    normalized = (role or "student").strip().lower()
+    if normalized not in VALID_USER_ROLES:
+        raise HTTPException(status_code=400, detail="Invalid user role")
+    return normalized
+
+def auth_success_payload(user: dict, access_token: str) -> dict:
+    return {
+        "token": access_token,
+        "access_token": access_token,
+        "student_id": user["id"],
+        "role": user["role"],
+        "user": {
+            "id": user["id"],
+            "name": user.get("name"),
+            "email": user.get("email"),
+            "role": user.get("role"),
+        },
+    }
+
 @app.post("/auth/register", response_model=StandardResponse)
 async def hybrid_register(req: AuthRegister):
+    req.email = req.email.strip().lower()
+    req.role = normalize_user_role(req.role)
     existing = await service.get_user_by_email(req.email)
     if existing:
-        return StandardResponse(success=False, message="Email already registered")
+        token_data = {"user_id": existing["id"], "role": existing["role"]}
+        access_token = create_access_token(token_data)
+        return StandardResponse(
+            success=True,
+            message="Registration successful",
+            data=auth_success_payload(existing, access_token),
+        )
     
     import time
     user_id = "usr_" + str(int(time.time() * 1000))
     pw_hash = hash_password(req.password)
     
-    user = await service.insert_user(
-        user_id=user_id,
-        name=req.name,
-        email=req.email,
-        password_hash=pw_hash,
-        role=req.role,
-    )
+    try:
+        user = await service.insert_user(
+            user_id=user_id,
+            name=req.name,
+            email=req.email,
+            password_hash=pw_hash,
+            role=req.role,
+        )
+    except Exception as exc:
+        if exc.__class__.__name__ != "UniqueViolationError":
+            raise
+        user = await service.get_user_by_email(req.email)
+        if not user:
+            raise
     
     token_data = {"user_id": user["id"], "role": user["role"]}
     access_token = create_access_token(token_data)
@@ -128,18 +165,18 @@ async def hybrid_register(req: AuthRegister):
     return StandardResponse(
         success=True,
         message="Registration successful",
-        data={
-            "access_token": access_token,
-            "student_id": user_id,
-            "role": user["role"]
-        }
+        data=auth_success_payload(user, access_token),
     )
 
 @app.post("/auth/login", response_model=StandardResponse)
 async def hybrid_login(req: AuthLogin):
-    user = await service.get_user_by_email(req.email)
-    if not user or not verify_password(req.password, user["password_hash"]):
+    email = req.email.strip().lower()
+    user = await service.get_user_by_email(email)
+    if not user or not verify_password(req.password, user.get("password_hash", "")):
         return StandardResponse(success=False, message="Unauthorized")
+
+    if password_needs_rehash(user.get("password_hash", "")):
+        await service.update_user_password_hash(user["id"], hash_password(req.password))
     
     token_data = {"user_id": user["id"], "role": user["role"]}
     access_token = create_access_token(token_data)
@@ -147,12 +184,16 @@ async def hybrid_login(req: AuthLogin):
     return StandardResponse(
         success=True,
         message="Login successful",
-        data={
-            "access_token": access_token,
-            "student_id": user["id"],
-            "role": user["role"]
-        }
+        data=auth_success_payload(user, access_token),
     )
+
+@app.post("/api/auth/register", response_model=StandardResponse)
+async def hybrid_register_api(req: AuthRegister):
+    return await hybrid_register(req)
+
+@app.post("/api/auth/login", response_model=StandardResponse)
+async def hybrid_login_api(req: AuthLogin):
+    return await hybrid_login(req)
 
 async def get_current_user(token: str = Depends(oauth2_scheme)):
     payload = decode_access_token(token)
@@ -175,6 +216,10 @@ async def hybrid_get_me(current_user: dict = Depends(get_current_user)):
             "role": current_user["role"]
         }
     )
+
+@app.get("/api/auth/me", response_model=StandardResponse)
+async def hybrid_get_me_api(current_user: dict = Depends(get_current_user)):
+    return await hybrid_get_me(current_user)
 
 # Disable the conflicting auth router
 # app.include_router(auth_router)
@@ -230,7 +275,7 @@ app.include_router(
 # Health endpoint for PV frontend
 @app.get("/api/health")
 async def pv_health():
-    return {"status": "ok", "version": "1.0.0", "env": "unified"}
+    return {"status": "ok"}
 
 
 # ── Direct chat (casual / no agent pipeline) ───────────────────────────────
@@ -266,24 +311,25 @@ app.mount("/service_images", StaticFiles(directory=IMAGE_DIR), name="service_ima
 
 @asynccontextmanager
 async def lifespan(app):
-    await PostgresDB.connect()
-    if not scheduler.running:
-        scheduler.start()
+    try:
+        await PostgresDB.connect()
+        if not scheduler.running:
+            scheduler.start()
 
-    async with PostgresDB.pool.acquire() as conn:
-        await conn.execute("""
+        async with PostgresDB.pool.acquire() as conn:
+            await conn.execute("""
         CREATE TABLE IF NOT EXISTS departments (
             id TEXT PRIMARY KEY,
             name TEXT
         );
         """)
         
-        try:
-            await conn.execute("ALTER TABLE departments ADD COLUMN IF NOT EXISTS hod_faculty_id TEXT UNIQUE;")
-        except Exception:
-            pass
+            try:
+                await conn.execute("ALTER TABLE departments ADD COLUMN IF NOT EXISTS hod_faculty_id TEXT UNIQUE;")
+            except Exception:
+                pass
 
-        await conn.execute("""
+            await conn.execute("""
         CREATE TABLE IF NOT EXISTS users (
             id TEXT PRIMARY KEY,
             name TEXT,
@@ -292,8 +338,22 @@ async def lifespan(app):
             role TEXT CHECK (role IN ('student','faculty','hod','admin'))
         );
         """)
+            await conn.execute("ALTER TABLE users DROP CONSTRAINT IF EXISTS users_role_check;")
+            await conn.execute("""
+        UPDATE users
+        SET role = CASE
+            WHEN role IS NULL OR TRIM(role) = '' THEN 'student'
+            WHEN LOWER(TRIM(role)) IN ('student', 'faculty', 'hod', 'admin') THEN LOWER(TRIM(role))
+            ELSE 'student'
+        END;
+        """)
+            await conn.execute("""
+        ALTER TABLE users
+        ADD CONSTRAINT users_role_check
+        CHECK (role IN ('student','faculty','hod','admin'));
+        """)
 
-        await conn.execute("""
+            await conn.execute("""
         CREATE TABLE IF NOT EXISTS students (
             id TEXT PRIMARY KEY,
             user_id TEXT REFERENCES users(id),
@@ -303,7 +363,7 @@ async def lifespan(app):
         );
         """)
 
-        await conn.execute("""
+            await conn.execute("""
         CREATE TABLE IF NOT EXISTS faculty (
             id TEXT PRIMARY KEY,
             user_id TEXT REFERENCES users(id),
@@ -314,14 +374,14 @@ async def lifespan(app):
         );
         """)
         
-        try:
-            await conn.execute("ALTER TABLE faculty ADD COLUMN IF NOT EXISTS faculty_code TEXT UNIQUE;")
-            await conn.execute("ALTER TABLE faculty ADD COLUMN IF NOT EXISTS name TEXT;")
-            await conn.execute("ALTER TABLE faculty ADD COLUMN IF NOT EXISTS department_id TEXT;")
-        except Exception:
-            pass
+            try:
+                await conn.execute("ALTER TABLE faculty ADD COLUMN IF NOT EXISTS faculty_code TEXT UNIQUE;")
+                await conn.execute("ALTER TABLE faculty ADD COLUMN IF NOT EXISTS name TEXT;")
+                await conn.execute("ALTER TABLE faculty ADD COLUMN IF NOT EXISTS department_id TEXT;")
+            except Exception:
+                pass
 
-        await conn.execute("""
+            await conn.execute("""
         CREATE TABLE IF NOT EXISTS subjects (
             id TEXT PRIMARY KEY,
             subject_name TEXT,
@@ -330,7 +390,7 @@ async def lifespan(app):
         );
         """)
 
-        await conn.execute("""
+            await conn.execute("""
         CREATE TABLE IF NOT EXISTS faculty_subjects (
             id TEXT PRIMARY KEY,
             faculty_id TEXT REFERENCES faculty(id),
@@ -338,7 +398,7 @@ async def lifespan(app):
         );
         """)
         
-        await conn.execute("""
+            await conn.execute("""
         CREATE TABLE IF NOT EXISTS student_queries (
             id TEXT PRIMARY KEY,
             student_id TEXT REFERENCES students(id),
@@ -349,15 +409,15 @@ async def lifespan(app):
         );
         """)
         
-        try:
-            await conn.execute("ALTER TABLE subjects ADD COLUMN IF NOT EXISTS subject_name TEXT;")
-            await conn.execute("ALTER TABLE subjects ADD COLUMN IF NOT EXISTS subject_code TEXT UNIQUE;")
-            await conn.execute("ALTER TABLE subjects ADD COLUMN IF NOT EXISTS department_id TEXT;")
-            await conn.execute("ALTER TABLE subjects ADD COLUMN IF NOT EXISTS semester INTEGER;")
-        except Exception:
-            pass
+            try:
+                await conn.execute("ALTER TABLE subjects ADD COLUMN IF NOT EXISTS subject_name TEXT;")
+                await conn.execute("ALTER TABLE subjects ADD COLUMN IF NOT EXISTS subject_code TEXT UNIQUE;")
+                await conn.execute("ALTER TABLE subjects ADD COLUMN IF NOT EXISTS department_id TEXT;")
+                await conn.execute("ALTER TABLE subjects ADD COLUMN IF NOT EXISTS semester INTEGER;")
+            except Exception:
+                pass
 
-        await conn.execute("""
+            await conn.execute("""
         CREATE TABLE IF NOT EXISTS attendance_sessions (
             id TEXT PRIMARY KEY,
             subject_id TEXT REFERENCES subjects(id),
@@ -369,12 +429,12 @@ async def lifespan(app):
         );
         """)
         
-        try:
-            await conn.execute("ALTER TABLE attendance_sessions ADD COLUMN IF NOT EXISTS total_classes INTEGER;")
-        except Exception:
-            pass
+            try:
+                await conn.execute("ALTER TABLE attendance_sessions ADD COLUMN IF NOT EXISTS total_classes INTEGER;")
+            except Exception:
+                pass
 
-        await conn.execute("""
+            await conn.execute("""
         CREATE TABLE IF NOT EXISTS attendance_records (
             id TEXT PRIMARY KEY,
             session_id TEXT REFERENCES attendance_sessions(id),
@@ -383,7 +443,7 @@ async def lifespan(app):
         );
         """)
 
-        await conn.execute("""
+            await conn.execute("""
         CREATE TABLE IF NOT EXISTS attendance (
             id TEXT PRIMARY KEY,
             student_id TEXT REFERENCES students(id),
@@ -392,7 +452,7 @@ async def lifespan(app):
         );
         """)
 
-        await conn.execute("""
+            await conn.execute("""
         CREATE TABLE IF NOT EXISTS marks (
             id TEXT PRIMARY KEY,
             student_id TEXT REFERENCES students(id),
@@ -402,7 +462,7 @@ async def lifespan(app):
         );
         """)
 
-        await conn.execute("""
+            await conn.execute("""
         CREATE TABLE IF NOT EXISTS results (
             id TEXT PRIMARY KEY,
             student_id TEXT REFERENCES students(id),
@@ -411,7 +471,7 @@ async def lifespan(app):
         );
         """)
 
-        await conn.execute("""
+            await conn.execute("""
         CREATE TABLE IF NOT EXISTS notifications (
             id TEXT PRIMARY KEY,
             sender_id TEXT,
@@ -422,12 +482,12 @@ async def lifespan(app):
         );
         """)
         
-        try:
-            await conn.execute("ALTER TABLE notifications ADD COLUMN IF NOT EXISTS read_status BOOLEAN DEFAULT FALSE;")
-        except Exception:
-            pass
+            try:
+                await conn.execute("ALTER TABLE notifications ADD COLUMN IF NOT EXISTS read_status BOOLEAN DEFAULT FALSE;")
+            except Exception:
+                pass
 
-        await conn.execute("""
+            await conn.execute("""
         CREATE TABLE IF NOT EXISTS ia_marks (
             id TEXT PRIMARY KEY,
             student_id TEXT REFERENCES students(id),
@@ -439,6 +499,8 @@ async def lifespan(app):
             UNIQUE(student_id, subject_id)
         );
         """)
+    except Exception as exc:
+        print(f"Postgres bootstrap skipped: {exc}")
 
     yield
 
@@ -454,6 +516,141 @@ async def create_anon_id(request: Request):
     if not isinstance(fingerprint, str):
         raise HTTPException(status_code=422, detail="fingerprint must be a string")
     return {"anon_id": generate_anon_id(fingerprint)}
+
+def _normalize_voice_language(language):
+    if not language:
+        return "en"
+    language = language.lower()
+    if language.startswith("hi"):
+        return "hi"
+    if language.startswith("kn"):
+        return "kn"
+    return "en"
+
+class VoiceSpeakRequest(BaseModel):
+    text: str
+    language: str = "en"
+
+@app.post("/voice/transcribe")
+async def transcribe_voice(request: Request):
+    import httpx
+    import subprocess
+
+    try:
+        form = await request.form()
+        upload = form.get("audio") or form.get("file")
+    except Exception:
+        upload = None
+
+    if upload and hasattr(upload, "read"):
+        audio_bytes = await upload.read()
+        filename = getattr(upload, "filename", "") or "voice.webm"
+        content_type = getattr(upload, "content_type", None) or "audio/webm"
+    else:
+        audio_bytes = await request.body()
+        filename = "voice.webm"
+        content_type = request.headers.get("content-type") or "audio/webm"
+
+    if not audio_bytes:
+        raise HTTPException(status_code=422, detail="audio blob is required")
+
+    api_key = os.environ.get("SARVAM_API_KEY", "").strip()
+    if not api_key or api_key == "your_key_here":
+        raise HTTPException(status_code=500, detail="SARVAM_API_KEY is not configured")
+
+    def convert_to_wav(raw_audio_bytes: bytes) -> bytes:
+        result = subprocess.run(
+            ["ffmpeg", "-i", "pipe:0", "-ar", "16000", "-ac", "1", "-f", "wav", "pipe:1"],
+            input=raw_audio_bytes,
+            capture_output=True,
+        )
+        if result.returncode != 0:
+            raise Exception(f"ffmpeg conversion failed: {result.stderr.decode()}")
+        return result.stdout
+
+    try:
+        wav_bytes = convert_to_wav(audio_bytes)
+    except Exception as exc:
+        raise HTTPException(status_code=422, detail=str(exc)) from exc
+
+    try:
+        async with httpx.AsyncClient(timeout=60.0) as client:
+            sarvam_response = await client.post(
+                "https://api.sarvam.ai/speech-to-text",
+                headers={"api-subscription-key": api_key},
+                data={
+                    "model": "saarika:v2.5",
+                    "language_code": "unknown",
+                },
+                files={"file": ("audio.wav", wav_bytes, "audio/wav")},
+            )
+    except httpx.HTTPError as exc:
+        raise HTTPException(status_code=502, detail=f"Sarvam speech-to-text request failed: {exc}") from exc
+
+    if sarvam_response.status_code >= 400:
+        raise HTTPException(
+            status_code=502,
+            detail=f"Sarvam speech-to-text failed ({sarvam_response.status_code}): {sarvam_response.text}",
+        )
+
+    data = sarvam_response.json()
+    transcript = (data.get("transcript") or "").strip()
+    language = _normalize_voice_language(data.get("language_code"))
+
+    return {"success": True, "data": {"transcript": transcript, "language": language}}
+
+@app.post("/voice/speak")
+async def speak_voice(req: VoiceSpeakRequest):
+    from fastapi.responses import Response
+    import base64
+    import httpx
+
+    if not req.text or not req.text.strip():
+        raise HTTPException(status_code=422, detail="text is required")
+
+    api_key = os.environ.get("SARVAM_API_KEY", "").strip()
+    if not api_key or api_key == "your_key_here":
+        raise HTTPException(status_code=500, detail="SARVAM_API_KEY is not configured")
+
+    language_map = {
+        "en": "en-IN",
+        "hi": "hi-IN",
+        "kn": "kn-IN",
+    }
+    language = _normalize_voice_language(req.language)
+
+    try:
+        async with httpx.AsyncClient(timeout=60.0) as client:
+            sarvam_response = await client.post(
+                "https://api.sarvam.ai/text-to-speech",
+                headers={
+                    "api-subscription-key": api_key,
+                    "Content-Type": "application/json",
+                },
+                json={
+                    "text": req.text.strip(),
+                    "target_language_code": language_map[language],
+                    "model": "bulbul:v3",
+                    "speaker": "shubh",
+                    "speech_sample_rate": 24000,
+                    "output_audio_codec": "wav",
+                },
+            )
+    except httpx.HTTPError as exc:
+        raise HTTPException(status_code=502, detail=f"Sarvam text-to-speech request failed: {exc}") from exc
+
+    if sarvam_response.status_code >= 400:
+        raise HTTPException(
+            status_code=502,
+            detail=f"Sarvam text-to-speech failed ({sarvam_response.status_code}): {sarvam_response.text}",
+        )
+
+    data = sarvam_response.json()
+    audio_b64 = (data.get("audios") or [None])[0]
+    if not audio_b64:
+        raise HTTPException(status_code=500, detail="speech generation failed")
+
+    return Response(content=base64.b64decode(audio_b64), media_type="audio/wav")
 
 if __name__ == "__main__":
     uvicorn.run(app, host="0.0.0.0", port=int(os.environ.get("PORT", 8000)))

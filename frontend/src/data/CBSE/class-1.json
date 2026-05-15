@@ -1,0 +1,222 @@
+{
+  "board": "CBSE",
+  "academic_year": "2025-26",
+  "medium": "English Medium",
+  "class": "Class 1",
+  "subjects": [
+    {
+      "subject_name": "English",
+      "textbook": "Mridang",
+      "chapters": [
+        {
+          "chapter_number": 1,
+          "chapter_title": "My Family and Me",
+          "topics": [
+            "Two Little Hands",
+            "Greetings",
+            "Family Members"
+          ]
+        },
+        {
+          "chapter_number": 2,
+          "chapter_title": "Life Around Us",
+          "topics": [
+            "Picture Time",
+            "The Cap-seller and the Monkeys",
+            "A Farm"
+          ]
+        },
+        {
+          "chapter_number": 3,
+          "chapter_title": "Food",
+          "topics": [
+            "The Food We Eat",
+            "Healthy Food",
+            "Fun with Pictures"
+          ]
+        },
+        {
+          "chapter_number": 4,
+          "chapter_title": "Seasons",
+          "topics": [
+            "The Four Seasons",
+            "Rainy Days",
+            "Anandi's Rainbow"
+          ]
+        }
+      ]
+    },
+    {
+      "subject_name": "Hindi",
+      "textbook": "Sarangi",
+      "chapters": [
+        {
+          "chapter_number": 1,
+          "chapter_title": "हमारे आसपास",
+          "topics": [
+            "परिवार",
+            "दोस्त",
+            "घर"
+          ]
+        },
+        {
+          "chapter_number": 2,
+          "chapter_title": "खेल और मस्ती",
+          "topics": [
+            "खेल",
+            "कविता",
+            "चित्र पहचान"
+          ]
+        },
+        {
+          "chapter_number": 3,
+          "chapter_title": "प्रकृति",
+          "topics": [
+            "पेड़-पौधे",
+            "जानवर",
+            "मौसम"
+          ]
+        }
+      ]
+    },
+    {
+      "subject_name": "Mathematics",
+      "textbook": "Joyful Mathematics / Math-Mela",
+      "chapters": [
+        {
+          "chapter_number": 1,
+          "chapter_title": "Finding the Furry Cat",
+          "topics": [
+            "Pre-number Concepts",
+            "Observation",
+            "Comparisons"
+          ]
+        },
+        {
+          "chapter_number": 2,
+          "chapter_title": "What is Long? What is Round?",
+          "topics": [
+            "Shapes",
+            "Length",
+            "Patterns"
+          ]
+        },
+        {
+          "chapter_number": 3,
+          "chapter_title": "Mango Treat",
+          "topics": [
+            "Counting Numbers",
+            "Number Recognition",
+            "Comparing Numbers"
+          ]
+        },
+        {
+          "chapter_number": 4,
+          "chapter_title": "Vegetable Farm",
+          "topics": [
+            "Addition",
+            "Subtraction",
+            "Grouping Objects"
+          ]
+        },
+        {
+          "chapter_number": 5,
+          "chapter_title": "Fun with Numbers",
+          "topics": [
+            "Number Patterns",
+            "Simple Operations",
+            "Mental Maths"
+          ]
+        }
+      ]
+    },
+    {
+      "subject_name": "Environmental Studies",
+      "textbook": "Looking Around",
+      "chapters": [
+        {
+          "chapter_number": 1,
+          "chapter_title": "My Body",
+          "topics": [
+            "Body Parts",
+            "Sense Organs",
+            "Healthy Habits"
+          ]
+        },
+        {
+          "chapter_number": 2,
+          "chapter_title": "My Family",
+          "topics": [
+            "Family Members",
+            "Relationships",
+            "Helping at Home"
+          ]
+        },
+        {
+          "chapter_number": 3,
+          "chapter_title": "Plants and Animals",
+          "topics": [
+            "Types of Plants",
+            "Domestic Animals",
+            "Birds Around Us"
+          ]
+        },
+        {
+          "chapter_number": 4,
+          "chapter_title": "Food and Water",
+          "topics": [
+            "Healthy Food",
+            "Sources of Water",
+            "Cleanliness"
+          ]
+        }
+      ]
+    },
+    {
+      "subject_name": "General Knowledge",
+      "chapters": [
+        {
+          "chapter_number": 1,
+          "chapter_title": "My Surroundings",
+          "topics": [
+            "Community Helpers",
+            "Places Around Us",
+            "Safety Rules"
+          ]
+        },
+        {
+          "chapter_number": 2,
+          "chapter_title": "India and Festivals",
+          "topics": [
+            "National Symbols",
+            "Festivals",
+            "Important Days"
+          ]
+        }
+      ]
+    },
+    {
+      "subject_name": "Art and Physical Education",
+      "chapters": [
+        {
+          "chapter_number": 1,
+          "chapter_title": "Art Activities",
+          "topics": [
+            "Drawing",
+            "Colouring",
+            "Craft Work"
+          ]
+        },
+        {
+          "chapter_number": 2,
+          "chapter_title": "Physical Activities",
+          "topics": [
+            "Games",
+            "Exercise",
+            "Yoga Basics"
+          ]
+        }
+      ]
+    }
+  ]
+}

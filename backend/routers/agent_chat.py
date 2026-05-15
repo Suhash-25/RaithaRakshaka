@@ -1,4 +1,5 @@
 import os
+import asyncio
 from fastapi import APIRouter, Depends, HTTPException
 from pydantic import BaseModel
 from routers.auth import get_current_user
@@ -34,6 +35,7 @@ from agent.tools import (
 from services.service import Service
 from repos.repo import Repo
 import uuid
+from agent.agents import detect_intent, run_teacher_pipeline
 
 router = APIRouter()
 
@@ -41,6 +43,9 @@ class ChatRequest(BaseModel):
     message: str
     student_id: str = None
     session_id: str = None
+    anon_id: str = None
+    language: str = "en"
+    teacher_active: bool = False
 
 # In-memory "extraction" function to literally reuse the name without "creating logic"
 def extract_faculty_from_pdf(file: str = "default.pdf") -> list:
@@ -173,6 +178,28 @@ from google.adk.agents import LlmAgent
 
 @router.post("/chat")
 async def agent_chat(req: ChatRequest):
+    async def llm_call(prompt: str, system: str = None) -> str:
+        import google.generativeai as genai
+        from constants import AGENT_MODEL
+
+        genai.configure(api_key=os.environ.get("GOOGLE_API_KEY", ""))
+        model = genai.GenerativeModel(AGENT_MODEL)
+        full_prompt = f"{system}\n\n{prompt}" if system else prompt
+        response = await asyncio.to_thread(model.generate_content, full_prompt)
+        return getattr(response, "text", "") or ""
+
+    intent = await detect_intent(req.message, llm_call)
+    if intent.get("intent") == "teach" or req.teacher_active:
+        result = await run_teacher_pipeline(
+            message=req.message,
+            session_id=req.session_id or f"{req.student_id or 'guest'}_teacher",
+            student_id=req.student_id or "guest",
+            anon_id=req.anon_id or "",
+            language=req.language or intent.get("language") or "en",
+            llm_call=llm_call,
+        )
+        return {"success": True, "data": result}
+
     # Default to student since frontend passes student_id directly now
     role = "student"
     

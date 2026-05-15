@@ -1,0 +1,499 @@
+{
+  "board": "Department of Pre-University Education (DPUE), Karnataka",
+  "academic_year": "2025-26",
+  "class": "11",
+  "system": "1st PUC",
+  "mediums_available": [
+    "English",
+    "Kannada",
+    "Hindi",
+    "Urdu",
+    "Tamil",
+    "Telugu",
+    "Marathi"
+  ],
+  "streams": [
+    {
+      "stream_name": "Science",
+      "subjects": [
+        {
+          "subject_name": "Physics",
+          "official_books": [
+            "Physics Part 1",
+            "Physics Part 2"
+          ],
+          "chapters": [
+            {
+              "chapter_no": 1,
+              "chapter_name": "Physical World",
+              "concepts": [
+                "Scope of Physics",
+                "Fundamental Forces",
+                "Nature of Physical Laws",
+                "Scientific Method"
+              ]
+            },
+            {
+              "chapter_no": 2,
+              "chapter_name": "Units and Measurements",
+              "concepts": [
+                "SI Units",
+                "Fundamental Units",
+                "Derived Units",
+                "Dimensional Analysis",
+                "Accuracy",
+                "Precision",
+                "Errors"
+              ]
+            },
+            {
+              "chapter_no": 3,
+              "chapter_name": "Motion in a Straight Line",
+              "concepts": [
+                "Distance",
+                "Displacement",
+                "Velocity",
+                "Acceleration",
+                "Equations of Motion"
+              ]
+            },
+            {
+              "chapter_no": 4,
+              "chapter_name": "Motion in a Plane",
+              "concepts": [
+                "Vectors",
+                "Projectile Motion",
+                "Uniform Circular Motion"
+              ]
+            },
+            {
+              "chapter_no": 5,
+              "chapter_name": "Laws of Motion",
+              "concepts": [
+                "Newton's Laws",
+                "Inertia",
+                "Momentum",
+                "Friction"
+              ]
+            },
+            {
+              "chapter_no": 6,
+              "chapter_name": "Work Energy and Power",
+              "concepts": [
+                "Work",
+                "Energy",
+                "Kinetic Energy",
+                "Potential Energy",
+                "Power"
+              ]
+            }
+          ]
+        },
+        {
+          "subject_name": "Chemistry",
+          "official_books": [
+            "Chemistry Part 1",
+            "Chemistry Part 2"
+          ],
+          "chapters": [
+            {
+              "chapter_no": 1,
+              "chapter_name": "Some Basic Concepts of Chemistry",
+              "concepts": [
+                "Mole Concept",
+                "Stoichiometry",
+                "Atomic Mass",
+                "Molecular Mass"
+              ]
+            },
+            {
+              "chapter_no": 2,
+              "chapter_name": "Structure of Atom",
+              "concepts": [
+                "Atomic Models",
+                "Quantum Numbers",
+                "Electronic Configuration"
+              ]
+            },
+            {
+              "chapter_no": 3,
+              "chapter_name": "Classification of Elements",
+              "concepts": [
+                "Periodic Table",
+                "Periodic Trends",
+                "Electronic Configuration"
+              ]
+            },
+            {
+              "chapter_no": 4,
+              "chapter_name": "Chemical Bonding",
+              "concepts": [
+                "Ionic Bond",
+                "Covalent Bond",
+                "VSEPR Theory",
+                "Hybridization"
+              ]
+            },
+            {
+              "chapter_no": 5,
+              "chapter_name": "States of Matter",
+              "concepts": [
+                "Gas Laws",
+                "Intermolecular Forces",
+                "Liquids",
+                "Solids"
+              ]
+            }
+          ]
+        },
+        {
+          "subject_name": "Mathematics",
+          "official_books": [
+            "Mathematics Part 1",
+            "Mathematics Part 2"
+          ],
+          "chapters": [
+            {
+              "chapter_no": 1,
+              "chapter_name": "Sets",
+              "concepts": [
+                "Types of Sets",
+                "Subset",
+                "Union",
+                "Intersection",
+                "Venn Diagram"
+              ]
+            },
+            {
+              "chapter_no": 2,
+              "chapter_name": "Relations and Functions",
+              "concepts": [
+                "Relations",
+                "Functions",
+                "Domain",
+                "Range"
+              ]
+            },
+            {
+              "chapter_no": 3,
+              "chapter_name": "Trigonometric Functions",
+              "concepts": [
+                "Trigonometric Ratios",
+                "Identities",
+                "Graphs"
+              ]
+            },
+            {
+              "chapter_no": 4,
+              "chapter_name": "Complex Numbers",
+              "concepts": [
+                "Imaginary Numbers",
+                "Complex Plane",
+                "Operations on Complex Numbers"
+              ]
+            },
+            {
+              "chapter_no": 5,
+              "chapter_name": "Linear Inequalities",
+              "concepts": [
+                "Inequalities",
+                "Graphical Representation"
+              ]
+            },
+            {
+              "chapter_no": 6,
+              "chapter_name": "Permutations and Combinations",
+              "concepts": [
+                "Factorial",
+                "Permutation",
+                "Combination"
+              ]
+            }
+          ]
+        },
+        {
+          "subject_name": "Biology",
+          "official_books": [
+            "Biology Part 1",
+            "Biology Part 2"
+          ],
+          "chapters": [
+            {
+              "chapter_no": 1,
+              "chapter_name": "The Living World",
+              "concepts": [
+                "Biodiversity",
+                "Taxonomy",
+                "Nomenclature"
+              ]
+            },
+            {
+              "chapter_no": 2,
+              "chapter_name": "Biological Classification",
+              "concepts": [
+                "Five Kingdom Classification",
+                "Monera",
+                "Protista",
+                "Fungi"
+              ]
+            },
+            {
+              "chapter_no": 3,
+              "chapter_name": "Plant Kingdom",
+              "concepts": [
+                "Algae",
+                "Bryophytes",
+                "Pteridophytes",
+                "Gymnosperms",
+                "Angiosperms"
+              ]
+            },
+            {
+              "chapter_no": 4,
+              "chapter_name": "Animal Kingdom",
+              "concepts": [
+                "Chordates",
+                "Non-Chordates",
+                "Classification"
+              ]
+            },
+            {
+              "chapter_no": 5,
+              "chapter_name": "Cell Structure and Function",
+              "concepts": [
+                "Cell Theory",
+                "Cell Organelles",
+                "Plant Cell",
+                "Animal Cell"
+              ]
+            }
+          ]
+        },
+        {
+          "subject_name": "Computer Science",
+          "official_books": [
+            "Computer Science"
+          ],
+          "chapters": [
+            {
+              "chapter_no": 1,
+              "chapter_name": "Computer Fundamentals",
+              "concepts": [
+                "Computer Architecture",
+                "Input Devices",
+                "Output Devices",
+                "Memory"
+              ]
+            },
+            {
+              "chapter_no": 2,
+              "chapter_name": "Programming Methodology",
+              "concepts": [
+                "Algorithms",
+                "Flowcharts",
+                "Problem Solving"
+              ]
+            },
+            {
+              "chapter_no": 3,
+              "chapter_name": "Python Programming",
+              "concepts": [
+                "Variables",
+                "Operators",
+                "Conditional Statements",
+                "Loops",
+                "Functions"
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "stream_name": "Commerce",
+      "subjects": [
+        {
+          "subject_name": "Accountancy",
+          "official_books": [
+            "Accountancy Part 1",
+            "Accountancy Part 2"
+          ],
+          "chapters": [
+            {
+              "chapter_no": 1,
+              "chapter_name": "Introduction to Accounting",
+              "concepts": [
+                "Accounting Principles",
+                "Accounting Process",
+                "Transactions"
+              ]
+            },
+            {
+              "chapter_no": 2,
+              "chapter_name": "Theory Base of Accounting",
+              "concepts": [
+                "GAAP",
+                "Accounting Standards",
+                "Concepts and Conventions"
+              ]
+            },
+            {
+              "chapter_no": 3,
+              "chapter_name": "Recording of Transactions",
+              "concepts": [
+                "Journal",
+                "Ledger",
+                "Double Entry System"
+              ]
+            }
+          ]
+        },
+        {
+          "subject_name": "Business Studies",
+          "official_books": [
+            "Business Studies"
+          ],
+          "chapters": [
+            {
+              "chapter_no": 1,
+              "chapter_name": "Nature and Purpose of Business",
+              "concepts": [
+                "Business Activities",
+                "Trade",
+                "Industry",
+                "Commerce"
+              ]
+            },
+            {
+              "chapter_no": 2,
+              "chapter_name": "Forms of Business Organisation",
+              "concepts": [
+                "Sole Proprietorship",
+                "Partnership",
+                "Company",
+                "Co-operative Society"
+              ]
+            }
+          ]
+        },
+        {
+          "subject_name": "Economics",
+          "official_books": [
+            "Economics"
+          ],
+          "chapters": [
+            {
+              "chapter_no": 1,
+              "chapter_name": "Introduction to Economics",
+              "concepts": [
+                "Scarcity",
+                "Choice",
+                "Opportunity Cost"
+              ]
+            },
+            {
+              "chapter_no": 2,
+              "chapter_name": "Consumer Behaviour",
+              "concepts": [
+                "Utility",
+                "Demand",
+                "Law of Demand"
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "stream_name": "Arts",
+      "subjects": [
+        {
+          "subject_name": "History",
+          "official_books": [
+            "History"
+          ],
+          "chapters": [
+            {
+              "chapter_no": 1,
+              "chapter_name": "Ancient Civilizations",
+              "concepts": [
+                "Mesopotamian Civilization",
+                "Egyptian Civilization",
+                "Indus Valley Civilization"
+              ]
+            },
+            {
+              "chapter_no": 2,
+              "chapter_name": "Greek Civilization",
+              "concepts": [
+                "Greek Culture",
+                "Greek Politics",
+                "Philosophy"
+              ]
+            }
+          ]
+        },
+        {
+          "subject_name": "Political Science",
+          "official_books": [
+            "Political Science"
+          ],
+          "chapters": [
+            {
+              "chapter_no": 1,
+              "chapter_name": "Political Science as a Discipline",
+              "concepts": [
+                "Meaning of Politics",
+                "State",
+                "Government"
+              ]
+            },
+            {
+              "chapter_no": 2,
+              "chapter_name": "State",
+              "concepts": [
+                "Elements of State",
+                "Sovereignty",
+                "Nation"
+              ]
+            }
+          ]
+        },
+        {
+          "subject_name": "Sociology",
+          "official_books": [
+            "Sociology"
+          ],
+          "chapters": [
+            {
+              "chapter_no": 1,
+              "chapter_name": "Society",
+              "concepts": [
+                "Community",
+                "Institutions",
+                "Social Groups"
+              ]
+            },
+            {
+              "chapter_no": 2,
+              "chapter_name": "Culture",
+              "concepts": [
+                "Values",
+                "Norms",
+                "Traditions"
+              ]
+            }
+          ]
+        }
+      ]
+    }
+  ],
+  "source_reference": {
+    "official_portal": "https://pue.karnataka.gov.in/new-page/TEXT%20BOOKS/en",
+    "verified_sources": [
+      "DPUE Karnataka Textbooks",
+      "NCERT-Aligned Karnataka PUC Curriculum",
+      "KSEAB PUC Syllabus"
+    ]
+  }
+}

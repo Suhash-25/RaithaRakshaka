@@ -1,6 +1,6 @@
 import { getAllLoadedCatalogs } from './catalogRegistry'
 
-// The old static, template-generated list is gone. 
+// The old static, template-generated list is gone.
 // We keep this export empty so offlineContent.js doesn't crash if it tries to seed it.
 export const OFFLINE_QUESTION_BANK = []
 
@@ -11,18 +11,18 @@ export function getOfflineQuestionByTopicId(topicId) {
       if (topic) {
         // Return the first question as default if requested by topic
         if (topic.questions && topic.questions.length > 0) {
-           return { 
-             ...topic.questions[0], 
+           return {
+             ...topic.questions[0],
              subjectId: catalog.subject.toLowerCase(),
-             topicLabel: topic.title, 
-             conceptSummary: topic.title 
+             topicLabel: topic.title,
+             conceptSummary: topic.title
            }
         }
-        return { 
-           id: `${topicId}-q1`, 
+        return {
+           id: `${topicId}-q1`,
            subjectId: catalog.subject.toLowerCase(),
-           topicId: topic.id, 
-           topicLabel: topic.title, 
+           topicId: topic.id,
+           topicLabel: topic.title,
            expectedConcepts: [],
            conceptSummary: topic.title,
            offTrackKeywords: [],
@@ -41,11 +41,11 @@ export function getOfflineQuestionById(questionId) {
          if (topic.questions) {
             const q = topic.questions.find(q => q.id === questionId)
             if (q) {
-              return { 
-                ...q, 
+              return {
+                ...q,
                 subjectId: catalog.subject.toLowerCase(),
-                topicLabel: topic.title, 
-                conceptSummary: topic.title 
+                topicLabel: topic.title,
+                conceptSummary: topic.title
               }
             }
          }

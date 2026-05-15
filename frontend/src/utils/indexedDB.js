@@ -4,7 +4,7 @@ import { openDB } from 'idb'
 
 const DB_NAME    = 'pragna-vistara-db'
 
-const DB_VERSION = 7
+const DB_VERSION = 8
 
 
 /**
@@ -42,7 +42,7 @@ const CURRENT_SELECTION_ID = 'current-learning-selection'
  */
 async function getDB() {
   return openDB(DB_NAME, DB_VERSION, {
-    upgrade(db) {
+    upgrade(db, oldVersion, newVersion, transaction) {
       // ── questions store ────────────────────────────
       if (!db.objectStoreNames.contains(STORES.QUESTIONS)) {
         const qs = db.createObjectStore(STORES.QUESTIONS, { keyPath: 'id' })
@@ -59,6 +59,11 @@ async function getDB() {
         rs.createIndex('by-topic',    'topicId',    { unique: false })
         rs.createIndex('by-time',     'timestamp',  { unique: false })
         rs.createIndex('by-student',  'student_id', { unique: false })
+      } else {
+        const rs = transaction.objectStore(STORES.RESPONSES)
+        if (!rs.indexNames.contains('by-student')) {
+          rs.createIndex('by-student', 'student_id', { unique: false })
+        }
       }
 
       // ── explanations store ─────────────────────────
@@ -96,6 +101,12 @@ async function getDB() {
         progress.createIndex('by-subject', 'subjectId', { unique: false })
         progress.createIndex('by-time', 'createdAt', { unique: false })
         progress.createIndex('by-misconception', 'misconceptionType', { unique: false })
+        progress.createIndex('by-student', 'student_id', { unique: false })
+      } else {
+        const progress = transaction.objectStore(STORES.PROGRESS_EVENTS)
+        if (!progress.indexNames.contains('by-student')) {
+          progress.createIndex('by-student', 'student_id', { unique: false })
+        }
       }
 
       // ── students store ─────────────────────────────
@@ -342,15 +353,30 @@ export async function getApprovedContent() {
 
 export async function saveProgressEvent(event) {
   const db = await getDB()
-  return db.add(STORES.PROGRESS_EVENTS, {
+  const id = await db.add(STORES.PROGRESS_EVENTS, {
     ...event,
     createdAt: event.createdAt ?? Date.now(),
   })
+  if (typeof window !== 'undefined') {
+    window.dispatchEvent(new CustomEvent('pv-progress-updated'))
+  }
+  return id
 }
 
 export async function getAllProgressEvents() {
   const db = await getDB()
   return db.getAll(STORES.PROGRESS_EVENTS)
+}
+
+export async function getProgressEventsByStudent(studentId) {
+  if (!studentId) return getAllProgressEvents()
+  const db = await getDB()
+  const index = db.transaction(STORES.PROGRESS_EVENTS).store.index('by-student')
+  const rows = await index.getAll(studentId)
+  if (studentId !== 'guest') return rows
+
+  const allRows = await getAllProgressEvents()
+  return allRows.filter((event) => !event.student_id || event.student_id === 'guest')
 }
 
 // ─── Students ─────────────────────────────────────────────────────────────────
@@ -363,12 +389,13 @@ export async function getAllProgressEvents() {
 export async function createStudent(student) {
   const db = await getDB()
   const studentId = `stu_${Date.now()}_${Math.random().toString(36).substr(2, 9)}`
+  const pin = String(student.pin ?? '').trim()
   
   const studentRecord = {
     id: studentId,
     name: student.name,
     class: student.class,
-    pin: student.pin, // In production, hash this with bcrypt
+    pin, // In production, hash this with bcrypt
     language: student.language || 'en',
     createdAt: Date.now(),
     lastAccessedAt: Date.now(),
@@ -420,7 +447,7 @@ export async function authenticateStudent(studentId, pin) {
   const student = await getStudentById(studentId)
   if (!student) return false
   // In production, use bcrypt.compare(pin, student.pin)
-  return student.pin === pin
+  return String(student.pin ?? '').trim() === String(pin ?? '').trim()
 }
 
 /**

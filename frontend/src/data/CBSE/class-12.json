@@ -1,0 +1,492 @@
+{
+  "board": "CBSE",
+  "academic_year": "2025-26",
+  "medium": "English Medium",
+  "class": "Class 12",
+  "source": "CBSE Academic & NCERT Curriculum",
+  "subjects": [
+    {
+      "subject_name": "English",
+      "textbook": "Flamingo & Vistas",
+      "chapters": [
+        {
+          "chapter_number": 1,
+          "chapter_title": "The Last Lesson",
+          "topics": [
+            "Language and Identity",
+            "Patriotism",
+            "Reading Comprehension"
+          ]
+        },
+        {
+          "chapter_number": 2,
+          "chapter_title": "Lost Spring",
+          "topics": [
+            "Child Labour",
+            "Poverty",
+            "Social Issues"
+          ]
+        },
+        {
+          "chapter_number": 3,
+          "chapter_title": "Deep Water",
+          "topics": [
+            "Fear",
+            "Determination",
+            "Self Confidence"
+          ]
+        },
+        {
+          "chapter_number": 4,
+          "chapter_title": "The Rattrap",
+          "topics": [
+            "Human Values",
+            "Compassion",
+            "Forgiveness"
+          ]
+        },
+        {
+          "chapter_number": 5,
+          "chapter_title": "Indigo",
+          "topics": [
+            "Freedom Movement",
+            "Gandhian Philosophy",
+            "Social Justice"
+          ]
+        },
+        {
+          "chapter_number": 6,
+          "chapter_title": "Poets and Pancakes",
+          "topics": [
+            "Film Industry",
+            "Humour",
+            "Literary Analysis"
+          ]
+        },
+        {
+          "chapter_number": 7,
+          "chapter_title": "The Interview",
+          "topics": [
+            "Journalism",
+            "Interviews",
+            "Communication Skills"
+          ]
+        },
+        {
+          "chapter_number": 8,
+          "chapter_title": "Going Places",
+          "topics": [
+            "Dreams and Aspirations",
+            "Adolescence",
+            "Reality vs Imagination"
+          ]
+        }
+      ]
+    },
+    {
+      "subject_name": "Hindi",
+      "textbook": "Aroh-II & Vitan-II",
+      "chapters": [
+        {
+          "chapter_number": 1,
+          "chapter_title": "आत्मपरिचय",
+          "topics": [
+            "काव्य सौंदर्य",
+            "आत्मविश्लेषण",
+            "भावार्थ"
+          ]
+        },
+        {
+          "chapter_number": 2,
+          "chapter_title": "पतंग",
+          "topics": [
+            "बाल मनोविज्ञान",
+            "कल्पना",
+            "कविता"
+          ]
+        },
+        {
+          "chapter_number": 3,
+          "chapter_title": "भक्तिन",
+          "topics": [
+            "ग्रामीण जीवन",
+            "महिला चरित्र",
+            "संवेदनशीलता"
+          ]
+        },
+        {
+          "chapter_number": 4,
+          "chapter_title": "बाजार दर्शन",
+          "topics": [
+            "उपभोक्तावाद",
+            "समाज",
+            "आर्थिक दृष्टिकोण"
+          ]
+        },
+        {
+          "chapter_number": 5,
+          "chapter_title": "काले मेघा पानी दे",
+          "topics": [
+            "लोक संस्कृति",
+            "परंपरा",
+            "ग्रामीण जीवन"
+          ]
+        },
+        {
+          "chapter_number": 6,
+          "chapter_title": "सिल्वर वेडिंग",
+          "topics": [
+            "पारिवारिक संबंध",
+            "संवेदनाएँ",
+            "आधुनिक जीवन"
+          ]
+        }
+      ]
+    },
+    {
+      "subject_name": "Mathematics",
+      "textbook": "Mathematics Part I & II",
+      "chapters": [
+        {
+          "chapter_number": 1,
+          "chapter_title": "Relations and Functions",
+          "topics": [
+            "Types of Relations",
+            "Functions",
+            "Composition of Functions"
+          ]
+        },
+        {
+          "chapter_number": 2,
+          "chapter_title": "Inverse Trigonometric Functions",
+          "topics": [
+            "Domain and Range",
+            "Graphs",
+            "Properties"
+          ]
+        },
+        {
+          "chapter_number": 3,
+          "chapter_title": "Matrices",
+          "topics": [
+            "Types of Matrices",
+            "Operations",
+            "Inverse Matrix"
+          ]
+        },
+        {
+          "chapter_number": 4,
+          "chapter_title": "Determinants",
+          "topics": [
+            "Properties",
+            "Minors and Cofactors",
+            "Applications"
+          ]
+        },
+        {
+          "chapter_number": 5,
+          "chapter_title": "Continuity and Differentiability",
+          "topics": [
+            "Limits",
+            "Continuity",
+            "Differentiation"
+          ]
+        },
+        {
+          "chapter_number": 6,
+          "chapter_title": "Applications of Derivatives",
+          "topics": [
+            "Rate of Change",
+            "Tangents and Normals",
+            "Maxima and Minima"
+          ]
+        },
+        {
+          "chapter_number": 7,
+          "chapter_title": "Integrals",
+          "topics": [
+            "Indefinite Integrals",
+            "Definite Integrals",
+            "Methods of Integration"
+          ]
+        },
+        {
+          "chapter_number": 8,
+          "chapter_title": "Application of Integrals",
+          "topics": [
+            "Area Under Curves",
+            "Area Between Curves",
+            "Applications"
+          ]
+        },
+        {
+          "chapter_number": 9,
+          "chapter_title": "Differential Equations",
+          "topics": [
+            "Formation",
+            "Solutions",
+            "Applications"
+          ]
+        },
+        {
+          "chapter_number": 10,
+          "chapter_title": "Vector Algebra",
+          "topics": [
+            "Vectors",
+            "Dot Product",
+            "Cross Product"
+          ]
+        },
+        {
+          "chapter_number": 11,
+          "chapter_title": "Three Dimensional Geometry",
+          "topics": [
+            "Direction Cosines",
+            "Lines in Space",
+            "Shortest Distance"
+          ]
+        },
+        {
+          "chapter_number": 12,
+          "chapter_title": "Linear Programming",
+          "topics": [
+            "Optimization",
+            "Constraints",
+            "Graphical Method"
+          ]
+        },
+        {
+          "chapter_number": 13,
+          "chapter_title": "Probability",
+          "topics": [
+            "Conditional Probability",
+            "Bayes Theorem",
+            "Random Variables"
+          ]
+        }
+      ]
+    },
+    {
+      "subject_name": "Science",
+      "textbook": "Physics, Chemistry & Biology",
+      "chapters": [
+        {
+          "chapter_number": 1,
+          "chapter_title": "Electric Charges and Fields",
+          "topics": [
+            "Coulomb's Law",
+            "Electric Field",
+            "Electric Flux"
+          ]
+        },
+        {
+          "chapter_number": 2,
+          "chapter_title": "Current Electricity",
+          "topics": [
+            "Ohm's Law",
+            "Resistance",
+            "Kirchhoff's Laws"
+          ]
+        },
+        {
+          "chapter_number": 3,
+          "chapter_title": "Electrochemistry",
+          "topics": [
+            "Electrochemical Cells",
+            "Conductance",
+            "Nernst Equation"
+          ]
+        },
+        {
+          "chapter_number": 4,
+          "chapter_title": "Chemical Kinetics",
+          "topics": [
+            "Rate of Reaction",
+            "Order of Reaction",
+            "Activation Energy"
+          ]
+        },
+        {
+          "chapter_number": 5,
+          "chapter_title": "Reproduction in Organisms",
+          "topics": [
+            "Asexual Reproduction",
+            "Sexual Reproduction",
+            "Life Cycles"
+          ]
+        },
+        {
+          "chapter_number": 6,
+          "chapter_title": "Genetics and Evolution",
+          "topics": [
+            "Inheritance",
+            "DNA",
+            "Evolution Theory"
+          ]
+        },
+        {
+          "chapter_number": 7,
+          "chapter_title": "Biotechnology",
+          "topics": [
+            "Genetic Engineering",
+            "Biotechnology Applications",
+            "Ethical Issues"
+          ]
+        },
+        {
+          "chapter_number": 8,
+          "chapter_title": "Ecology",
+          "topics": [
+            "Ecosystem",
+            "Biodiversity",
+            "Environmental Issues"
+          ]
+        }
+      ]
+    },
+    {
+      "subject_name": "Social Science",
+      "textbook": "History, Geography, Political Science & Economics",
+      "chapters": [
+        {
+          "chapter_number": 1,
+          "chapter_title": "Bricks, Beads and Bones",
+          "topics": [
+            "Harappan Civilization",
+            "Archaeology",
+            "Urban Planning"
+          ]
+        },
+        {
+          "chapter_number": 2,
+          "chapter_title": "Kings, Farmers and Towns",
+          "topics": [
+            "Ancient Kingdoms",
+            "Agriculture",
+            "Trade"
+          ]
+        },
+        {
+          "chapter_number": 3,
+          "chapter_title": "The Constitution",
+          "topics": [
+            "Indian Constitution",
+            "Rights",
+            "Democracy"
+          ]
+        },
+        {
+          "chapter_number": 4,
+          "chapter_title": "Globalisation",
+          "topics": [
+            "Economic Integration",
+            "Trade",
+            "Liberalisation"
+          ]
+        },
+        {
+          "chapter_number": 5,
+          "chapter_title": "Human Geography",
+          "topics": [
+            "Population",
+            "Migration",
+            "Human Activities"
+          ]
+        }
+      ]
+    },
+    {
+      "subject_name": "Environmental Studies (EVS)",
+      "textbook": "Environmental Education",
+      "chapters": [
+        {
+          "chapter_number": 1,
+          "chapter_title": "Human and Environment",
+          "topics": [
+            "Ecosystem",
+            "Human Impact",
+            "Environmental Balance"
+          ]
+        },
+        {
+          "chapter_number": 2,
+          "chapter_title": "Natural Resources",
+          "topics": [
+            "Forest Resources",
+            "Water Resources",
+            "Energy Resources"
+          ]
+        },
+        {
+          "chapter_number": 3,
+          "chapter_title": "Biodiversity and Conservation",
+          "topics": [
+            "Wildlife Conservation",
+            "Protected Areas",
+            "Sustainable Development"
+          ]
+        },
+        {
+          "chapter_number": 4,
+          "chapter_title": "Pollution and Waste Management",
+          "topics": [
+            "Air Pollution",
+            "Water Pollution",
+            "Solid Waste Management"
+          ]
+        },
+        {
+          "chapter_number": 5,
+          "chapter_title": "Global Environmental Issues",
+          "topics": [
+            "Climate Change",
+            "Global Warming",
+            "Environmental Policies"
+          ]
+        }
+      ]
+    },
+    {
+      "subject_name": "Kannada",
+      "textbook": "Kannada Core",
+      "chapters": [
+        {
+          "chapter_number": 1,
+          "chapter_title": "ಪ್ರಕೃತಿ ಮತ್ತು ಮಾನವ",
+          "topics": [
+            "ಪ್ರಕೃತಿ ಸಂರಕ್ಷಣೆ",
+            "ಪರಿಸರ ಜಾಗೃತಿ",
+            "ಕಾವ್ಯ ಅಧ್ಯಯನ"
+          ]
+        },
+        {
+          "chapter_number": 2,
+          "chapter_title": "ಮಾನವ ಮೌಲ್ಯಗಳು",
+          "topics": [
+            "ನೈತಿಕತೆ",
+            "ಸಹಾನುಭೂತಿ",
+            "ಸಾಮಾಜಿಕ ಜವಾಬ್ದಾರಿ"
+          ]
+        },
+        {
+          "chapter_number": 3,
+          "chapter_title": "ವಿಜ್ಞಾನ ಮತ್ತು ತಂತ್ರಜ್ಞಾನ",
+          "topics": [
+            "ಆವಿಷ್ಕಾರಗಳು",
+            "ತಂತ್ರಜ್ಞಾನ",
+            "ಆಧುನಿಕ ಸಮಾಜ"
+          ]
+        },
+        {
+          "chapter_number": 4,
+          "chapter_title": "ಸಾಹಿತ್ಯ ಮತ್ತು ಸಂಸ್ಕೃತಿ",
+          "topics": [
+            "ಕನ್ನಡ ಸಾಹಿತ್ಯ",
+            "ಸಂಸ್ಕೃತಿ",
+            "ಪರಂಪರೆ"
+          ]
+        }
+      ]
+    }
+  ]
+}

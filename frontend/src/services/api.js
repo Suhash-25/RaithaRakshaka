@@ -1,4 +1,4 @@
-import axios from 'axios'
+﻿import axios from 'axios'
 import { analyzeResponseOffline, generateExplanationOffline } from '@/utils/offlineEngine'
 import {
   getBoardSyllabusCatalog,
@@ -16,14 +16,18 @@ import {
  * Errors are re-thrown as-is for the caller to handle.
  */
 
+// In production VITE_API_BASE_URL is set to the Render backend URL.
+// In dev it is undefined so the Vite proxy handles relative paths.
+const BACKEND_BASE = import.meta.env.VITE_API_BASE_URL || ''
+
 const client = axios.create({
-  baseURL: '/api',
+  baseURL: BACKEND_BASE + '/api',
   timeout: 15_000,
   headers: { 'Content-Type': 'application/json' },
 })
 
 const authClient = axios.create({
-  baseURL: '',
+  baseURL: BACKEND_BASE,
   timeout: 15_000,
   headers: { 'Content-Type': 'application/json' },
 })

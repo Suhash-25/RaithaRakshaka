@@ -45,6 +45,7 @@ pip-wheel-metadata/
 .env
 .env.*
 !.env.example
+!.env.production
 .secret
 .credentials
 

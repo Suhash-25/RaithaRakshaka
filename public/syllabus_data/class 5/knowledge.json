@@ -1,0 +1,548 @@
+{
+  "board": "Karnataka Textbook Society (KTBS)",
+  "academic_year": "2025-26",
+  "class": "5",
+  "medium": "English",
+  "mediums_available": [
+    "English",
+    "Kannada",
+    "Hindi",
+    "Urdu",
+    "Tamil",
+    "Telugu",
+    "Marathi"
+  ],
+  "subjects": [
+    {
+      "subject_name": "English",
+      "official_books": [
+        "English First Language Part 1",
+        "English First Language Part 2"
+      ],
+      "concepts": [
+        {
+          "unit": "Reading Comprehension",
+          "topics": [
+            "Reading prose",
+            "Reading poetry",
+            "Story comprehension",
+            "Inference skills",
+            "Sequencing events",
+            "Character identification",
+            "Theme understanding"
+          ]
+        },
+        {
+          "unit": "Grammar",
+          "topics": [
+            "Nouns",
+            "Pronouns",
+            "Verbs",
+            "Adjectives",
+            "Adverbs",
+            "Articles",
+            "Prepositions",
+            "Conjunctions",
+            "Kinds of sentences",
+            "Tenses",
+            "Punctuation",
+            "Subject-verb agreement"
+          ]
+        },
+        {
+          "unit": "Vocabulary",
+          "topics": [
+            "Synonyms",
+            "Antonyms",
+            "Compound words",
+            "Homophones",
+            "Idioms",
+            "Word meanings",
+            "Prefix and suffix"
+          ]
+        },
+        {
+          "unit": "Writing Skills",
+          "topics": [
+            "Paragraph writing",
+            "Essay writing",
+            "Letter writing",
+            "Story writing",
+            "Dialogue writing",
+            "Picture composition",
+            "Creative writing"
+          ]
+        },
+        {
+          "unit": "Listening and Speaking",
+          "topics": [
+            "Story narration",
+            "Recitation",
+            "Conversation",
+            "Role play",
+            "Listening comprehension",
+            "Public speaking basics"
+          ]
+        }
+      ]
+    },
+    {
+      "subject_name": "Kannada",
+      "official_books": [
+        "Kannada First Language Part 1",
+        "Kannada First Language Part 2"
+      ],
+      "concepts": [
+        {
+          "unit": "ಗದ್ಯ",
+          "topics": [
+            "ಕಥೆ ಓದು",
+            "ಅರ್ಥಗ್ರಹಣ",
+            "ಪಾತ್ರ ವಿಶ್ಲೇಷಣೆ",
+            "ಘಟನೆಗಳ ಕ್ರಮ"
+          ]
+        },
+        {
+          "unit": "ಪದ್ಯ",
+          "topics": [
+            "ಪದ್ಯ ಪಠಣ",
+            "ಅರ್ಥಗ್ರಹಣ",
+            "ಛಂದಸ್ಸಿನ ಪರಿಚಯ",
+            "ಭಾವಾರ್ಥ"
+          ]
+        },
+        {
+          "unit": "ವ್ಯಾಕರಣ",
+          "topics": [
+            "ನಾಮಪದ",
+            "ಸರ್ವನಾಮ",
+            "ಕ್ರಿಯಾಪದ",
+            "ಗುಣವಾಚಕ",
+            "ವಚನ",
+            "ಲಿಂಗ",
+            "ಕಾಲ",
+            "ವಾಕ್ಯ ರಚನೆ",
+            "ವಿರಾಮ ಚಿಹ್ನೆಗಳು"
+          ]
+        },
+        {
+          "unit": "ಪದಸಂಪತ್ತು",
+          "topics": [
+            "ಸಮಾನಾರ್ಥಕ ಪದಗಳು",
+            "ವಿರುದ್ಧಾರ್ಥಕ ಪದಗಳು",
+            "ಗಾದೆಗಳು",
+            "ಹೊಸ ಪದಗಳ ಅರ್ಥ"
+          ]
+        },
+        {
+          "unit": "ಬರಹ ಕೌಶಲ್ಯ",
+          "topics": [
+            "ಪ್ರಬಂಧ",
+            "ಪತ್ರ ಬರಹ",
+            "ಕಥೆ ಬರಹ",
+            "ಚಿತ್ರ ವಿವರಣೆ",
+            "ಸಾರಾಂಶ ಬರಹ"
+          ]
+        }
+      ]
+    },
+    {
+      "subject_name": "Environmental Studies",
+      "official_books": [
+        "EVS Part 1",
+        "EVS Part 2"
+      ],
+      "concepts": [
+        {
+          "unit": "Human Body and Health",
+          "topics": [
+            "Body systems",
+            "Nutrition",
+            "Balanced diet",
+            "Diseases and prevention",
+            "Personal hygiene",
+            "Exercise and fitness"
+          ]
+        },
+        {
+          "unit": "Plants",
+          "topics": [
+            "Plant parts",
+            "Photosynthesis basics",
+            "Plant reproduction",
+            "Medicinal plants",
+            "Uses of plants"
+          ]
+        },
+        {
+          "unit": "Animals",
+          "topics": [
+            "Classification of animals",
+            "Food habits",
+            "Adaptation",
+            "Useful animals",
+            "Wildlife protection"
+          ]
+        },
+        {
+          "unit": "Natural Resources",
+          "topics": [
+            "Air",
+            "Water",
+            "Soil",
+            "Conservation",
+            "Pollution"
+          ]
+        },
+        {
+          "unit": "Environment",
+          "topics": [
+            "Waste management",
+            "Recycling",
+            "Environmental cleanliness",
+            "Protection of nature"
+          ]
+        },
+        {
+          "unit": "Transport and Communication",
+          "topics": [
+            "Modes of transport",
+            "Road safety",
+            "Communication systems",
+            "Digital communication basics"
+          ]
+        },
+        {
+          "unit": "Earth and Space",
+          "topics": [
+            "Earth",
+            "Sun",
+            "Moon",
+            "Stars",
+            "Seasons",
+            "Weather"
+          ]
+        }
+      ]
+    },
+    {
+      "subject_name": "Mathematics",
+      "official_books": [
+        "Mathematics Part 1",
+        "Mathematics Part 2"
+      ],
+      "parts": [
+        {
+          "part": "Part 1",
+          "chapters": [
+            {
+              "chapter_no": 1,
+              "chapter_name": "5-Digit Numbers",
+              "concepts": [
+                "Place Value",
+                "Face Value",
+                "Expanded Form",
+                "Number Comparison",
+                "Ascending Order",
+                "Descending Order",
+                "Roman Numerals"
+              ]
+            },
+            {
+              "chapter_no": 2,
+              "chapter_name": "Addition",
+              "concepts": [
+                "Addition of Large Numbers",
+                "Carry Over Method",
+                "Word Problems",
+                "Estimation"
+              ]
+            },
+            {
+              "chapter_no": 3,
+              "chapter_name": "Subtraction",
+              "concepts": [
+                "Borrowing Method",
+                "Subtraction of Large Numbers",
+                "Word Problems",
+                "Verification of Answers"
+              ]
+            },
+            {
+              "chapter_no": 4,
+              "chapter_name": "Factors and Multiples",
+              "concepts": [
+                "Factors",
+                "Multiples",
+                "Prime Numbers",
+                "Composite Numbers",
+                "Divisibility Rules",
+                "Common Factors"
+              ]
+            },
+            {
+              "chapter_no": 5,
+              "chapter_name": "Fractions",
+              "concepts": [
+                "Proper Fractions",
+                "Improper Fractions",
+                "Equivalent Fractions",
+                "Comparison of Fractions",
+                "Addition of Fractions",
+                "Subtraction of Fractions"
+              ]
+            },
+            {
+              "chapter_no": 6,
+              "chapter_name": "Angles",
+              "concepts": [
+                "Types of Angles",
+                "Measurement of Angles",
+                "Right Angle",
+                "Acute Angle",
+                "Obtuse Angle"
+              ]
+            },
+            {
+              "chapter_no": 7,
+              "chapter_name": "Circles",
+              "concepts": [
+                "Circle",
+                "Radius",
+                "Diameter",
+                "Circumference",
+                "Center of Circle"
+              ]
+            },
+            {
+              "chapter_no": 8,
+              "chapter_name": "Length",
+              "concepts": [
+                "Units of Length",
+                "Conversion of Units",
+                "Measurement Problems"
+              ]
+            },
+            {
+              "chapter_no": 9,
+              "chapter_name": "Perimeter and Area",
+              "concepts": [
+                "Perimeter",
+                "Area",
+                "Area of Rectangle",
+                "Area of Square"
+              ]
+            },
+            {
+              "chapter_no": 10,
+              "chapter_name": "Data Handling",
+              "concepts": [
+                "Pictograph",
+                "Bar Graph",
+                "Data Collection",
+                "Data Interpretation"
+              ]
+            }
+          ]
+        },
+        {
+          "part": "Part 2",
+          "chapters": [
+            {
+              "chapter_no": 1,
+              "chapter_name": "Multiplication",
+              "concepts": [
+                "Multiplication of Large Numbers",
+                "Properties of Multiplication",
+                "Word Problems"
+              ]
+            },
+            {
+              "chapter_no": 2,
+              "chapter_name": "Division",
+              "concepts": [
+                "Long Division",
+                "Division with Remainder",
+                "Verification of Division",
+                "Word Problems"
+              ]
+            },
+            {
+              "chapter_no": 3,
+              "chapter_name": "Mental Arithmetic",
+              "concepts": [
+                "Mental Calculation",
+                "Quick Computation",
+                "Logical Arithmetic"
+              ]
+            },
+            {
+              "chapter_no": 4,
+              "chapter_name": "Decimal Fractions",
+              "concepts": [
+                "Decimals",
+                "Place Value in Decimals",
+                "Addition of Decimals",
+                "Subtraction of Decimals"
+              ]
+            },
+            {
+              "chapter_no": 5,
+              "chapter_name": "Money",
+              "concepts": [
+                "Currency Operations",
+                "Addition and Subtraction of Money",
+                "Bills and Transactions"
+              ]
+            },
+            {
+              "chapter_no": 6,
+              "chapter_name": "Weight and Volume",
+              "concepts": [
+                "Units of Weight",
+                "Units of Volume",
+                "Conversion Problems"
+              ]
+            },
+            {
+              "chapter_no": 7,
+              "chapter_name": "Time",
+              "concepts": [
+                "Clock Reading",
+                "Calendar",
+                "Time Conversion",
+                "Elapsed Time"
+              ]
+            },
+            {
+              "chapter_no": 8,
+              "chapter_name": "Symmetrical Figures",
+              "concepts": [
+                "Line Symmetry",
+                "Symmetrical Shapes",
+                "Mirror Images"
+              ]
+            },
+            {
+              "chapter_no": 9,
+              "chapter_name": "Three Dimensional Figures",
+              "concepts": [
+                "Cube",
+                "Cuboid",
+                "Cylinder",
+                "Cone",
+                "Sphere"
+              ]
+            },
+            {
+              "chapter_no": 10,
+              "chapter_name": "Patterns",
+              "concepts": [
+                "Number Patterns",
+                "Shape Patterns",
+                "Pattern Recognition",
+                "Sequence Formation"
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "subject_name": "Hindi",
+      "official_books": [
+        "Hindi First Language Part 1",
+        "Hindi First Language Part 2"
+      ],
+      "concepts": [
+        {
+          "unit": "गद्य",
+          "topics": [
+            "कहानी पढ़ना",
+            "अर्थ समझना",
+            "चरित्र पहचान",
+            "मुख्य विचार"
+          ]
+        },
+        {
+          "unit": "पद्य",
+          "topics": [
+            "कविता पाठ",
+            "भावार्थ",
+            "ताल और लय"
+          ]
+        },
+        {
+          "unit": "व्याकरण",
+          "topics": [
+            "संज्ञा",
+            "सर्वनाम",
+            "क्रिया",
+            "विशेषण",
+            "काल",
+            "वचन",
+            "लिंग"
+          ]
+        }
+      ]
+    },
+    {
+      "subject_name": "Art Education",
+      "concepts": [
+        {
+          "unit": "Drawing and Painting",
+          "topics": [
+            "Nature drawing",
+            "Object drawing",
+            "Creative coloring",
+            "Festival art",
+            "Pattern design"
+          ]
+        },
+        {
+          "unit": "Craft",
+          "topics": [
+            "Paper craft",
+            "Origami",
+            "Clay modeling",
+            "Decoration work",
+            "Recycled crafts"
+          ]
+        }
+      ]
+    },
+    {
+      "subject_name": "Physical Education",
+      "concepts": [
+        {
+          "unit": "Fitness Activities",
+          "topics": [
+            "Running",
+            "Stretching",
+            "Balance exercises",
+            "Coordination",
+            "Warm-up exercises"
+          ]
+        },
+        {
+          "unit": "Games and Sports",
+          "topics": [
+            "Indoor games",
+            "Outdoor games",
+            "Teamwork",
+            "Sportsmanship",
+            "Healthy lifestyle"
+          ]
+        }
+      ]
+    }
+  ],
+  "source_reference": {
+    "official_portal": "https://textbooks.karnataka.gov.in/textbooks/en/1000",
+    "verified_sources": [
+      "KTBS PDF Textbooks",
+      "KSEEB Solutions",
+      "KTBS Subject Listings"
+    ]
+  }
+}

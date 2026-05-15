@@ -1,0 +1,102 @@
+{
+  "board": "cbse", "class": "4",
+  "subjects": [
+    { "id": "english", "label": "English", "slug": "english",
+      "chapters": [
+        { "id": "ch1", "number": 1, "title": "Marigold — Wake Up!",
+          "topics": [
+            { "id": "ch1-t1", "title": "Wake Up! (Poem)", "duration": 15 },
+            { "id": "ch1-t2", "title": "Neha's Alarm Clock (Story)", "duration": 20 }
+          ]},
+        { "id": "ch2", "number": 2, "title": "Noses",
+          "topics": [
+            { "id": "ch2-t1", "title": "Noses (Poem)", "duration": 15 },
+            { "id": "ch2-t2", "title": "The Little Fir Tree (Story)", "duration": 20 }
+          ]},
+        { "id": "ch3", "number": 3, "title": "Run!",
+          "topics": [
+            { "id": "ch3-t1", "title": "Run! (Poem)", "duration": 15 },
+            { "id": "ch3-t2", "title": "Nasruddin's Aim (Story)", "duration": 20 }
+          ]},
+        { "id": "ch4", "number": 4, "title": "Why",
+          "topics": [
+            { "id": "ch4-t1", "title": "Why (Poem)", "duration": 15 },
+            { "id": "ch4-t2", "title": "Alice in Wonderland (Story)", "duration": 20 }
+          ]}
+      ]
+    },
+    { "id": "hindi", "label": "Hindi", "slug": "hindi",
+      "chapters": [
+        { "id": "ch1", "number": 1, "title": "रिमझिम — मन के भोले-भाले बादल",
+          "topics": [
+            { "id": "ch1-t1", "title": "मन के भोले-भाले बादल", "duration": 15 },
+            { "id": "ch1-t2", "title": "जैसा सवाल वैसा जवाब", "duration": 20 }
+          ]},
+        { "id": "ch2", "number": 2, "title": "रिमझिम — पाठ 2",
+          "topics": [
+            { "id": "ch2-t1", "title": "किरमिच की गेंद", "duration": 15 },
+            { "id": "ch2-t2", "title": "नाव बनाओ नाव बनाओ", "duration": 15 }
+          ]},
+        { "id": "ch3", "number": 3, "title": "रिमझिम — पाठ 3",
+          "topics": [
+            { "id": "ch3-t1", "title": "हाथी चल्लम चल्लम", "duration": 15 },
+            { "id": "ch3-t2", "title": "थप्प रोटी थप्प दाल", "duration": 15 }
+          ]}
+      ]
+    },
+    { "id": "mathematics", "label": "Mathematics", "slug": "mathematics",
+      "chapters": [
+        { "id": "ch1", "number": 1, "title": "Building with Bricks",
+          "topics": [
+            { "id": "ch1-t1", "title": "Shapes of Bricks and Walls", "duration": 15 },
+            { "id": "ch1-t2", "title": "3D Shapes: Cube, Cuboid, Cylinder", "duration": 20 }
+          ]},
+        { "id": "ch2", "number": 2, "title": "Long and Short (Large Numbers)",
+          "topics": [
+            { "id": "ch2-t1", "title": "Numbers up to 9999", "duration": 20 },
+            { "id": "ch2-t2", "title": "Comparing Large Numbers", "duration": 15 }
+          ]},
+        { "id": "ch3", "number": 3, "title": "A Trip to Bhopal (Large Number Addition)",
+          "topics": [
+            { "id": "ch3-t1", "title": "Addition of 4-Digit Numbers", "duration": 20 },
+            { "id": "ch3-t2", "title": "Subtraction of 4-Digit Numbers", "duration": 20 },
+            { "id": "ch3-t3", "title": "Word Problems", "duration": 25 }
+          ]},
+        { "id": "ch4", "number": 4, "title": "Tick-Tick-Tick (Time)",
+          "topics": [
+            { "id": "ch4-t1", "title": "Reading the Clock: Hours and Minutes", "duration": 20 },
+            { "id": "ch4-t2", "title": "AM and PM, 24-Hour Clock", "duration": 20 }
+          ]},
+        { "id": "ch5", "number": 5, "title": "The Way the World Looks (Multiplication)",
+          "topics": [
+            { "id": "ch5-t1", "title": "Multiplication Tables 6 to 10", "duration": 20 },
+            { "id": "ch5-t2", "title": "Multiplying 2-Digit Numbers", "duration": 25 }
+          ]}
+      ]
+    },
+    { "id": "evs", "label": "Environmental Studies", "slug": "evs",
+      "chapters": [
+        { "id": "ch1", "number": 1, "title": "Going to School",
+          "topics": [
+            { "id": "ch1-t1", "title": "Means of Transport", "duration": 20 },
+            { "id": "ch1-t2", "title": "How Children Travel to School Across India", "duration": 20 }
+          ]},
+        { "id": "ch2", "number": 2, "title": "Ear to Ear",
+          "topics": [
+            { "id": "ch2-t1", "title": "How We Communicate", "duration": 20 },
+            { "id": "ch2-t2", "title": "Traditional and Modern Means of Communication", "duration": 20 }
+          ]},
+        { "id": "ch3", "number": 3, "title": "A River's Tale",
+          "topics": [
+            { "id": "ch3-t1", "title": "How Rivers Help Us", "duration": 20 },
+            { "id": "ch3-t2", "title": "River Pollution and Conservation", "duration": 20 }
+          ]},
+        { "id": "ch4", "number": 4, "title": "The Seed of Truth",
+          "topics": [
+            { "id": "ch4-t1", "title": "How Seeds Grow into Plants", "duration": 20 },
+            { "id": "ch4-t2", "title": "Importance of Trees and Forests", "duration": 20 }
+          ]}
+      ]
+    }
+  ]
+}

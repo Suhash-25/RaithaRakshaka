@@ -1,0 +1,534 @@
+{
+  "board": "Karnataka Textbook Society (KTBS)",
+  "academic_year": "2025-26",
+  "class": "8",
+  "medium": "English",
+  "mediums_available": [
+    "English",
+    "Kannada",
+    "Hindi",
+    "Urdu",
+    "Tamil",
+    "Telugu",
+    "Marathi"
+  ],
+  "subjects": [
+    {
+      "subject_name": "Mathematics",
+      "official_books": [
+        "Mathematics Part 1",
+        "Mathematics Part 2"
+      ],
+      "parts": [
+        {
+          "part": "Part 1",
+          "chapters": [
+            {
+              "chapter_no": 1,
+              "chapter_name": "Rational Numbers",
+              "concepts": [
+                "Properties of Rational Numbers",
+                "Addition",
+                "Subtraction",
+                "Multiplication",
+                "Division",
+                "Representation on Number Line"
+              ]
+            },
+            {
+              "chapter_no": 2,
+              "chapter_name": "Linear Equations in One Variable",
+              "concepts": [
+                "Variables",
+                "Equations",
+                "Transposition",
+                "Solving Linear Equations",
+                "Applications"
+              ]
+            },
+            {
+              "chapter_no": 3,
+              "chapter_name": "Understanding Quadrilaterals",
+              "concepts": [
+                "Polygon Properties",
+                "Quadrilaterals",
+                "Angle Sum Property",
+                "Parallelogram",
+                "Rhombus",
+                "Trapezium"
+              ]
+            },
+            {
+              "chapter_no": 4,
+              "chapter_name": "Practical Geometry",
+              "concepts": [
+                "Construction of Quadrilaterals",
+                "Compass Construction",
+                "Scale Drawings"
+              ]
+            },
+            {
+              "chapter_no": 5,
+              "chapter_name": "Data Handling",
+              "concepts": [
+                "Bar Graphs",
+                "Pie Charts",
+                "Histograms",
+                "Probability Basics"
+              ]
+            },
+            {
+              "chapter_no": 6,
+              "chapter_name": "Squares and Square Roots",
+              "concepts": [
+                "Perfect Squares",
+                "Square Roots",
+                "Properties of Squares",
+                "Finding Square Roots"
+              ]
+            }
+          ]
+        },
+        {
+          "part": "Part 2",
+          "chapters": [
+            {
+              "chapter_no": 7,
+              "chapter_name": "Cubes and Cube Roots",
+              "concepts": [
+                "Perfect Cubes",
+                "Cube Roots",
+                "Properties of Cubes"
+              ]
+            },
+            {
+              "chapter_no": 8,
+              "chapter_name": "Comparing Quantities",
+              "concepts": [
+                "Percentage",
+                "Profit and Loss",
+                "Discount",
+                "Simple Interest",
+                "Compound Interest"
+              ]
+            },
+            {
+              "chapter_no": 9,
+              "chapter_name": "Algebraic Expressions and Identities",
+              "concepts": [
+                "Monomials",
+                "Polynomials",
+                "Identities",
+                "Expansion"
+              ]
+            },
+            {
+              "chapter_no": 10,
+              "chapter_name": "Visualising Solid Shapes",
+              "concepts": [
+                "3D Shapes",
+                "Nets",
+                "Euler's Formula",
+                "Views of Objects"
+              ]
+            },
+            {
+              "chapter_no": 11,
+              "chapter_name": "Mensuration",
+              "concepts": [
+                "Surface Area",
+                "Volume",
+                "Area of Trapezium",
+                "Area of Polygon"
+              ]
+            },
+            {
+              "chapter_no": 12,
+              "chapter_name": "Exponents and Powers",
+              "concepts": [
+                "Laws of Exponents",
+                "Scientific Notation",
+                "Power Operations"
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "subject_name": "Science",
+      "official_books": [
+        "Science Part 1",
+        "Science Part 2"
+      ],
+      "chapters": [
+        {
+          "chapter_no": 1,
+          "chapter_name": "Crop Production and Management",
+          "concepts": [
+            "Agricultural Practices",
+            "Irrigation",
+            "Fertilizers",
+            "Crop Protection",
+            "Storage"
+          ]
+        },
+        {
+          "chapter_no": 2,
+          "chapter_name": "Microorganisms",
+          "concepts": [
+            "Bacteria",
+            "Fungi",
+            "Protozoa",
+            "Viruses",
+            "Useful and Harmful Microorganisms"
+          ]
+        },
+        {
+          "chapter_no": 3,
+          "chapter_name": "Synthetic Fibres and Plastics",
+          "concepts": [
+            "Synthetic Fibres",
+            "Types of Plastics",
+            "Environmental Impact"
+          ]
+        },
+        {
+          "chapter_no": 4,
+          "chapter_name": "Materials: Metals and Non-Metals",
+          "concepts": [
+            "Physical Properties",
+            "Chemical Properties",
+            "Uses of Metals",
+            "Corrosion"
+          ]
+        },
+        {
+          "chapter_no": 5,
+          "chapter_name": "Coal and Petroleum",
+          "concepts": [
+            "Fossil Fuels",
+            "Refining",
+            "Natural Gas",
+            "Conservation"
+          ]
+        },
+        {
+          "chapter_no": 6,
+          "chapter_name": "Combustion and Flame",
+          "concepts": [
+            "Combustion",
+            "Types of Flame",
+            "Fuel Efficiency",
+            "Fire Safety"
+          ]
+        },
+        {
+          "chapter_no": 7,
+          "chapter_name": "Conservation of Plants and Animals",
+          "concepts": [
+            "Deforestation",
+            "Wildlife Sanctuaries",
+            "National Parks",
+            "Biodiversity"
+          ]
+        },
+        {
+          "chapter_no": 8,
+          "chapter_name": "Cell Structure and Functions",
+          "concepts": [
+            "Cell Theory",
+            "Plant Cell",
+            "Animal Cell",
+            "Cell Organelles"
+          ]
+        },
+        {
+          "chapter_no": 9,
+          "chapter_name": "Reproduction in Animals",
+          "concepts": [
+            "Modes of Reproduction",
+            "Human Reproductive System",
+            "Fertilization"
+          ]
+        },
+        {
+          "chapter_no": 10,
+          "chapter_name": "Force and Pressure",
+          "concepts": [
+            "Types of Forces",
+            "Pressure",
+            "Atmospheric Pressure"
+          ]
+        },
+        {
+          "chapter_no": 11,
+          "chapter_name": "Friction",
+          "concepts": [
+            "Types of Friction",
+            "Advantages and Disadvantages",
+            "Reducing Friction"
+          ]
+        },
+        {
+          "chapter_no": 12,
+          "chapter_name": "Sound",
+          "concepts": [
+            "Vibration",
+            "Propagation of Sound",
+            "Noise Pollution"
+          ]
+        }
+      ]
+    },
+    {
+      "subject_name": "Social Science",
+      "official_books": [
+        "Social Science Part 1",
+        "Social Science Part 2"
+      ],
+      "sections": [
+        {
+          "section_name": "History",
+          "chapters": [
+            "Advent of Europeans",
+            "British Rule",
+            "Freedom Struggle",
+            "Social and Religious Reforms",
+            "National Movement"
+          ]
+        },
+        {
+          "section_name": "Geography",
+          "chapters": [
+            "Resources",
+            "Land Soil Water Resources",
+            "Mineral and Power Resources",
+            "Agriculture",
+            "Industries",
+            "Human Resources"
+          ]
+        },
+        {
+          "section_name": "Civics",
+          "chapters": [
+            "Constitution",
+            "Secularism",
+            "Parliament",
+            "Judiciary",
+            "Economic Presence of Government"
+          ]
+        }
+      ]
+    },
+    {
+      "subject_name": "English",
+      "official_books": [
+        "English First Language Part 1",
+        "English First Language Part 2",
+        "English Second Language Part 1",
+        "English Second Language Part 2"
+      ],
+      "concepts": [
+        {
+          "unit": "Reading Skills",
+          "topics": [
+            "Comprehension",
+            "Poetry Appreciation",
+            "Theme Analysis",
+            "Inference",
+            "Character Sketch"
+          ]
+        },
+        {
+          "unit": "Grammar",
+          "topics": [
+            "Tenses",
+            "Voice",
+            "Direct and Indirect Speech",
+            "Clauses",
+            "Sentence Transformation"
+          ]
+        },
+        {
+          "unit": "Writing Skills",
+          "topics": [
+            "Essay Writing",
+            "Letter Writing",
+            "Report Writing",
+            "Dialogue Writing",
+            "Creative Writing"
+          ]
+        }
+      ]
+    },
+    {
+      "subject_name": "Kannada",
+      "official_books": [
+        "Kannada First Language Part 1",
+        "Kannada First Language Part 2",
+        "Kannada Second Language Part 1",
+        "Kannada Second Language Part 2"
+      ],
+      "chapters": [
+        {
+          "chapter_type": "ಗದ್ಯ",
+          "concepts": [
+            "ಅರ್ಥಗ್ರಹಣ",
+            "ಮುಖ್ಯ ಅಂಶಗಳು",
+            "ಪಾತ್ರ ವಿಶ್ಲೇಷಣೆ",
+            "ಘಟನೆಗಳ ಕ್ರಮ",
+            "ಸಾಮಾಜಿಕ ಸಂದೇಶ"
+          ]
+        },
+        {
+          "chapter_type": "ಪದ್ಯ",
+          "concepts": [
+            "ಭಾವಾರ್ಥ",
+            "ಛಂದಸ್ಸು",
+            "ಅಲಂಕಾರ",
+            "ಕಾವ್ಯ ಸೌಂದರ್ಯ",
+            "ಪದ್ಯ ಪಠಣ"
+          ]
+        },
+        {
+          "chapter_type": "ವ್ಯಾಕರಣ",
+          "concepts": [
+            "ನಾಮಪದ",
+            "ಸರ್ವನಾಮ",
+            "ಕ್ರಿಯಾಪದ",
+            "ಗುಣವಾಚಕ",
+            "ಸಂಧಿ",
+            "ಸಮಾಸ",
+            "ವಿರಾಮ ಚಿಹ್ನೆಗಳು",
+            "ವಾಕ್ಯ ರಚನೆ"
+          ]
+        },
+        {
+          "chapter_type": "ಬರಹ ಕೌಶಲ್ಯ",
+          "concepts": [
+            "ಪ್ರಬಂಧ ಬರಹ",
+            "ಪತ್ರ ಬರಹ",
+            "ವರದಿ ಬರಹ",
+            "ಸಂವಾದ ಬರಹ",
+            "ಸಾರಾಂಶ ಬರಹ"
+          ]
+        },
+        {
+          "chapter_type": "ಪದಸಂಪತ್ತು",
+          "concepts": [
+            "ಸಮಾನಾರ್ಥಕ ಪದಗಳು",
+            "ವಿರುದ್ಧಾರ್ಥಕ ಪದಗಳು",
+            "ಗಾದೆಗಳು",
+            "ಹೊಸ ಪದಗಳ ಅರ್ಥ"
+          ]
+        }
+      ]
+    },
+    {
+      "subject_name": "Hindi",
+      "official_books": [
+        "Hindi First Language Part 1",
+        "Hindi First Language Part 2"
+      ],
+      "chapters": [
+        {
+          "chapter_type": "गद्य",
+          "concepts": [
+            "कहानी",
+            "अर्थ समझना",
+            "मुख्य विचार",
+            "चरित्र विश्लेषण",
+            "सामाजिक संदेश"
+          ]
+        },
+        {
+          "chapter_type": "पद्य",
+          "concepts": [
+            "भावार्थ",
+            "कविता पाठ",
+            "अलंकार",
+            "ताल और लय",
+            "काव्य सौंदर्य"
+          ]
+        },
+        {
+          "chapter_type": "व्याकरण",
+          "concepts": [
+            "संज्ञा",
+            "सर्वनाम",
+            "क्रिया",
+            "विशेषण",
+            "काल",
+            "वचन",
+            "लिंग",
+            "वाक्य रचना"
+          ]
+        },
+        {
+          "chapter_type": "लेखन कौशल",
+          "concepts": [
+            "निबंध लेखन",
+            "पत्र लेखन",
+            "संवाद लेखन",
+            "रिपोर्ट लेखन",
+            "सार लेखन"
+          ]
+        },
+        {
+          "chapter_type": "शब्द भंडार",
+          "concepts": [
+            "पर्यायवाची शब्द",
+            "विलोम शब्द",
+            "मुहावरे",
+            "लोकोक्तियाँ"
+          ]
+        }
+      ]
+    },
+    {
+      "subject_name": "Physical Education",
+      "official_books": [
+        "Physical Education"
+      ],
+      "concepts": [
+        {
+          "unit": "Health and Fitness",
+          "topics": [
+            "Exercise",
+            "Team Games",
+            "Yoga Basics",
+            "Sportsmanship",
+            "Physical Fitness"
+          ]
+        }
+      ]
+    },
+    {
+      "subject_name": "Art Education",
+      "official_books": [
+        "Art Education"
+      ],
+      "concepts": [
+        {
+          "unit": "Creative Arts",
+          "topics": [
+            "Sketching",
+            "Painting",
+            "Craft Work",
+            "Origami",
+            "Poster Making"
+          ]
+        }
+      ]
+    }
+  ],
+  "source_reference": {
+    "official_portal": "https://textbooks.karnataka.gov.in/textbooks/en/1000",
+    "verified_sources": [
+      "KTBS Textbook PDFs",
+      "KSEEB Chapter Listings",
+      "NCERT-Aligned Karnataka Curriculum"
+    ]
+  }
+}

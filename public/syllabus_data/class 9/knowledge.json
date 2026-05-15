@@ -1,0 +1,566 @@
+{
+  "board": "Karnataka Textbook Society (KTBS)",
+  "academic_year": "2025-26",
+  "class": "9",
+  "medium": "English",
+  "mediums_available": [
+    "English",
+    "Kannada",
+    "Hindi",
+    "Urdu",
+    "Tamil",
+    "Telugu",
+    "Marathi"
+  ],
+  "subjects": [
+    {
+      "subject_name": "Mathematics",
+      "official_books": [
+        "Mathematics Part 1",
+        "Mathematics Part 2"
+      ],
+      "parts": [
+        {
+          "part": "Part 1",
+          "chapters": [
+            {
+              "chapter_no": 1,
+              "chapter_name": "Number Systems",
+              "concepts": [
+                "Natural Numbers",
+                "Integers",
+                "Rational Numbers",
+                "Irrational Numbers",
+                "Real Numbers",
+                "Representation on Number Line",
+                "Decimal Expansion"
+              ]
+            },
+            {
+              "chapter_no": 2,
+              "chapter_name": "Polynomials",
+              "concepts": [
+                "Polynomial",
+                "Degree of Polynomial",
+                "Zeroes of Polynomial",
+                "Remainder Theorem",
+                "Factorization"
+              ]
+            },
+            {
+              "chapter_no": 3,
+              "chapter_name": "Coordinate Geometry",
+              "concepts": [
+                "Cartesian Plane",
+                "Coordinates",
+                "Origin",
+                "Quadrants",
+                "Plotting Points"
+              ]
+            },
+            {
+              "chapter_no": 4,
+              "chapter_name": "Linear Equations in Two Variables",
+              "concepts": [
+                "Linear Equation",
+                "Graphical Representation",
+                "Solution of Equations",
+                "Coordinate Axes"
+              ]
+            },
+            {
+              "chapter_no": 5,
+              "chapter_name": "Introduction to Euclid's Geometry",
+              "concepts": [
+                "Euclid's Definitions",
+                "Axioms",
+                "Postulates",
+                "Geometrical Proofs"
+              ]
+            },
+            {
+              "chapter_no": 6,
+              "chapter_name": "Lines and Angles",
+              "concepts": [
+                "Intersecting Lines",
+                "Parallel Lines",
+                "Transversal",
+                "Angle Relationships",
+                "Angle Sum Property"
+              ]
+            }
+          ]
+        },
+        {
+          "part": "Part 2",
+          "chapters": [
+            {
+              "chapter_no": 7,
+              "chapter_name": "Triangles",
+              "concepts": [
+                "Congruence",
+                "Triangle Properties",
+                "ASA",
+                "SAS",
+                "SSS",
+                "Inequalities in Triangles"
+              ]
+            },
+            {
+              "chapter_no": 8,
+              "chapter_name": "Quadrilaterals",
+              "concepts": [
+                "Parallelogram",
+                "Rectangle",
+                "Square",
+                "Rhombus",
+                "Properties of Quadrilaterals"
+              ]
+            },
+            {
+              "chapter_no": 9,
+              "chapter_name": "Circles",
+              "concepts": [
+                "Chord",
+                "Arc",
+                "Angle Subtended",
+                "Cyclic Quadrilateral"
+              ]
+            },
+            {
+              "chapter_no": 10,
+              "chapter_name": "Heron's Formula",
+              "concepts": [
+                "Area of Triangle",
+                "Semi-Perimeter",
+                "Application Problems"
+              ]
+            },
+            {
+              "chapter_no": 11,
+              "chapter_name": "Surface Areas and Volumes",
+              "concepts": [
+                "Cube",
+                "Cuboid",
+                "Cylinder",
+                "Cone",
+                "Sphere",
+                "Volume Calculations"
+              ]
+            },
+            {
+              "chapter_no": 12,
+              "chapter_name": "Statistics",
+              "concepts": [
+                "Data Collection",
+                "Frequency Distribution",
+                "Mean",
+                "Median",
+                "Mode"
+              ]
+            },
+            {
+              "chapter_no": 13,
+              "chapter_name": "Probability",
+              "concepts": [
+                "Experiment",
+                "Outcome",
+                "Event",
+                "Probability Basics"
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "subject_name": "Science",
+      "official_books": [
+        "Science Physics",
+        "Science Chemistry",
+        "Science Biology"
+      ],
+      "sections": [
+        {
+          "section_name": "Physics",
+          "chapters": [
+            {
+              "chapter_name": "Motion",
+              "concepts": [
+                "Distance and Displacement",
+                "Speed",
+                "Velocity",
+                "Acceleration",
+                "Equations of Motion",
+                "Graphs"
+              ]
+            },
+            {
+              "chapter_name": "Force and Laws of Motion",
+              "concepts": [
+                "Newton's Laws",
+                "Momentum",
+                "Inertia",
+                "Action and Reaction"
+              ]
+            },
+            {
+              "chapter_name": "Gravitation",
+              "concepts": [
+                "Universal Law of Gravitation",
+                "Mass",
+                "Weight",
+                "Free Fall",
+                "Buoyancy"
+              ]
+            },
+            {
+              "chapter_name": "Work and Energy",
+              "concepts": [
+                "Work",
+                "Energy",
+                "Kinetic Energy",
+                "Potential Energy",
+                "Power"
+              ]
+            },
+            {
+              "chapter_name": "Sound",
+              "concepts": [
+                "Vibration",
+                "Frequency",
+                "Amplitude",
+                "Propagation of Sound",
+                "Echo"
+              ]
+            }
+          ]
+        },
+        {
+          "section_name": "Chemistry",
+          "chapters": [
+            {
+              "chapter_name": "Matter in Our Surroundings",
+              "concepts": [
+                "States of Matter",
+                "Diffusion",
+                "Evaporation",
+                "Melting",
+                "Boiling"
+              ]
+            },
+            {
+              "chapter_name": "Is Matter Around Us Pure",
+              "concepts": [
+                "Mixtures",
+                "Solutions",
+                "Colloids",
+                "Suspensions",
+                "Separation Techniques"
+              ]
+            },
+            {
+              "chapter_name": "Atoms and Molecules",
+              "concepts": [
+                "Atoms",
+                "Molecules",
+                "Atomic Mass",
+                "Mole Concept",
+                "Chemical Formulae"
+              ]
+            },
+            {
+              "chapter_name": "Structure of Atom",
+              "concepts": [
+                "Electrons",
+                "Protons",
+                "Neutrons",
+                "Atomic Models",
+                "Electronic Configuration"
+              ]
+            }
+          ]
+        },
+        {
+          "section_name": "Biology",
+          "chapters": [
+            {
+              "chapter_name": "The Fundamental Unit of Life",
+              "concepts": [
+                "Cell",
+                "Cell Organelles",
+                "Plant Cell",
+                "Animal Cell"
+              ]
+            },
+            {
+              "chapter_name": "Tissues",
+              "concepts": [
+                "Plant Tissues",
+                "Animal Tissues",
+                "Meristematic Tissue",
+                "Permanent Tissue"
+              ]
+            },
+            {
+              "chapter_name": "Diversity in Living Organisms",
+              "concepts": [
+                "Classification",
+                "Kingdoms",
+                "Taxonomy",
+                "Biodiversity"
+              ]
+            },
+            {
+              "chapter_name": "Why Do We Fall Ill",
+              "concepts": [
+                "Diseases",
+                "Health",
+                "Infectious Diseases",
+                "Prevention"
+              ]
+            },
+            {
+              "chapter_name": "Natural Resources",
+              "concepts": [
+                "Air",
+                "Water",
+                "Soil",
+                "Biogeochemical Cycles"
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "subject_name": "Social Science",
+      "official_books": [
+        "History",
+        "Geography",
+        "Political Science",
+        "Economics"
+      ],
+      "sections": [
+        {
+          "section_name": "History",
+          "chapters": [
+            "French Revolution",
+            "Nazism and Hitler",
+            "Forest Society and Colonialism",
+            "Pastoralists in the Modern World"
+          ]
+        },
+        {
+          "section_name": "Geography",
+          "chapters": [
+            "India Size and Location",
+            "Physical Features of India",
+            "Drainage",
+            "Climate",
+            "Natural Vegetation"
+          ]
+        },
+        {
+          "section_name": "Political Science",
+          "chapters": [
+            "Democracy",
+            "Constitutional Design",
+            "Electoral Politics",
+            "Working of Institutions"
+          ]
+        },
+        {
+          "section_name": "Economics",
+          "chapters": [
+            "The Story of Village Palampur",
+            "People as Resource",
+            "Poverty",
+            "Food Security"
+          ]
+        }
+      ]
+    },
+    {
+      "subject_name": "English",
+      "official_books": [
+        "English First Language",
+        "English Second Language"
+      ],
+      "sections": [
+        {
+          "section_name": "Prose",
+          "concepts": [
+            "Theme Analysis",
+            "Character Sketch",
+            "Inference",
+            "Comprehension"
+          ]
+        },
+        {
+          "section_name": "Poetry",
+          "concepts": [
+            "Poetic Devices",
+            "Imagery",
+            "Rhythm",
+            "Theme"
+          ]
+        },
+        {
+          "section_name": "Grammar",
+          "concepts": [
+            "Tenses",
+            "Voice",
+            "Direct and Indirect Speech",
+            "Clauses",
+            "Sentence Transformation"
+          ]
+        },
+        {
+          "section_name": "Writing Skills",
+          "concepts": [
+            "Essay Writing",
+            "Letter Writing",
+            "Report Writing",
+            "Dialogue Writing",
+            "Speech Writing"
+          ]
+        }
+      ]
+    },
+    {
+      "subject_name": "Kannada",
+      "official_books": [
+        "Kannada First Language",
+        "Kannada Second Language"
+      ],
+      "sections": [
+        {
+          "section_name": "ಗದ್ಯ",
+          "concepts": [
+            "ಅರ್ಥಗ್ರಹಣ",
+            "ಪಾತ್ರ ವಿಶ್ಲೇಷಣೆ",
+            "ಮುಖ್ಯ ಅಂಶಗಳು",
+            "ಸಾಮಾಜಿಕ ಸಂದೇಶ",
+            "ಭಾಷಾ ಬಳಕೆ"
+          ]
+        },
+        {
+          "section_name": "ಪದ್ಯ",
+          "concepts": [
+            "ಭಾವಾರ್ಥ",
+            "ಛಂದಸ್ಸು",
+            "ಅಲಂಕಾರ",
+            "ಕಾವ್ಯ ಸೌಂದರ್ಯ",
+            "ಕಾವ್ಯ ವಿಶ್ಲೇಷಣೆ"
+          ]
+        },
+        {
+          "section_name": "ವ್ಯಾಕರಣ",
+          "concepts": [
+            "ನಾಮಪದ",
+            "ಸರ್ವನಾಮ",
+            "ಕ್ರಿಯಾಪದ",
+            "ಸಂಧಿ",
+            "ಸಮಾಸ",
+            "ವಿರಾಮ ಚಿಹ್ನೆಗಳು",
+            "ವಾಕ್ಯ ರಚನೆ"
+          ]
+        },
+        {
+          "section_name": "ಬರಹ ಕೌಶಲ್ಯ",
+          "concepts": [
+            "ಪ್ರಬಂಧ",
+            "ಪತ್ರ ಬರಹ",
+            "ವರದಿ ಬರಹ",
+            "ಸಂವಾದ ಬರಹ",
+            "ಸಾರಾಂಶ"
+          ]
+        }
+      ]
+    },
+    {
+      "subject_name": "Hindi",
+      "official_books": [
+        "Hindi First Language",
+        "Hindi Second Language"
+      ],
+      "sections": [
+        {
+          "section_name": "गद्य",
+          "concepts": [
+            "कहानी",
+            "मुख्य विचार",
+            "चरित्र विश्लेषण",
+            "सामाजिक संदेश",
+            "अर्थ समझना"
+          ]
+        },
+        {
+          "section_name": "पद्य",
+          "concepts": [
+            "भावार्थ",
+            "अलंकार",
+            "काव्य सौंदर्य",
+            "ताल और लय"
+          ]
+        },
+        {
+          "section_name": "व्याकरण",
+          "concepts": [
+            "संज्ञा",
+            "सर्वनाम",
+            "क्रिया",
+            "विशेषण",
+            "काल",
+            "वचन",
+            "वाक्य रचना"
+          ]
+        },
+        {
+          "section_name": "लेखन कौशल",
+          "concepts": [
+            "निबंध लेखन",
+            "पत्र लेखन",
+            "संवाद लेखन",
+            "रिपोर्ट लेखन"
+          ]
+        }
+      ]
+    },
+    {
+      "subject_name": "Physical Education",
+      "official_books": [
+        "Physical Education"
+      ],
+      "concepts": [
+        "Physical Fitness",
+        "Yoga",
+        "Team Sports",
+        "Health Education",
+        "Exercise"
+      ]
+    },
+    {
+      "subject_name": "Art Education",
+      "official_books": [
+        "Art Education"
+      ],
+      "concepts": [
+        "Drawing",
+        "Painting",
+        "Craft",
+        "Poster Design",
+        "Creative Activities"
+      ]
+    }
+  ],
+  "source_reference": {
+    "official_portal": "https://textbooks.karnataka.gov.in/textbooks/en/1000",
+    "verified_sources": [
+      "KTBS Textbook PDFs",
+      "KSEEB Curriculum",
+      "NCERT-Aligned Karnataka Textbooks"
+    ]
+  }
+}

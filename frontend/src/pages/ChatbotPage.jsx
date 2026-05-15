@@ -466,6 +466,7 @@ export default function ChatbotPage() {
       const decoder = new TextDecoder()
       let buffer = ""
       const textParts = []
+      let sseError = null
 
       while (true) {
         const { done, value } = await reader.read()
@@ -485,18 +486,59 @@ export default function ChatbotPage() {
 
           try {
             const parsed = JSON.parse(jsonPart)
+            // Check for top-level error from ADK
+            if (parsed?.error) {
+              sseError = parsed.error
+              break
+            }
             if (parsed?.content?.parts) {
               parsed.content.parts.forEach(p => {
                 if (p.text) textParts.push(p.text)
               })
             }
+            // Handle ADK event format with actions
+            if (parsed?.actions?.state_delta || parsed?.text) {
+              if (parsed.text) textParts.push(parsed.text)
+            }
           } catch {
             console.warn("Failed to parse SSE chunk:", line)
           }
         }
+        if (sseError) break
       }
 
-      const responseText = textParts.join("") || "No response received."
+      // If ADK pipeline errored (quota/model issue), fall back to direct chat
+      if (sseError || textParts.length === 0) {
+        console.warn('ADK pipeline error, falling back to direct chat:', sseError)
+        try {
+          const fallbackRes = await fetch('/api/chat/direct', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ message: text, student_id: currentStudent?.id }),
+          })
+          const fallbackData = await fallbackRes.json()
+          const fallbackText = fallbackData?.data?.response || 'How can I help you with your studies?'
+          setMessages(prev => {
+            const copy = [...prev]
+            const lastIdx = copy.findLastIndex(m => m.role === 'assistant' && m.pipeline_done === false)
+            if (lastIdx !== -1) {
+              copy[lastIdx] = {
+                role: 'assistant',
+                text: fallbackText,
+                agent_flow: [],
+                pipeline_done: true,
+                time: now,
+              }
+            }
+            return copy
+          })
+          return
+        } catch (fallbackErr) {
+          console.error('Fallback chat also failed:', fallbackErr)
+        }
+      }
+
+      const responseText = textParts.join("") || "I'm here to help! What would you like to learn about?"
 
       setMessages(prev => {
         const copy = [...prev]

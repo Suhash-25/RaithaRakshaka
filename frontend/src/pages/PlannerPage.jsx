@@ -134,20 +134,46 @@ export default function PlannerPage() {
 
   // ─── Toggle task ─────────────────────────────────────────────────────────
   const toggleTask = async (day, task, currentStatus) => {
+    const isNowCompleted = !currentStatus
     // Optimistic update
     const updatedPlan = JSON.parse(JSON.stringify(plan))
     const dayIdx = updatedPlan.week_plan.findIndex(p => p.day === day)
     if (dayIdx > -1) {
       if (!updatedPlan.week_plan[dayIdx].progress) updatedPlan.week_plan[dayIdx].progress = {}
-      updatedPlan.week_plan[dayIdx].progress[task] = !currentStatus
+      updatedPlan.week_plan[dayIdx].progress[task] = isNowCompleted
       setPlan(updatedPlan)
+    }
+
+    // Save to Progress Dashboard analytics if checking off
+    if (isNowCompleted) {
+      import('@/utils/indexedDB').then(({ saveProgressEvent }) => {
+        saveProgressEvent({
+          topicId: `task-${Date.now()}`,
+          topicLabel: task.length > 30 ? task.substring(0, 30) + '...' : task,
+          subjectId: 'planner',
+          subjectLabel: 'Study Planner',
+          chapterId: day,
+          chapterLabel: day,
+          classId: 'N/A',
+          classLabel: 'Planner',
+          totalQuestions: 1,
+          correctAnswers: 1,
+          wrongAnswers: 0,
+          scorePct: 100,
+          masteryScore: 100,
+          questionResults: [],
+          misconceptionType: 'Task Completed',
+          confidenceLevel: 'high',
+          createdAt: Date.now(),
+        }).catch(() => {})
+      })
     }
 
     try {
       await apiPost('/api/student/update-progress', {
         student_id: studentId,
         day, task,
-        completed: !currentStatus,
+        completed: isNowCompleted,
       })
     } catch {
       // Revert on failure

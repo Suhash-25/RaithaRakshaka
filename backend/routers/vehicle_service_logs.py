@@ -33,41 +33,117 @@ async def ask_agent(
     """
     Run the deterministic agent based on the logged-in user's role prompt.
     """
+    import time
+    import inspect
+    import os
+    from google import genai as _genai
+    from google.genai import types as genai_types
     role = current_user.get("role")
     
     from agent.prompt_loader import get_prompt_by_role
     prompt = get_prompt_by_role(role)
     
-    from google.adk.agents import LlmAgent
-    from constants import AGENT_NAME, AGENT_MODEL, AGENT_DESCRIPTION
+    from constants import AGENT_MODEL
     from agent.tools import (
         add_student, fetch_student_data, list_all_students, create_faculty,
         list_all_faculty, add_subject, list_all_subjects, update_attendance,
+        get_student_attendance, update_marks, get_student_marks, calculate_sgpa_cgpa,
+        get_student_result, list_all_results, get_physics_topic_description
+    )
+
+    available_tools = [
+        add_student, fetch_student_data, list_all_students, create_faculty,
+        list_all_faculty, add_subject, list_all_subjects, update_attendance,
         get_student_attendance, update_marks, get_student_marks,
-        calculate_sgpa_cgpa, get_student_result, list_all_results
-    )
+        calculate_sgpa_cgpa, get_student_result, list_all_results,
+        get_physics_topic_description
+    ]
+    tool_map = {fn.__name__: fn for fn in available_tools}
+
+    models_to_try = [AGENT_MODEL, "gemini-2.0-flash-lite"]
+    max_retries = 3
     
-    user_agent = LlmAgent(
-        name=f"{AGENT_NAME}_{role}",
-        model=AGENT_MODEL,
-        description=AGENT_DESCRIPTION,
-        instruction=prompt,
-        tools=[
-            add_student, fetch_student_data, list_all_students, create_faculty,
-            list_all_faculty, add_subject, list_all_subjects, update_attendance,
-            get_student_attendance, update_marks, get_student_marks,
-            calculate_sgpa_cgpa, get_student_result, list_all_results
-        ]
-    )
+    last_error = None
+    final_response = None
+
+    client = _genai.Client(api_key=os.environ.get("GOOGLE_API_KEY", ""))
     
-    response = await user_agent.arun(payload.query)
+    for model_name in models_to_try:
+        for attempt in range(max_retries):
+            try:
+                messages = [
+                    genai_types.Content(
+                        role="user",
+                        parts=[genai_types.Part(text=f"{prompt}\n\nUser query: {payload.query}")]
+                    )
+                ]
+                agent_response = None
+                for _turn in range(3):
+                    resp = client.models.generate_content(
+                        model=model_name,
+                        contents=messages,
+                        config=genai_types.GenerateContentConfig(
+                            tools=[genai_types.Tool(function_declarations=[
+                                genai_types.FunctionDeclaration(
+                                    name=fn.__name__,
+                                    description=(fn.__doc__ or fn.__name__),
+                                    parameters=genai_types.Schema(type=genai_types.Type.OBJECT, properties={})
+                                ) for fn in available_tools
+                            ])]
+                        )
+                    )
+                    candidate = resp.candidates[0]
+                    parts = candidate.content.parts if candidate.content else []
+                    fn_calls = [p for p in parts if p.function_call is not None]
+                    text_parts = [p.text for p in parts if p.text]
+                    if fn_calls:
+                        tool_results = []
+                        for fc in fn_calls:
+                            fn_name = fc.function_call.name
+                            fn_args = dict(fc.function_call.args) if fc.function_call.args else {}
+                            try:
+                                fn = tool_map.get(fn_name)
+                                if fn:
+                                    if inspect.iscoroutinefunction(fn):
+                                        result = await fn(**fn_args)
+                                    else:
+                                        result = fn(**fn_args)
+                                else:
+                                    result = {"error": f"Tool {fn_name} not found"}
+                            except Exception as te:
+                                result = {"error": str(te)}
+                            tool_results.append(genai_types.Part(
+                                function_response=genai_types.FunctionResponse(
+                                    name=fn_name, response={"result": str(result)}
+                                )
+                            ))
+                        messages.append(candidate.content)
+                        messages.append(genai_types.Content(role="tool", parts=tool_results))
+                    else:
+                        agent_response = " ".join(text_parts).strip()
+                        break
+                final_response = agent_response or "Request processed successfully."
+                break
+            except Exception as e:
+                last_error = e
+                error_msg = str(e)
+                if "503" in error_msg or "UNAVAILABLE" in error_msg:
+                    print(f"Agent model {model_name} unavailable (attempt {attempt+1}/{max_retries}).")
+                    time.sleep(1)
+                    continue
+                break
+        if final_response:
+            break
+
+    if not final_response:
+        return {"status": "error", "message": f"AI Agent is currently overloaded. Please try again in a moment. ({str(last_error)})"}
     
     try:
-        clean_json = response.strip().strip("```json").strip("```").strip()
+        clean_json = final_response.strip().strip("```json").strip("```").strip()
         data = json.loads(clean_json)
         return data
     except Exception:
-        return {"status": "error", "message": "Agent failed to return structured JSON", "raw": response}
+        return {"status": "error", "message": "Agent failed to return structured JSON", "raw": final_response}
 
 
 @router.post("/ask-agent-with-file")
@@ -81,23 +157,36 @@ async def ask_agent_with_file(
     The file content is extracted and injected into the agent prompt alongside the user query.
     Images are sent natively to Gemini for vision analysis.
     """
+    import time
+    import inspect
+    import os
+    from google import genai as _genai
+    from google.genai import types as genai_types
     role = current_user.get("role")
 
     from agent.prompt_loader import get_prompt_by_role
     prompt = get_prompt_by_role(role)
 
-    from google.adk.agents import LlmAgent
     from constants import AGENT_NAME, AGENT_MODEL, AGENT_DESCRIPTION
     from agent.tools import (
         add_student, fetch_student_data, list_all_students, create_faculty,
         list_all_faculty, add_subject, list_all_subjects, update_attendance,
-        get_student_attendance, update_marks, get_student_marks,
-        calculate_sgpa_cgpa, get_student_result, list_all_results
+        get_student_attendance, update_marks, get_student_marks, calculate_sgpa_cgpa,
+        get_student_result, list_all_results, get_physics_topic_description
     )
+    available_tools = [
+        add_student, fetch_student_data, list_all_students, create_faculty,
+        list_all_faculty, add_subject, list_all_subjects, update_attendance,
+        get_student_attendance, update_marks, get_student_marks,
+        calculate_sgpa_cgpa, get_student_result, list_all_results,
+        get_physics_topic_description
+    ]
+    tool_map = {fn.__name__: fn for fn in available_tools}
 
     # --- Process file if provided ---
     file_context = ""
-    image_parts = []  # For Gemini multimodal vision
+    image_bytes = None
+    image_mime = None
 
     if file:
         try:
@@ -126,16 +215,8 @@ async def ask_agent_with_file(
 
             elif ctype.startswith('image/') or fname.lower().endswith(
                     ('.jpg', '.jpeg', '.png', '.webp', '.gif', '.bmp')):
-                import base64
-                b64 = base64.b64encode(contents).decode('utf-8')
-                mime = ctype or 'image/png'
-                # Build Gemini-compatible inline_data part
-                image_parts.append({
-                    "inline_data": {
-                        "mime_type": mime,
-                        "data": b64
-                    }
-                })
+                image_bytes = contents
+                image_mime = ctype or 'image/png'
                 file_context = f"\n\n[User has attached an image: {fname}. Analyze the image and respond to their query.]\n"
             else:
                 file_context = f"\n\n[User attached a file ({fname}) of unsupported type ({ctype}). Inform them only Excel, CSV, PDF, and image files are supported.]\n"
@@ -145,45 +226,92 @@ async def ask_agent_with_file(
     # --- Build agent query ---
     full_query = query + file_context
 
-    user_agent = LlmAgent(
-        name=f"{AGENT_NAME}_{role}",
-        model=AGENT_MODEL,
-        description=AGENT_DESCRIPTION,
-        instruction=prompt,
-        tools=[
-            add_student, fetch_student_data, list_all_students, create_faculty,
-            list_all_faculty, add_subject, list_all_subjects, update_attendance,
-            get_student_attendance, update_marks, get_student_marks,
-            calculate_sgpa_cgpa, get_student_result, list_all_results
-        ]
-    )
+    # Try multiple models and retry on 503
+    models_to_try = [AGENT_MODEL, "gemini-2.0-flash-lite"]
+    max_retries = 3
+    
+    last_error = None
+    final_response = None
 
-    # If image parts exist, try to pass them via Gemini's multimodal content format
-    if image_parts:
-        try:
-            # Build multimodal content: [image_part, text_part]
-            from google.genai import types as genai_types
-            content_parts = []
-            for img_part in image_parts:
-                content_parts.append(genai_types.Part.from_bytes(
-                    data=base64.b64decode(img_part["inline_data"]["data"]),
-                    mime_type=img_part["inline_data"]["mime_type"]
-                ))
-            content_parts.append(genai_types.Part.from_text(text=full_query))
+    client = _genai.Client(api_key=os.environ.get("GOOGLE_API_KEY", ""))
+    
+    for model_name in models_to_try:
+        for attempt in range(max_retries):
+            try:
+                # Build initial message parts
+                initial_parts = []
+                if image_bytes:
+                    initial_parts.append(genai_types.Part.from_bytes(data=image_bytes, mime_type=image_mime))
+                initial_parts.append(genai_types.Part(text=f"{prompt}\n\nUser query: {full_query}"))
 
-            response = await user_agent.arun(content_parts)
-        except Exception:
-            # Fallback: send as text-only with image description
-            response = await user_agent.arun(full_query)
-    else:
-        response = await user_agent.arun(full_query)
+                messages = [genai_types.Content(role="user", parts=initial_parts)]
+                agent_response = None
+                for _turn in range(3):
+                    resp = client.models.generate_content(
+                        model=model_name,
+                        contents=messages,
+                        config=genai_types.GenerateContentConfig(
+                            tools=[genai_types.Tool(function_declarations=[
+                                genai_types.FunctionDeclaration(
+                                    name=fn.__name__,
+                                    description=(fn.__doc__ or fn.__name__),
+                                    parameters=genai_types.Schema(type=genai_types.Type.OBJECT, properties={})
+                                ) for fn in available_tools
+                            ])]
+                        )
+                    )
+                    candidate = resp.candidates[0]
+                    parts = candidate.content.parts if candidate.content else []
+                    fn_calls = [p for p in parts if p.function_call is not None]
+                    text_parts = [p.text for p in parts if p.text]
+                    if fn_calls:
+                        tool_results = []
+                        for fc in fn_calls:
+                            fn_name = fc.function_call.name
+                            fn_args = dict(fc.function_call.args) if fc.function_call.args else {}
+                            try:
+                                fn = tool_map.get(fn_name)
+                                if fn:
+                                    if inspect.iscoroutinefunction(fn):
+                                        result = await fn(**fn_args)
+                                    else:
+                                        result = fn(**fn_args)
+                                else:
+                                    result = {"error": f"Tool {fn_name} not found"}
+                            except Exception as te:
+                                result = {"error": str(te)}
+                            tool_results.append(genai_types.Part(
+                                function_response=genai_types.FunctionResponse(
+                                    name=fn_name, response={"result": str(result)}
+                                )
+                            ))
+                        messages.append(candidate.content)
+                        messages.append(genai_types.Content(role="tool", parts=tool_results))
+                    else:
+                        agent_response = " ".join(text_parts).strip()
+                        break
+                final_response = agent_response or "Request processed successfully."
+                break
+            except Exception as e:
+                last_error = e
+                error_msg = str(e)
+                if "503" in error_msg or "UNAVAILABLE" in error_msg:
+                    print(f"Agent model {model_name} unavailable for file query (attempt {attempt+1}/{max_retries}).")
+                    time.sleep(1)
+                    continue
+                break
+        if final_response:
+            break
+
+    if not final_response:
+        return {"status": "success", "response": f"I'm currently experiencing high demand and couldn't process your file. Please try again in a moment. ({str(last_error)})"}
 
     try:
-        clean_json = response.strip().strip("```json").strip("```").strip()
+        clean_json = final_response.strip().strip("```json").strip("```").strip()
         data = json.loads(clean_json)
         return data
     except Exception:
-        return {"status": "success", "response": response}
+        return {"status": "success", "response": final_response}
 
 
 # ==========================================

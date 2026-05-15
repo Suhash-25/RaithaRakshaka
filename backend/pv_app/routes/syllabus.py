@@ -33,14 +33,14 @@ router = APIRouter()
     summary="Get the extracted syllabus catalog",
     tags=["Syllabus"],
 )
-async def syllabus_catalog() -> SyllabusCatalogResponse:
+async def syllabus_catalog(board: str = Query("state", pattern="^(state|cbse)$")) -> SyllabusCatalogResponse:
     """Return the complete class → subject → document syllabus tree."""
 
     settings = get_settings()
     logger.info("syllabus_catalog | root=%s", settings.textbook_extracted_root)
 
     try:
-        payload = get_syllabus_catalog(settings.textbook_extracted_root)
+        payload = get_syllabus_catalog(settings.textbook_extracted_root, board=board)
     except TextbookCatalogNotFoundError as exc:
         raise HTTPException(status_code=404, detail=str(exc)) from exc
 
@@ -53,14 +53,17 @@ async def syllabus_catalog() -> SyllabusCatalogResponse:
     summary="Get one class and its syllabus subjects",
     tags=["Syllabus"],
 )
-async def syllabus_class(class_slug: str) -> SyllabusClassDetail:
+async def syllabus_class(
+    class_slug: str,
+    board: str = Query("state", pattern="^(state|cbse)$"),
+) -> SyllabusClassDetail:
     """Return a single class node with nested subject summaries."""
 
     settings = get_settings()
     logger.info("syllabus_class | class_slug=%s", class_slug)
 
     try:
-        payload = get_syllabus_class(settings.textbook_extracted_root, class_slug)
+        payload = get_syllabus_class(settings.textbook_extracted_root, class_slug, board=board)
     except TextbookCatalogNotFoundError as exc:
         raise HTTPException(status_code=404, detail=str(exc)) from exc
 
@@ -76,14 +79,18 @@ async def syllabus_class(class_slug: str) -> SyllabusClassDetail:
     summary="Get one canonical subject within a class",
     tags=["Syllabus"],
 )
-async def syllabus_subject(class_slug: str, subject_slug: str) -> SyllabusSubjectDetail:
+async def syllabus_subject(
+    class_slug: str,
+    subject_slug: str,
+    board: str = Query("state", pattern="^(state|cbse)$"),
+) -> SyllabusSubjectDetail:
     """Return one grouped subject and its underlying textbook documents."""
 
     settings = get_settings()
     logger.info("syllabus_subject | class_slug=%s subject_slug=%s", class_slug, subject_slug)
 
     try:
-        payload = get_syllabus_subject(settings.textbook_extracted_root, class_slug, subject_slug)
+        payload = get_syllabus_subject(settings.textbook_extracted_root, class_slug, subject_slug, board=board)
     except TextbookCatalogNotFoundError as exc:
         raise HTTPException(status_code=404, detail=str(exc)) from exc
 
@@ -102,14 +109,17 @@ async def syllabus_subject(class_slug: str, subject_slug: str) -> SyllabusSubjec
     summary="Get one extracted textbook document with TOC",
     tags=["Syllabus"],
 )
-async def syllabus_document(document_id: str) -> SyllabusDocumentDetail:
+async def syllabus_document(
+    document_id: str,
+    board: str = Query("state", pattern="^(state|cbse)$"),
+) -> SyllabusDocumentDetail:
     """Return one textbook JSON plus a tree-shaped TOC."""
 
     settings = get_settings()
     logger.info("syllabus_document | document_id=%s", document_id)
 
     try:
-        payload = get_textbook_document(settings.textbook_extracted_root, document_id)
+        payload = get_textbook_document(settings.textbook_extracted_root, document_id, board=board)
     except TextbookCatalogNotFoundError as exc:
         raise HTTPException(status_code=404, detail=str(exc)) from exc
 
@@ -128,6 +138,7 @@ async def syllabus_document(document_id: str) -> SyllabusDocumentDetail:
 async def syllabus_search(
     q: str = Query(..., min_length=2, description="Search query"),
     limit: int = Query(20, ge=1, le=100, description="Maximum number of results"),
+    board: str = Query("state", pattern="^(state|cbse)$"),
 ) -> SyllabusSearchResponse:
     """Search across classes, subjects, document titles, and chapter titles."""
 
@@ -135,7 +146,7 @@ async def syllabus_search(
     logger.info("syllabus_search | query=%s limit=%s", q, limit)
 
     try:
-        payload = search_syllabus(settings.textbook_extracted_root, q, limit=limit)
+        payload = search_syllabus(settings.textbook_extracted_root, q, limit=limit, board=board)
     except TextbookCatalogNotFoundError as exc:
         raise HTTPException(status_code=404, detail=str(exc)) from exc
 

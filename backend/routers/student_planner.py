@@ -4,15 +4,14 @@ import io
 from PyPDF2 import PdfReader
 from fastapi import APIRouter, Depends, UploadFile, File, HTTPException
 from pydantic import BaseModel
-import google.generativeai as genai
 from db import PostgresDB
 from routers.auth import get_current_user
 from typing import Optional, List
 
 router = APIRouter(prefix="/api/student", tags=["Student Planner"])
 
-# Setup Gemini Direct API — reuse the same key as the rest of the system
-genai.configure(api_key=os.environ.get("GOOGLE_API_KEY", ""))
+# NOTE: No module-level AI client — we use ai_helper which handles
+# Google Gemini → Groq fallback automatically.
 
 class PlanRequest(BaseModel):
     student_id: str
@@ -51,12 +50,11 @@ def scrape_resources(query: str, max_results: int = 3) -> list:
         search_query = query + " tutorial learn"
         results = []
         with DDGS() as ddgs:
-            # text search returns a generator of dicts: {'title': ..., 'href': ..., 'body': ...}
             for idx, r in enumerate(ddgs.text(search_query)):
                 if idx >= max_results:
                     break
                 results.append({
-                    "title": r.get('title', ''), 
+                    "title": r.get('title', ''),
                     "url": r.get('href', '')
                 })
         return results
@@ -67,46 +65,55 @@ def scrape_resources(query: str, max_results: int = 3) -> list:
 
 @router.post("/generate-plan")
 async def generate_plan(req: PlanRequest):
+    from ai_helper import generate_text_async
+
+    prompt = f"""
+Analyze this student's resume and generate a structured 7-day learning plan.
+Include:
+- daily goals
+- skills to improve
+- difficulty level
+- estimated time per day
+- a short search_query per day (used to find online resources)
+
+Resume: {req.resume_text}
+
+Return STRICT JSON format EXACTLY like this (NO Markdown wrappers, just JSON):
+{{
+  "week_plan": [
+    {{
+      "day": "Day 1",
+      "goal": "...",
+      "tasks": ["...", "..."],
+      "time_estimate": "2 hours",
+      "search_query": "python data structures beginner"
+    }}
+  ]
+}}
+"""
+
     try:
-        model = genai.GenerativeModel("gemini-2.5-flash")
-        prompt = f"""
-        Analyze this student's resume and generate a structured 7-day learning plan.
-        Include:
-        - daily goals
-        - skills to improve
-        - difficulty level
-        - estimated time per day
-        - a short search_query per day (used to find online resources)
+        text_resp, provider = await generate_text_async(prompt)
+        print(f"[generate-plan] Served by {provider}")
+    except RuntimeError as e:
+        raise HTTPException(status_code=503, detail=f"AI service unavailable: {str(e)}")
 
-        Resume: {req.resume_text}
+    # Clean JSON if wrapped in markdown
+    text_resp = text_resp.strip()
+    if text_resp.startswith("```json"):
+        text_resp = text_resp[7:]
+    if text_resp.startswith("```"):
+        text_resp = text_resp[3:]
+    if text_resp.endswith("```"):
+        text_resp = text_resp[:-3]
+    text_resp = text_resp.strip()
 
-        Return STRICT JSON format EXACTLY like this (NO Markdown wrappers, just JSON):
-        {{
-          "week_plan": [
-            {{
-              "day": "Day 1",
-              "goal": "...",
-              "tasks": ["...", "..."],
-              "time_estimate": "2 hours",
-              "search_query": "python data structures beginner"
-            }}
-          ]
-        }}
-        """
-        response = model.generate_content(prompt)
-        text_resp = response.text.strip()
-
-        # Clean JSON if wrapped in markdown
-        if text_resp.startswith("```json"):
-            text_resp = text_resp[7:]
-        if text_resp.startswith("```"):
-            text_resp = text_resp[3:]
-        if text_resp.endswith("```"):
-            text_resp = text_resp[:-3]
-        text_resp = text_resp.strip()
-
+    try:
         plan_data = json.loads(text_resp)
+    except json.JSONDecodeError as e:
+        raise HTTPException(status_code=500, detail=f"AI returned invalid JSON: {str(e)}")
 
+    try:
         # Scrape real resource links for each day using the search_query
         for day_plan in plan_data.get("week_plan", []):
             query = day_plan.get("search_query") or day_plan.get("goal", "")
@@ -141,22 +148,20 @@ async def get_plan(student_id: str):
             if not row:
                 return {"plan": None}
             plan_data = json.loads(row["plan_json"])
-            
-            # Fetch progress
+
             progress_rows = await conn.fetch(
                 "SELECT day, task, completed FROM student_progress WHERE student_id = $1", student_id
             )
-            
-            # Integrate progress into the response
+
             progress_map = {}
             for r in progress_rows:
                 if r["day"] not in progress_map:
                     progress_map[r["day"]] = {}
                 progress_map[r["day"]][r["task"]] = r["completed"]
-                
+
             for dp in plan_data.get("week_plan", []):
                 dp["progress"] = progress_map.get(dp["day"], {})
-                
+
             return {"plan": plan_data}
     except Exception as e:
         raise HTTPException(status_code=500, detail=str(e))
@@ -197,9 +202,10 @@ async def mark_notification_read(notification_id: int):
 
 @router.post("/ai-assistant")
 async def ai_assistant(req: AiAssistantRequest):
-    """Single Gemini pipeline — sends current plan + progress as context for contextual answers."""
+    """Study assistant — uses current plan + progress as context. Gemini → Groq fallback."""
+    from ai_helper import generate_text_async
+
     try:
-        # Fetch current plan and progress
         plan_context = "No active plan."
         async with PostgresDB.pool.acquire() as conn:
             row = await conn.fetchrow("SELECT plan_json FROM student_plans WHERE student_id = $1", req.student_id)
@@ -217,7 +223,6 @@ async def ai_assistant(req: AiAssistantRequest):
                     dp["progress"] = progress_map.get(dp["day"], {})
                 plan_context = json.dumps(plan_data, indent=2)
 
-        model = genai.GenerativeModel("gemini-2.5-flash")
         prompt = f"""You are a helpful AI study assistant for a student.
 Here is their current weekly study plan and progress:
 
@@ -227,8 +232,13 @@ The student asks: "{req.message}"
 
 Give a helpful, concise, and encouraging response. If they ask what to do today, look at incomplete tasks and guide them. If they ask for motivation, be supportive. Always reference their actual plan data."""
 
-        response = model.generate_content(prompt)
-        return {"status": "success", "response": response.text}
-    except Exception as e:
-        raise HTTPException(status_code=500, detail=str(e))
+        response_text, provider = await generate_text_async(prompt)
+        print(f"[ai-assistant] Served by {provider}")
+        return {"status": "success", "response": response_text}
 
+    except RuntimeError as e:
+        raise HTTPException(status_code=503, detail=f"AI assistant unavailable: {str(e)}")
+    except Exception as e:
+        if isinstance(e, HTTPException):
+            raise e
+        raise HTTPException(status_code=500, detail=str(e))

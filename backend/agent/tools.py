@@ -307,3 +307,16 @@ async def get_ia_admin_analytics() -> Dict:
         return {"success": True, "data": data}
     except Exception as e:
         return {"success": False, "message": str(e)}
+
+# -------------------- PHYSICS CATALOG -------------------- #
+
+async def get_physics_topic_description(topic_name: str) -> Dict:
+    """Fetch the detailed description and pedagogical context for a specific Physics topic."""
+    try:
+        from utils.catalog_helper import CatalogHelper
+        desc = CatalogHelper.get_description(topic_name)
+        if not desc:
+            return {"success": False, "message": f"No detailed description found for '{topic_name}' in the Physics catalog."}
+        return {"success": True, "data": {"topic": topic_name, "description": desc}}
+    except Exception as e:
+        return {"success": False, "message": str(e)}

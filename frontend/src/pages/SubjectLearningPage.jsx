@@ -8,6 +8,7 @@ import PhysicsAnimationEngine from '@/components/physics/PhysicsAnimationEngine'
 import { getAnimation } from '@/components/physics/animations'
 import { loadCatalog, getCatalogChapter, getCatalogTopic } from '@/data/catalogRegistry'
 import { saveMisconceptionResult } from '@/utils/misconceptionTracker'
+import { saveProgressEvent } from '@/utils/indexedDB'
 import { useLearningSelection } from '@/context/LearningSelectionContext'
 
 const STAGE_LABELS = ['Description', 'Questions', 'Analysis']
@@ -78,31 +79,60 @@ export default function SubjectLearningPage() {
 
   const handleSubmitMisconceptions = useCallback(async () => {
     setMisconceptionSubmitted(true)
+    const results = []
     for (const m of misconceptions) {
       const selected = misconceptionAnswers[m.id]
       if (selected !== undefined) {
+        const isCorrect = selected === m.correctIndex
+        results.push({
+          questionId: m.id,
+          probe: m.probe,
+          selectedIndex: selected,
+          correctIndex: m.correctIndex,
+          isCorrect,
+        })
         await saveMisconceptionResult({
           chapterId, topicId, misconceptionId: m.id,
           probe: m.probe, selectedIndex: selected,
           correctIndex: m.correctIndex,
-          isCorrect: selected === m.correctIndex,
-        }).catch(() => {}) // IndexedDB may not be available
+          isCorrect,
+        }).catch(() => {})
       }
     }
-  }, [misconceptionAnswers, misconceptions, chapterId, topicId])
+
+    const correctCount = results.filter(r => r.isCorrect).length
+    const totalCount = results.length
+    const scorePct = totalCount > 0 ? Math.round((correctCount / totalCount) * 100) : 0
+    await saveProgressEvent({
+      topicId,
+      topicLabel: topic?.title ?? topicId,
+      subjectId,
+      subjectLabel: catalog?.subject ?? subjectId,
+      chapterId,
+      chapterLabel: chapter?.title ?? chapterId,
+      classId,
+      classLabel: catalog?.classLabel ?? classId,
+      totalQuestions: totalCount,
+      correctAnswers: correctCount,
+      wrongAnswers: totalCount - correctCount,
+      scorePct,
+      masteryScore: scorePct,
+      questionResults: results,
+      misconceptionType: correctCount === totalCount ? 'No misconception' : 'Misconception detected',
+      confidenceLevel: scorePct >= 80 ? 'high' : scorePct >= 50 ? 'medium' : 'low',
+      createdAt: Date.now(),
+    }).catch(console.error)
+
+  }, [misconceptionAnswers, misconceptions, chapterId, topicId, topic, catalog, chapter, classId, subjectId])
 
   const checkAnswer = useCallback((question, answerText) => {
     if (!answerText?.trim()) return { score: 0, matched: [], missing: question.expectedConcepts }
     const lower = answerText.toLowerCase()
     const expected = question.expectedConcepts || []
     if (expected.length === 0) return { score: 1, matched: [], missing: [] }
-
     const matched = expected.filter(c => lower.includes(c.toLowerCase()))
     const missing = expected.filter(c => !lower.includes(c.toLowerCase()))
-    return {
-      score: matched.length / expected.length,
-      matched, missing,
-    }
+    return { score: matched.length / expected.length, matched, missing }
   }, [])
 
   if (isLoading) {

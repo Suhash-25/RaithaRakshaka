@@ -4,7 +4,8 @@ import os
 
 
 def generate_anon_id(fingerprint):
-    return hashlib.sha256((fingerprint + os.environ["ANON_SALT"]).encode("utf-8")).hexdigest()
+    salt = os.environ.get("ANON_SALT", "pragna-vistara-local-anon-salt")
+    return hashlib.sha256((fingerprint + salt).encode("utf-8")).hexdigest()
 
 
 def generate_audit_signature(payload):

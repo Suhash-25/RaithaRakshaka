@@ -240,21 +240,53 @@ class DirectChatRequest(BaseModel):
 
 @app.post("/api/chat/direct")
 async def direct_chat(req: DirectChatRequest):
-    """Handles casual/conversational messages without triggering the agent pipeline."""
+    """Handles casual/conversational messages. Uses Google Gemini with Groq fallback."""
+    from ai_helper import generate_text_async
+    from utils.catalog_helper import CatalogHelper
+
+    topic_desc = None
     try:
-        import google.generativeai as genai
-        genai.configure(api_key=os.environ.get("GOOGLE_API_KEY", ""))
-        model = genai.GenerativeModel("gemini-2.5-flash")
-        prompt = (
-            "You are a helpful AI learning assistant for college students. "
-            "Answer naturally and concisely. If it is a greeting respond warmly. "
-            "If it is a learning question give a clear, helpful answer.\n\n"
-            f"Student: {req.message}"
-        )
-        response = model.generate_content(prompt)
-        return {"success": True, "data": {"response": response.text, "agent_flow": []}}
-    except Exception as e:
-        return {"success": True, "data": {"response": "How can I help you with your studies today?", "agent_flow": []}}
+        all_topics = CatalogHelper.get_all_topics()
+        for topic in all_topics:
+            if topic.lower() in req.message.lower():
+                topic_desc = CatalogHelper.get_description(topic)
+                if topic_desc:
+                    break
+    except Exception:
+        pass
+
+    kb_context = f"\n\nKnowledge Base Context:\n{topic_desc}" if topic_desc else ""
+    prompt = (
+        "You are a helpful AI learning assistant for college students. "
+        "Answer naturally and concisely. If it is a greeting respond warmly. "
+        "If it is a learning question give a clear, helpful answer. "
+        "If knowledge base context is provided, use it to give a detailed and accurate explanation."
+        f"{kb_context}\n\n"
+        f"Student: {req.message}"
+    )
+
+    try:
+        response_text, provider = await generate_text_async(prompt)
+        print(f"[chat/direct] Served by {provider}")
+        return {"success": True, "data": {"response": response_text, "agent_flow": []}}
+    except RuntimeError as e:
+        return {
+            "success": False,
+            "data": {
+                "response": (
+                    "⚠️ All AI providers are unavailable.\n\n"
+                    "**Quick fix:** Get a FREE Groq API key (no billing needed):\n"
+                    "1. Go to https://console.groq.com/keys\n"
+                    "2. Sign up free → Create API Key\n"
+                    "3. Add to backend/.env: GROQ_API_KEY=your_key_here\n"
+                    "4. Restart python main.py"
+                ),
+                "agent_flow": []
+            }
+        }
+
+
+
 
 
 IMAGE_DIR = os.path.join(AGENT_DIR, "service_images")

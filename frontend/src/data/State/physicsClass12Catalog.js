@@ -436,7 +436,7 @@ export const PHYSICS_CLASS_12 = {
             { id: 'ch3-t1-m1', probe: 'Electrons travel from the battery to the bulb at the speed of light. True?', options: ['True — that is why the bulb lights instantly', 'False — the electric field propagates fast, but electrons drift slowly'], correctIndex: 1, correction: 'The electric field signal travels near the speed of light, causing all free electrons to start drifting almost simultaneously. Individual electrons move very slowly (~mm/s).', detectKeywords: ['electrons travel at speed of light', 'electrons move fast'] },
           ],
         },
-        { id: 'ch3-t2', title: "Ohm"s Law and Resistivity", duration: '15 min', difficulty: 'core', animationType: 'ohmCircuit',
+        { id: 'ch3-t2', title: "Ohm's Law and Resistivity", duration: '15 min', difficulty: 'core', animationType: 'ohmCircuit',
           learningObjectives: ['State Ohm\'s law and its limitations', 'Define resistivity and its temperature dependence', 'Distinguish between ohmic and non-ohmic conductors'],
           mcq: [
             { id: 'ch3-t2-mcq1', text: 'The resistance of a conductor depends on:', options: ['Only length', 'Only cross-sectional area', 'Length, area, and material', 'Only material'], correctIndex: 2, explanation: 'R = ρL/A — resistance depends on length, area, and resistivity (material property).' },
@@ -453,7 +453,7 @@ export const PHYSICS_CLASS_12 = {
             { id: 'ch3-t2-m1', probe: 'Ohm\'s law is a universal law that applies to all conducting materials. True?', options: ['True — all conductors obey Ohm\'s law', 'False — many materials and devices are non-ohmic'], correctIndex: 1, correction: 'Ohm\'s law is an empirical relationship valid only for ohmic conductors. Semiconductors, diodes, and electrolytes are examples of non-ohmic materials.', detectKeywords: ['universal', 'all materials', 'always true'] },
           ],
         },
-        { id: 'ch3-t3', title: "Kirchhoff"s Laws", duration: '16 min', difficulty: 'core', animationType: 'kirchhoff',
+        { id: 'ch3-t3', title: "Kirchhoff's Laws", duration: '16 min', difficulty: 'core', animationType: 'kirchhoff',
           learningObjectives: ['State junction and loop rules with conservation principles', 'Apply Kirchhoff\'s laws to multi-loop circuits', 'Derive the Wheatstone bridge balance condition'],
           mcq: [
             { id: 'ch3-t3-mcq1', text: 'Kirchhoff\'s junction rule is based on conservation of:', options: ['Energy', 'Momentum', 'Charge', 'Mass'], correctIndex: 2, explanation: 'Junction rule: current in = current out, which is conservation of charge.' },
@@ -525,7 +525,7 @@ export const PHYSICS_CLASS_12 = {
             { id: 'ch4-t2-m1', probe: 'The magnetic field due to a straight current-carrying wire decreases as 1/r² with distance. True?', options: ['True — like Coulomb\'s law', 'False — it decreases as 1/r for an infinite straight wire'], correctIndex: 1, correction: 'For an infinitely long straight wire, B = μ₀I/2πr, which falls as 1/r, not 1/r².', detectKeywords: ['1/r²', 'inverse square'] },
           ],
         },
-        { id: 'ch4-t3', title: "Ampere"s Circuital Law", duration: '15 min', difficulty: 'core', animationType: 'biotsavart',
+        { id: 'ch4-t3', title: "Ampere's Circuital Law", duration: '15 min', difficulty: 'core', animationType: 'biotsavart',
           learningObjectives: ['State Ampere\'s circuital law', 'Derive magnetic field inside a solenoid', 'Explain why B ≈ 0 outside an ideal solenoid'],
           mcq: [
             { id: 'ch4-t3-mcq1', text: 'The magnetic field inside a long solenoid is:', options: ['Zero', 'Uniform and depends on nI', 'Non-uniform', 'Depends on the radius'], correctIndex: 1, explanation: 'B = μ₀nI inside an ideal solenoid, uniform throughout.' },
@@ -574,7 +574,7 @@ export const PHYSICS_CLASS_12 = {
             { id: 'ch5-t1-m1', probe: 'Magnetic field lines start from the north pole and end at the south pole. True?', options: ['True — they start at N and end at S', 'Not exactly — field lines are closed loops, continuing through the magnet from S to N inside'], correctIndex: 1, correction: 'Magnetic field lines form closed loops. Outside the magnet they go N→S, but inside they continue from S→N. They have no start or end point.', detectKeywords: ['start at north', 'end at south', 'begin and end'] },
           ],
         },
-        { id: 'ch5-t2', title: "Earth\"s Magnetism', duration: '10 min', difficulty: 'foundation', animationType: 'magneticFieldLab',
+        { id: 'ch5-t2', title: "Earth's Magnetism", duration: '10 min', difficulty: 'foundation', animationType: 'magneticFieldLab',
           learningObjectives: ['Explain elements of Earth\'s magnetic field', 'Define declination, dip, and horizontal component'],
           questions: [
             { id: 'ch5-t2-q1', text: 'The geographic north pole of the Earth is actually near the magnetic south pole. Explain why a compass needle\'s north pole points toward geographic north.', hint: 'Opposite poles attract.', expectedConcepts: ['magnetic south near geographic north', 'opposite poles attract', 'compass aligns with earth field'], estimatedTime: '3 min' },
@@ -610,7 +610,7 @@ export const PHYSICS_CLASS_12 = {
     {
       id: 'ch6', number: 6, title: "Electromagnetic Induction",
       topics: [
-        { id: 'ch6-t1', title: "Faraday\"s Laws of Electromagnetic Induction', duration: '15 min', difficulty: 'foundation', animationType: 'faradayLaw',
+        { id: 'ch6-t1', title: "Faraday's Laws of Electromagnetic Induction", duration: '15 min', difficulty: 'foundation', animationType: 'faradayLaw',
           learningObjectives: ['State Faraday\'s laws of electromagnetic induction', 'Calculate induced EMF from rate of change of flux', 'Relate the negative sign to Lenz\'s law'],
           mcq: [
             { id: 'ch6-t1-mcq1', text: 'The magnitude of induced EMF is proportional to:', options: ['The magnetic flux', 'The rate of change of magnetic flux', 'The area of the coil', 'The resistance of the coil'], correctIndex: 1, explanation: 'Faraday\'s law: EMF = −NdΦ/dt. EMF depends on rate of change, not the flux itself.' },
@@ -626,7 +626,7 @@ export const PHYSICS_CLASS_12 = {
             { id: 'ch6-t1-m1', probe: 'A stationary magnet near a coil induces an EMF as long as the magnet is present. True?', options: ['True — the magnet\'s field induces EMF', 'False — EMF is induced only when the flux is CHANGING'], correctIndex: 1, correction: 'EMF is induced only when there is a change in magnetic flux. A stationary magnet produces constant flux and hence zero EMF.', detectKeywords: ['always induces', 'magnet present means EMF'] },
           ],
         },
-        { id: 'ch6-t2', title: "Lenz\"s Law', duration: '12 min', difficulty: 'core', animationType: 'faradayLaw',
+        { id: 'ch6-t2', title: "Lenz's Law", duration: '12 min', difficulty: 'core', animationType: 'faradayLaw',
           learningObjectives: ['State Lenz\'s law and relate it to conservation of energy', 'Predict direction of induced current using Lenz\'s law'],
           questions: [
             { id: 'ch6-t2-q1', text: 'A north pole of a magnet is pushed toward a coil. Predict the direction of induced current and explain using Lenz\'s law.', hint: 'The coil must oppose the approaching north pole.', expectedConcepts: ['current creates opposing north pole', 'opposes change in flux', 'conservation of energy'], estimatedTime: '4 min' },
@@ -734,7 +734,7 @@ export const PHYSICS_CLASS_12 = {
     {
       id: 'ch8', number: 8, title: "Electromagnetic Waves",
       topics: [
-        { id: 'ch8-t1', title: "Displacement Current and Maxwell\"s Equations', duration: '14 min', difficulty: 'advanced', animationType: 'emWave',
+        { id: 'ch8-t1', title: "Displacement Current and Maxwell's Equations", duration: '14 min', difficulty: 'advanced', animationType: 'emWave',
           learningObjectives: ['Explain the inconsistency Maxwell found in Ampere\'s law', 'Define displacement current and its physical significance'],
           questions: [
             { id: 'ch8-t1-q1', text: 'What problem did Maxwell identify with Ampere\'s circuital law, and how did he resolve it by introducing displacement current?', hint: 'Think about a charging capacitor.', expectedConcepts: ['inconsistency during charging', 'displacement current', 'changing electric field'], estimatedTime: '4 min' },

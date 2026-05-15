@@ -22,6 +22,12 @@ const client = axios.create({
   headers: { 'Content-Type': 'application/json' },
 })
 
+const authClient = axios.create({
+  baseURL: '',
+  timeout: 15_000,
+  headers: { 'Content-Type': 'application/json' },
+})
+
 const syllabusRequestCache = new Map()
 
 async function getCachedSyllabusRequest(cacheKey, request) {
@@ -77,7 +83,7 @@ client.interceptors.response.use(
 // ─── Hybrid Auth Methods ──────────────────────────────────────────────────────
 
 export async function hybridRegister(payload) {
-  const { data } = await client.post('/auth/register', payload)
+  const { data } = await authClient.post('/auth/register', payload)
   if (data.success && data.data?.access_token) {
     localStorage.setItem('access_token', data.data.access_token)
   }
@@ -85,7 +91,7 @@ export async function hybridRegister(payload) {
 }
 
 export async function hybridLogin(email, password) {
-  const { data } = await client.post('/auth/login', { email, password })
+  const { data } = await authClient.post('/auth/login', { email, password })
   if (data.success && data.data?.access_token) {
     localStorage.setItem('access_token', data.data.access_token)
   }
@@ -103,14 +109,14 @@ export async function syncLocalUserToBackend(student) {
     
     let res = null
     try {
-      res = await client.post('/auth/login', { email, password })
+      res = await authClient.post('/auth/login', { email, password })
     } catch (e) {
       // Login failed, try register
     }
     
     if (!res || !res.data?.success) {
       // Register
-      res = await client.post('/auth/register', {
+      res = await authClient.post('/auth/register', {
         name: student.name,
         email: email,
         password: password,

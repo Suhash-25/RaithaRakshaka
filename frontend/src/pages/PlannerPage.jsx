@@ -148,6 +148,7 @@ export default function PlannerPage() {
     if (isNowCompleted) {
       import('@/utils/indexedDB').then(({ saveProgressEvent }) => {
         saveProgressEvent({
+          student_id: currentStudent?.id || 'guest',
           topicId: `task-${Date.now()}`,
           topicLabel: task.length > 30 ? task.substring(0, 30) + '...' : task,
           subjectId: 'planner',

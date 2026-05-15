@@ -9,6 +9,7 @@ import { getAnimation } from '@/components/physics/animations'
 import { loadCatalog, getCatalogChapter, getCatalogTopic } from '@/data/catalogRegistry'
 import { buildTopicDescription, buildVisualSearchUrl, buildVisualVideoUrl } from '@/data/syllabusBoards'
 import { useLearningSelection } from '@/context/LearningSelectionContext'
+import { useStudent } from '@/context/StudentContext'
 import { saveMisconceptionResult } from '@/utils/misconceptionTracker'
 import { saveProgressEvent } from '@/utils/indexedDB'
 
@@ -16,6 +17,7 @@ const STAGE_LABELS = ['Description', 'Questions', 'Analysis']
 
 export default function SubjectLearningPage() {
   const navigate = useNavigate()
+  const { currentStudent } = useStudent()
   const { classId, subjectId, chapterId, topicId } = useParams()
   const { selection } = useLearningSelection()
   const boardId = selection.boardId ?? 'state'
@@ -123,6 +125,7 @@ export default function SubjectLearningPage() {
     const totalCount = results.length
     const scorePct = totalCount > 0 ? Math.round((correctCount / totalCount) * 100) : 0
     await saveProgressEvent({
+      student_id: currentStudent?.id || 'guest',
       topicId,
       topicLabel: topic?.title ?? topicId,
       subjectId,
@@ -142,7 +145,7 @@ export default function SubjectLearningPage() {
       createdAt: Date.now(),
     }).catch(console.error)
 
-  }, [misconceptionAnswers, misconceptions, chapterId, topicId, topic, catalog, chapter, classId, subjectId])
+  }, [misconceptionAnswers, misconceptions, chapterId, topicId, topic, catalog, chapter, classId, subjectId, currentStudent])
 
   const checkAnswer = useCallback((question, answerText) => {
     if (!answerText?.trim()) return { score: 0, matched: [], missing: question.expectedConcepts }

@@ -1,6 +1,7 @@
 import { useEffect, useMemo, useState, useRef } from 'react'
 import { Link } from 'react-router-dom'
-import { getAllProgressEvents } from '@/utils/indexedDB'
+import { getProgressEventsByStudent } from '@/utils/indexedDB'
+import { useStudent } from '@/context/StudentContext'
 
 // ── Tiny SVG line chart ───────────────────────────────────────────────────────
 function SparkLine({ data, color = '#6c63ff', height = 56 }) {
@@ -204,13 +205,17 @@ function buildAnalytics(events) {
 
 // ── Page ──────────────────────────────────────────────────────────────────────
 export default function ProgressDashboardPage() {
+  const { currentStudent } = useStudent()
   const [events, setEvents] = useState([])
   const [loading, setLoading] = useState(true)
   const [activeTab, setActiveTab] = useState('overview')
+  const [recs, setRecs] = useState(null)
+  const [loadingRecs, setLoadingRecs] = useState(false)
   const intervalRef = useRef(null)
 
   async function loadEvents() {
-    const rows = await getAllProgressEvents()
+    const studentId = currentStudent?.id || 'guest'
+    const rows = await getProgressEventsByStudent(studentId)
     setEvents(rows)
     setLoading(false)
   }
@@ -220,9 +225,31 @@ export default function ProgressDashboardPage() {
     // Live refresh every 5 s so new quiz results show instantly
     intervalRef.current = setInterval(loadEvents, 5000)
     return () => clearInterval(intervalRef.current)
-  }, [])
+  }, [currentStudent?.id])
 
   const analytics = useMemo(() => buildAnalytics(events), [events])
+
+  useEffect(() => {
+    if (activeTab === 'insights' && !recs && !loadingRecs && events.length > 0) {
+      setLoadingRecs(true)
+      const payload = {
+        student_id: "local_student",
+        topic_breakdown: analytics.topicBreakdown.map(t => `${t.label} (${t.accuracy}%)`),
+        overall_accuracy: analytics.overallAccuracy,
+        weak_topics: analytics.weakTopics.map(t => t.label),
+        strong_topics: analytics.strongTopics.map(t => t.label)
+      }
+      fetch('/api/student/ml-recommendations', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(payload)
+      })
+        .then(res => res.json())
+        .then(data => setRecs(data.recommendations || []))
+        .catch(() => setRecs([]))
+        .finally(() => setLoadingRecs(false))
+    }
+  }, [activeTab, recs, loadingRecs, events.length, analytics])
 
   if (loading) {
     return (
@@ -266,9 +293,10 @@ export default function ProgressDashboardPage() {
 
         {/* Tabs */}
         <div className="mt-6 flex gap-1 rounded-xl border border-surface-border bg-surface-card p-1 w-fit">
-          {['overview', 'subjects', 'history'].map(tab => (
+          {['overview', 'subjects', 'history', 'insights'].map(tab => (
             <button key={tab} onClick={() => setActiveTab(tab)}
-              className={`rounded-lg px-4 py-2 text-sm font-medium capitalize transition-all ${activeTab === tab ? 'bg-primary-500 text-white' : 'text-surface-muted hover:text-surface-text'}`}>
+              className={`rounded-lg px-4 py-2 text-sm font-medium capitalize transition-all flex items-center gap-1.5 ${activeTab === tab ? 'bg-primary-500 text-white' : 'text-surface-muted hover:text-surface-text'}`}>
+              {tab === 'insights' && <span className="text-[10px]">✨</span>}
               {tab}
             </button>
           ))}
@@ -478,6 +506,52 @@ export default function ProgressDashboardPage() {
                     </div>
                   </div>
                 ))
+              )}
+            </div>
+          )}
+
+          {/* ── INSIGHTS TAB ── */}
+          {activeTab === 'insights' && (
+            <div className="space-y-6">
+              <div className="rounded-2xl border border-surface-border bg-gradient-to-br from-primary-500/10 to-accent-teal/10 p-6">
+                <h2 className="text-xl font-display font-bold text-surface-text mb-2 flex items-center gap-2">
+                  <span className="text-2xl">🤖</span> AI Study Coach
+                </h2>
+                <p className="text-sm text-surface-muted">
+                  Your personalized, ML-driven recommendations based on your unique performance data.
+                </p>
+              </div>
+
+              {loadingRecs ? (
+                <div className="flex flex-col items-center justify-center py-12 gap-4">
+                  <span className="w-8 h-8 border-4 border-primary-500/30 border-t-primary-500 rounded-full animate-spin" />
+                  <p className="text-sm text-surface-muted animate-pulse">Analyzing your performance matrix...</p>
+                </div>
+              ) : !recs || recs.length === 0 ? (
+                <div className="flex h-32 items-center justify-center rounded-2xl border border-dashed border-surface-border bg-surface-card text-sm text-surface-muted">
+                  Not enough data to generate recommendations yet.
+                </div>
+              ) : (
+                <div className="grid gap-4 sm:grid-cols-1 lg:grid-cols-3">
+                  {recs.map((rec, i) => (
+                    <div key={i} className="rounded-2xl border border-surface-border bg-surface-card p-5 shadow-sm hover:shadow-md transition-all flex flex-col gap-3">
+                      <div className="flex items-start justify-between">
+                        <span className={`px-2.5 py-1 rounded-full text-[10px] font-bold uppercase tracking-wider ${
+                          rec.type === 'weakness' ? 'bg-rose-500/10 text-rose-500' :
+                          rec.type === 'strength' ? 'bg-emerald-500/10 text-emerald-500' :
+                          'bg-primary-500/10 text-primary-500'
+                        }`}>
+                          {rec.type}
+                        </span>
+                      </div>
+                      <h3 className="font-semibold text-surface-text text-lg">{rec.title}</h3>
+                      <p className="text-xs text-surface-muted leading-relaxed">{rec.reason}</p>
+                      <div className="mt-auto pt-3 border-t border-surface-border">
+                        <p className="text-sm font-medium text-primary-500">{rec.action}</p>
+                      </div>
+                    </div>
+                  ))}
+                </div>
               )}
             </div>
           )}

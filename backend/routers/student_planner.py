@@ -63,6 +63,55 @@ def scrape_resources(query: str, max_results: int = 3) -> list:
         return []
 
 
+class RecommendationRequest(BaseModel):
+    student_id: str
+    topic_breakdown: list
+    overall_accuracy: int
+    weak_topics: list
+    strong_topics: list
+
+@router.post("/ml-recommendations")
+async def get_ml_recommendations(req: RecommendationRequest):
+    from ai_helper import generate_text_async
+
+    prompt = f"""
+Act as an expert personalized learning recommendation engine.
+Analyze the following student's performance data and generate EXACTLY 3 highly specific, actionable study recommendations.
+
+Overall Accuracy: {req.overall_accuracy}%
+Strong Topics: {req.strong_topics}
+Weak Topics: {req.weak_topics}
+Topic Breakdown: {req.topic_breakdown}
+
+For each recommendation, provide:
+1. "title": A catchy, action-oriented title.
+2. "reason": Why you are recommending this based on their exact data.
+3. "action": The specific action they should take.
+4. "type": "weakness", "strength", or "explore".
+
+Return STRICT JSON format EXACTLY like this (NO Markdown wrappers, no ```json, just JSON):
+{{
+  "recommendations": [
+    {{
+      "title": "Master Newton's Laws",
+      "reason": "Your accuracy is only 45% in this topic.",
+      "action": "Re-read the chapter and take a practice quiz.",
+      "type": "weakness"
+    }}
+  ]
+}}
+"""
+    try:
+        text_resp, provider = await generate_text_async(prompt)
+        text_resp = text_resp.strip()
+        if text_resp.startswith("```"):
+            text_resp = text_resp.strip("`").removeprefix("json").strip()
+        data = json.loads(text_resp)
+        return {"recommendations": data.get("recommendations", [])}
+    except Exception as e:
+        print("ML Recommendation error:", e)
+        return {"recommendations": []}
+
 @router.post("/generate-plan")
 async def generate_plan(req: PlanRequest):
     from ai_helper import generate_text_async

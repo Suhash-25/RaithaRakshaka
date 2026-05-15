@@ -73,6 +73,7 @@ ALLOWED_ORIGINS = [
     "http://127.0.0.1:5176",
     "http://localhost:5177",
     "http://127.0.0.1:5177",
+    "https://av-26-104-jf4bvu4ec-suhash-gs-projects.vercel.app",
 ]
 
 SERVE_WEB_INTERFACE = True

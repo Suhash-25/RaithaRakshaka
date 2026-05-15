@@ -8,16 +8,26 @@
     --color-surface: 255 255 255;
     --color-surface-card: 245 245 245;
     --color-surface-border: 200 200 200;
-    --color-surface-muted: 150 150 150;
+    --color-surface-muted: 100 100 100;
     --color-text: 0 0 0;
+    --color-accent-teal: 13 148 136;
+    --color-accent-amber: 217 119 6;
+    --color-accent-rose: 225 29 72;
+    --color-accent-emerald: 5 150 105;
+    --color-accent-blue: 37 99 235;
   }
 
   .dark {
     --color-surface: 0 0 0;
     --color-surface-card: 15 15 15;
     --color-surface-border: 60 60 60;
-    --color-surface-muted: 100 100 100;
+    --color-surface-muted: 150 150 150;
     --color-text: 255 255 255;
+    --color-accent-teal: 45 212 191;
+    --color-accent-amber: 251 191 36;
+    --color-accent-rose: 242 62 54;
+    --color-accent-emerald: 52 211 153;
+    --color-accent-blue: 96 165 250;
   }
 
   *, *::before, *::after {
@@ -35,6 +45,10 @@
 
   h1, h2, h3, h4 {
     @apply font-display;
+  }
+
+  input, select, textarea {
+    @apply text-surface-text;
   }
 
   ::-webkit-scrollbar {
@@ -114,9 +128,9 @@
   }
 
   .badge-primary  { @apply badge bg-primary-500 text-white border border-primary-500; }
-  .badge-teal     { @apply badge bg-surface-text text-surface border border-surface-text; }
-  .badge-amber    { @apply badge bg-surface-text text-surface border border-surface-text; }
-  .badge-rose     { @apply badge bg-surface-text text-surface border border-surface-text; }
+  .badge-teal     { @apply badge bg-accent-teal/10 text-accent-teal border border-accent-teal/30; }
+  .badge-amber    { @apply badge bg-accent-amber/10 text-accent-amber border border-accent-amber/30; }
+  .badge-rose     { @apply badge bg-accent-rose/10 text-accent-rose border border-accent-rose/30; }
 
   /* Section container */
   .container-page {

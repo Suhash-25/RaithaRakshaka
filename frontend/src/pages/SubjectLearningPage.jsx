@@ -12,6 +12,8 @@ import { useLearningSelection } from '@/context/LearningSelectionContext'
 import { useStudent } from '@/context/StudentContext'
 import { saveMisconceptionResult } from '@/utils/misconceptionTracker'
 import { saveProgressEvent } from '@/utils/indexedDB'
+import SmartNotebook from '@/components/ui/SmartNotebook'
+import { getGenZVideoPath } from '@/utils/genzVideoResolver'
 
 const STAGE_LABELS = ['Description', 'Questions', 'Analysis']
 
@@ -244,6 +246,31 @@ export default function SubjectLearningPage() {
             </p>
           </div>
         )}
+
+        {/* ─── Smart Notebook & Visuals ─── */}
+        <div className="mt-6 w-full animate-fade-in">
+          <SmartNotebook 
+            key={`${classId}-${subjectId}-${topicId}`}
+            data={enrichedData || {
+              description: topicDescription,
+              key_points: topic.keyPoints || [],
+              methods: topic.methods || [],
+              shortcut_tricks: topic.shortcutTricks || [],
+            }} 
+            classId={classId} 
+            subject={catalog.subject}
+            chapterName={chapter.title}
+            topicName={topic.title}
+            videoUrl={getGenZVideoPath({
+              subject: catalog.subject,
+              chapterNumber: chapter.number,
+              topicTitle: topic.title,
+              topicId,
+              board: boardId,
+              classId
+            })}
+          />
+        </div>
       </div>
 
       <section className="mb-6 rounded-2xl border border-surface-border bg-surface-card/70 p-6">

@@ -17,6 +17,7 @@ import SubjectLearningPage from '@/pages/SubjectLearningPage'
 import StudentManagementPage from '@/pages/StudentManagementPage'
 import ChatbotPage from '@/pages/ChatbotPage'
 import PlannerPage from '@/pages/PlannerPage'
+import CBSELearningPage from '@/pages/CBSELearningPage'
 import { LearningSelectionProvider } from '@/context/LearningSelectionContext'
 import { OfflineSyncProvider } from '@/context/OfflineSyncContext'
 import { LanguageProvider } from '@/context/LanguageContext'
@@ -61,6 +62,12 @@ export default function App() {
                     <Route path="learn/:classId/:subjectId" element={<SubjectChaptersPage />} />
                     <Route path="learn/:classId/:subjectId/chapters/:chapterId" element={<SubjectChaptersPage />} />
                 <Route path="learn/:classId/:subjectId/chapters/:chapterId/topics/:topicId" element={<SubjectLearningPage />} />
+                
+                {/* CBSE Board — separate data pipeline */}
+                <Route path="learn/cbse/:classId/subjects" element={<CBSELearningPage />} />
+                <Route path="learn/cbse/:classId/:subjectId" element={<CBSELearningPage />} />
+                <Route path="learn/cbse/:classId/:subjectId/chapters/:chapterId" element={<CBSELearningPage />} />
+                <Route path="learn/cbse/:classId/:subjectId/chapters/:chapterId/topics/:topicId" element={<CBSELearningPage />} />
 
                 {/* Existing Routes retained for compatibility */}
                 <Route path="topic/:topicId/question" element={<QuestionPage />} />

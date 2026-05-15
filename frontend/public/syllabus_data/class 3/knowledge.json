@@ -1,0 +1,389 @@
+{
+  "board": "Karnataka State Board",
+  "academic_year": "2025-26",
+  "class": "3",
+  "medium": "English",
+  "subjects": [
+    {
+      "subject_name": "English",
+      "category": "Language",
+      "concepts": [
+        {
+          "unit": "Reading Skills",
+          "topics": [
+            "Reading fluency",
+            "Reading comprehension",
+            "Short stories",
+            "Poems",
+            "Picture reading",
+            "Inference from passages",
+            "Sequencing events",
+            "Identifying characters"
+          ]
+        },
+        {
+          "unit": "Grammar",
+          "topics": [
+            "Nouns",
+            "Proper nouns",
+            "Pronouns",
+            "Verbs",
+            "Adjectives",
+            "Articles",
+            "Prepositions",
+            "Conjunctions",
+            "Singular and plural",
+            "Gender",
+            "Tenses",
+            "Punctuation",
+            "Sentence types"
+          ]
+        },
+        {
+          "unit": "Vocabulary",
+          "topics": [
+            "Synonyms",
+            "Antonyms",
+            "Compound words",
+            "Rhyming words",
+            "Action words",
+            "Describing words",
+            "Homophones",
+            "Word meanings"
+          ]
+        },
+        {
+          "unit": "Writing Skills",
+          "topics": [
+            "Sentence writing",
+            "Paragraph writing",
+            "Creative writing",
+            "Story writing",
+            "Dialogue writing",
+            "Letter writing basics",
+            "Dictation",
+            "Picture composition"
+          ]
+        },
+        {
+          "unit": "Listening and Speaking",
+          "topics": [
+            "Story narration",
+            "Recitation",
+            "Conversation skills",
+            "Role play",
+            "Public speaking basics",
+            "Listening comprehension"
+          ]
+        }
+      ]
+    },
+    {
+      "subject_name": "Kannada",
+      "category": "Language",
+      "concepts": [
+        {
+          "unit": "ಓದು ಕೌಶಲ್ಯ",
+          "topics": [
+            "ಗದ್ಯ ಓದು",
+            "ಪದ್ಯ ಓದು",
+            "ಅರ್ಥಗ್ರಹಣ",
+            "ಕಥೆ ಓದು",
+            "ಚಿತ್ರ ವಿವರಣೆ",
+            "ಘಟನೆಗಳ ಕ್ರಮ"
+          ]
+        },
+        {
+          "unit": "ವ್ಯಾಕರಣ",
+          "topics": [
+            "ನಾಮಪದ",
+            "ಸರ್ವನಾಮ",
+            "ಕ್ರಿಯಾಪದ",
+            "ಗುಣವಾಚಕ",
+            "ವಚನ",
+            "ಲಿಂಗ",
+            "ಕಾಲ",
+            "ವಿರಾಮ ಚಿಹ್ನೆಗಳು"
+          ]
+        },
+        {
+          "unit": "ಪದಸಂಪತ್ತು",
+          "topics": [
+            "ಸಮಾನಾರ್ಥಕ ಪದಗಳು",
+            "ವಿರುದ್ಧಾರ್ಥಕ ಪದಗಳು",
+            "ಸಂಯುಕ್ತ ಪದಗಳು",
+            "ಹೊಸ ಪದಗಳ ಅರ್ಥ"
+          ]
+        },
+        {
+          "unit": "ಬರಹ ಕೌಶಲ್ಯ",
+          "topics": [
+            "ವಾಕ್ಯ ರಚನೆ",
+            "ಪ್ಯಾರಾಗ್ರಾಫ್ ಬರಹ",
+            "ಕಥೆ ಬರಹ",
+            "ಚಿತ್ರ ಆಧಾರಿತ ಬರಹ",
+            "ಶ್ರುತಿಲೇಖನ"
+          ]
+        },
+        {
+          "unit": "ಮಾತನಾಡುವ ಮತ್ತು ಕೇಳುವ ಕೌಶಲ್ಯ",
+          "topics": [
+            "ಕಥೆ ಹೇಳುವುದು",
+            "ಪದ್ಯ ಪಠಣ",
+            "ಸಂವಾದ",
+            "ಪಾತ್ರಭಜನೆ"
+          ]
+        }
+      ]
+    },
+    {
+      "subject_name": "Mathematics",
+      "category": "Core Subject",
+      "concepts": [
+        {
+          "unit": "Numbers",
+          "topics": [
+            "Numbers up to 10000",
+            "Place value",
+            "Face value",
+            "Expanded form",
+            "Comparing numbers",
+            "Ascending order",
+            "Descending order",
+            "Odd and even numbers",
+            "Number patterns"
+          ]
+        },
+        {
+          "unit": "Addition",
+          "topics": [
+            "Addition of 3-digit numbers",
+            "Addition of 4-digit numbers",
+            "Carry over addition",
+            "Word problems"
+          ]
+        },
+        {
+          "unit": "Subtraction",
+          "topics": [
+            "Subtraction of 3-digit numbers",
+            "Subtraction of 4-digit numbers",
+            "Borrowing",
+            "Word problems"
+          ]
+        },
+        {
+          "unit": "Multiplication",
+          "topics": [
+            "Multiplication tables",
+            "Repeated addition",
+            "Multiplication of 2-digit numbers",
+            "Properties of multiplication",
+            "Word problems"
+          ]
+        },
+        {
+          "unit": "Division",
+          "topics": [
+            "Division as repeated subtraction",
+            "Simple division",
+            "Division facts",
+            "Sharing equally",
+            "Word problems"
+          ]
+        },
+        {
+          "unit": "Fractions",
+          "topics": [
+            "Half",
+            "Quarter",
+            "Simple fractions",
+            "Representation of fractions"
+          ]
+        },
+        {
+          "unit": "Measurement",
+          "topics": [
+            "Length",
+            "Weight",
+            "Capacity",
+            "Units of measurement",
+            "Comparing measurements"
+          ]
+        },
+        {
+          "unit": "Geometry",
+          "topics": [
+            "2D shapes",
+            "3D shapes",
+            "Lines",
+            "Curves",
+            "Symmetry",
+            "Patterns"
+          ]
+        },
+        {
+          "unit": "Time and Money",
+          "topics": [
+            "Reading clock",
+            "Calendar",
+            "Days and months",
+            "Currency",
+            "Simple transactions"
+          ]
+        },
+        {
+          "unit": "Data Handling",
+          "topics": [
+            "Pictographs",
+            "Data collection",
+            "Sorting and classification"
+          ]
+        }
+      ]
+    },
+    {
+      "subject_name": "Environmental Studies",
+      "category": "EVS",
+      "concepts": [
+        {
+          "unit": "Living and Non-Living Things",
+          "topics": [
+            "Characteristics of living things",
+            "Non-living things",
+            "Needs of living organisms"
+          ]
+        },
+        {
+          "unit": "Human Body and Health",
+          "topics": [
+            "Body parts",
+            "Sense organs",
+            "Healthy habits",
+            "Personal hygiene",
+            "Exercise and fitness"
+          ]
+        },
+        {
+          "unit": "Family and Society",
+          "topics": [
+            "Types of families",
+            "Relationships",
+            "Helping at home",
+            "Community helpers",
+            "Social behavior"
+          ]
+        },
+        {
+          "unit": "Plants",
+          "topics": [
+            "Parts of plants",
+            "Functions of plant parts",
+            "Types of plants",
+            "Uses of plants",
+            "Plant growth"
+          ]
+        },
+        {
+          "unit": "Animals",
+          "topics": [
+            "Domestic animals",
+            "Wild animals",
+            "Food habits",
+            "Animal homes",
+            "Useful animals"
+          ]
+        },
+        {
+          "unit": "Food",
+          "topics": [
+            "Balanced diet basics",
+            "Sources of food",
+            "Healthy food",
+            "Food preservation"
+          ]
+        },
+        {
+          "unit": "Water and Air",
+          "topics": [
+            "Uses of water",
+            "Sources of water",
+            "Air around us",
+            "Importance of clean air",
+            "Saving water"
+          ]
+        },
+        {
+          "unit": "Transport and Communication",
+          "topics": [
+            "Modes of transport",
+            "Road safety",
+            "Means of communication",
+            "Postal services"
+          ]
+        },
+        {
+          "unit": "Environment and Safety",
+          "topics": [
+            "Clean surroundings",
+            "Waste management basics",
+            "Pollution awareness",
+            "Safety rules"
+          ]
+        }
+      ]
+    },
+    {
+      "subject_name": "Art Education",
+      "category": "Co-Curricular",
+      "concepts": [
+        {
+          "unit": "Drawing and Painting",
+          "topics": [
+            "Nature drawing",
+            "Coloring techniques",
+            "Pattern drawing",
+            "Festival drawings",
+            "Creative imagination"
+          ]
+        },
+        {
+          "unit": "Craft Work",
+          "topics": [
+            "Paper folding",
+            "Origami",
+            "Paper cutting",
+            "Clay work",
+            "Decoration activities"
+          ]
+        }
+      ]
+    },
+    {
+      "subject_name": "Physical Education",
+      "category": "Co-Curricular",
+      "concepts": [
+        {
+          "unit": "Fitness Activities",
+          "topics": [
+            "Running",
+            "Jumping",
+            "Stretching",
+            "Balancing",
+            "Coordination exercises"
+          ]
+        },
+        {
+          "unit": "Games and Sports",
+          "topics": [
+            "Team games",
+            "Outdoor games",
+            "Discipline",
+            "Team spirit",
+            "Healthy lifestyle"
+          ]
+        }
+      ]
+    }
+  ]
+}

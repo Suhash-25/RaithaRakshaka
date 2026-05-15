@@ -1,0 +1,513 @@
+{
+  "board": "Karnataka Textbook Society (KTBS)",
+  "academic_year": "2025-26",
+  "class": "6",
+  "medium": "English",
+  "mediums_available": [
+    "English",
+    "Kannada",
+    "Hindi",
+    "Urdu",
+    "Tamil",
+    "Telugu",
+    "Marathi"
+  ],
+  "subjects": [
+    {
+      "subject_name": "Mathematics",
+      "official_books": [
+        "Mathematics Part 1",
+        "Mathematics Part 2"
+      ],
+      "parts": [
+        {
+          "part": "Part 1",
+          "chapters": [
+            {
+              "chapter_no": 1,
+              "chapter_name": "Knowing Our Numbers",
+              "concepts": [
+                "Large Numbers",
+                "Place Value",
+                "Comparing Numbers",
+                "Estimation",
+                "Roman Numerals",
+                "International Number System"
+              ]
+            },
+            {
+              "chapter_no": 2,
+              "chapter_name": "Whole Numbers",
+              "concepts": [
+                "Natural Numbers",
+                "Whole Numbers",
+                "Successor and Predecessor",
+                "Number Line",
+                "Properties of Whole Numbers"
+              ]
+            },
+            {
+              "chapter_no": 3,
+              "chapter_name": "Playing with Numbers",
+              "concepts": [
+                "Factors",
+                "Multiples",
+                "Prime Numbers",
+                "Composite Numbers",
+                "Divisibility Rules",
+                "HCF",
+                "LCM"
+              ]
+            },
+            {
+              "chapter_no": 4,
+              "chapter_name": "Basic Geometrical Ideas",
+              "concepts": [
+                "Point",
+                "Line",
+                "Line Segment",
+                "Ray",
+                "Parallel Lines",
+                "Intersecting Lines",
+                "Curves",
+                "Polygons"
+              ]
+            },
+            {
+              "chapter_no": 5,
+              "chapter_name": "Understanding Elementary Shapes",
+              "concepts": [
+                "Angles",
+                "Triangles",
+                "Quadrilaterals",
+                "Circles",
+                "Symmetry",
+                "3D Shapes"
+              ]
+            },
+            {
+              "chapter_no": 6,
+              "chapter_name": "Integers",
+              "concepts": [
+                "Positive Integers",
+                "Negative Integers",
+                "Representation on Number Line",
+                "Addition of Integers",
+                "Subtraction of Integers"
+              ]
+            }
+          ]
+        },
+        {
+          "part": "Part 2",
+          "chapters": [
+            {
+              "chapter_no": 7,
+              "chapter_name": "Fractions",
+              "concepts": [
+                "Proper Fractions",
+                "Improper Fractions",
+                "Equivalent Fractions",
+                "Addition of Fractions",
+                "Subtraction of Fractions"
+              ]
+            },
+            {
+              "chapter_no": 8,
+              "chapter_name": "Decimals",
+              "concepts": [
+                "Decimal Representation",
+                "Place Value in Decimals",
+                "Addition of Decimals",
+                "Subtraction of Decimals"
+              ]
+            },
+            {
+              "chapter_no": 9,
+              "chapter_name": "Data Handling",
+              "concepts": [
+                "Data Collection",
+                "Pictographs",
+                "Bar Graphs",
+                "Interpretation of Data"
+              ]
+            },
+            {
+              "chapter_no": 10,
+              "chapter_name": "Mensuration",
+              "concepts": [
+                "Perimeter",
+                "Area",
+                "Area of Rectangle",
+                "Area of Square"
+              ]
+            },
+            {
+              "chapter_no": 11,
+              "chapter_name": "Algebra",
+              "concepts": [
+                "Variables",
+                "Constants",
+                "Expressions",
+                "Patterns",
+                "Simple Equations"
+              ]
+            },
+            {
+              "chapter_no": 12,
+              "chapter_name": "Ratio and Proportion",
+              "concepts": [
+                "Ratio",
+                "Equivalent Ratios",
+                "Proportion",
+                "Unitary Method"
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "subject_name": "Science",
+      "official_books": [
+        "Science Part 1",
+        "Science Part 2"
+      ],
+      "chapters": [
+        {
+          "chapter_no": 1,
+          "chapter_name": "Food: Where Does It Come From?",
+          "concepts": [
+            "Sources of Food",
+            "Plant Products",
+            "Animal Products",
+            "Food Habits"
+          ]
+        },
+        {
+          "chapter_no": 2,
+          "chapter_name": "Components of Food",
+          "concepts": [
+            "Nutrients",
+            "Carbohydrates",
+            "Proteins",
+            "Fats",
+            "Vitamins",
+            "Minerals",
+            "Balanced Diet"
+          ]
+        },
+        {
+          "chapter_no": 3,
+          "chapter_name": "Fibre to Fabric",
+          "concepts": [
+            "Natural Fibres",
+            "Cotton",
+            "Jute",
+            "Fabric Preparation"
+          ]
+        },
+        {
+          "chapter_no": 4,
+          "chapter_name": "Sorting Materials into Groups",
+          "concepts": [
+            "Material Properties",
+            "Classification",
+            "Transparent Materials",
+            "Solubility",
+            "Hardness"
+          ]
+        },
+        {
+          "chapter_no": 5,
+          "chapter_name": "Separation of Substances",
+          "concepts": [
+            "Hand Picking",
+            "Winnowing",
+            "Sieving",
+            "Sedimentation",
+            "Filtration",
+            "Evaporation"
+          ]
+        },
+        {
+          "chapter_no": 6,
+          "chapter_name": "Changes Around Us",
+          "concepts": [
+            "Reversible Changes",
+            "Irreversible Changes",
+            "Physical Changes",
+            "Chemical Changes"
+          ]
+        },
+        {
+          "chapter_no": 7,
+          "chapter_name": "Getting to Know Plants",
+          "concepts": [
+            "Plant Parts",
+            "Root System",
+            "Stem",
+            "Leaf",
+            "Photosynthesis",
+            "Types of Plants"
+          ]
+        },
+        {
+          "chapter_no": 8,
+          "chapter_name": "Body Movements",
+          "concepts": [
+            "Human Skeleton",
+            "Joints",
+            "Movement in Animals",
+            "Muscles"
+          ]
+        },
+        {
+          "chapter_no": 9,
+          "chapter_name": "The Living Organisms and Their Surroundings",
+          "concepts": [
+            "Habitat",
+            "Adaptation",
+            "Characteristics of Living Organisms"
+          ]
+        },
+        {
+          "chapter_no": 10,
+          "chapter_name": "Motion and Measurement of Distances",
+          "concepts": [
+            "Measurement",
+            "Standard Units",
+            "Types of Motion",
+            "Distance"
+          ]
+        },
+        {
+          "chapter_no": 11,
+          "chapter_name": "Light, Shadows and Reflections",
+          "concepts": [
+            "Sources of Light",
+            "Shadow Formation",
+            "Reflection",
+            "Transparent and Opaque Objects"
+          ]
+        },
+        {
+          "chapter_no": 12,
+          "chapter_name": "Electricity and Circuits",
+          "concepts": [
+            "Electric Cell",
+            "Electric Circuit",
+            "Conductors",
+            "Insulators",
+            "Bulb"
+          ]
+        }
+      ]
+    },
+    {
+      "subject_name": "Social Science",
+      "official_books": [
+        "Social Science Part 1",
+        "Social Science Part 2"
+      ],
+      "sections": [
+        {
+          "section_name": "History",
+          "chapters": [
+            "Sources of History",
+            "Prehistoric Age",
+            "Indus Valley Civilization",
+            "Vedic Age",
+            "Ancient Kingdoms"
+          ]
+        },
+        {
+          "section_name": "Geography",
+          "chapters": [
+            "Earth in the Solar System",
+            "Globe",
+            "Maps",
+            "Landforms",
+            "Weather and Climate"
+          ]
+        },
+        {
+          "section_name": "Civics",
+          "chapters": [
+            "Community",
+            "Government",
+            "Citizenship",
+            "Rights and Duties",
+            "Local Administration"
+          ]
+        }
+      ]
+    },
+    {
+      "subject_name": "English",
+      "official_books": [
+        "English First Language Part 1",
+        "English First Language Part 2",
+        "English Second Language Part 1",
+        "English Second Language Part 2"
+      ],
+      "concepts": [
+        {
+          "unit": "Reading Skills",
+          "topics": [
+            "Reading Comprehension",
+            "Prose",
+            "Poetry",
+            "Inference",
+            "Theme Analysis",
+            "Character Study"
+          ]
+        },
+        {
+          "unit": "Grammar",
+          "topics": [
+            "Parts of Speech",
+            "Nouns",
+            "Pronouns",
+            "Verbs",
+            "Adjectives",
+            "Adverbs",
+            "Tenses",
+            "Prepositions",
+            "Conjunctions",
+            "Sentence Formation"
+          ]
+        },
+        {
+          "unit": "Writing Skills",
+          "topics": [
+            "Essay Writing",
+            "Letter Writing",
+            "Story Writing",
+            "Dialogue Writing",
+            "Creative Writing"
+          ]
+        }
+      ]
+    },
+    {
+      "subject_name": "Kannada",
+      "official_books": [
+        "Kannada First Language Part 1",
+        "Kannada First Language Part 2",
+        "Kannada Second Language Part 1",
+        "Kannada Second Language Part 2"
+      ],
+      "concepts": [
+        {
+          "unit": "ಗದ್ಯ",
+          "topics": [
+            "ಅರ್ಥಗ್ರಹಣ",
+            "ಪಾತ್ರ ವಿಶ್ಲೇಷಣೆ",
+            "ಮುಖ್ಯ ಅಂಶಗಳು",
+            "ಕಥೆ ಓದು"
+          ]
+        },
+        {
+          "unit": "ಪದ್ಯ",
+          "topics": [
+            "ಭಾವಾರ್ಥ",
+            "ಛಂದಸ್ಸು",
+            "ಅಲಂಕಾರ"
+          ]
+        },
+        {
+          "unit": "ವ್ಯಾಕರಣ",
+          "topics": [
+            "ನಾಮಪದ",
+            "ಸರ್ವನಾಮ",
+            "ಕ್ರಿಯಾಪದ",
+            "ಗುಣವಾಚಕ",
+            "ಕಾಲ",
+            "ವಚನ",
+            "ಲಿಂಗ"
+          ]
+        }
+      ]
+    },
+    {
+      "subject_name": "Hindi",
+      "official_books": [
+        "Hindi First Language Part 1",
+        "Hindi First Language Part 2"
+      ],
+      "concepts": [
+        {
+          "unit": "गद्य",
+          "topics": [
+            "कहानी",
+            "मुख्य विचार",
+            "अर्थ समझना"
+          ]
+        },
+        {
+          "unit": "पद्य",
+          "topics": [
+            "कविता",
+            "भावार्थ",
+            "ताल और लय"
+          ]
+        },
+        {
+          "unit": "व्याकरण",
+          "topics": [
+            "संज्ञा",
+            "सर्वनाम",
+            "क्रिया",
+            "विशेषण",
+            "काल"
+          ]
+        }
+      ]
+    },
+    {
+      "subject_name": "Physical Education",
+      "official_books": [
+        "Physical Education"
+      ],
+      "concepts": [
+        {
+          "unit": "Fitness",
+          "topics": [
+            "Warm-up Exercises",
+            "Stretching",
+            "Running",
+            "Coordination",
+            "Team Games"
+          ]
+        }
+      ]
+    },
+    {
+      "subject_name": "Art Education",
+      "official_books": [
+        "Art Education"
+      ],
+      "concepts": [
+        {
+          "unit": "Drawing and Craft",
+          "topics": [
+            "Sketching",
+            "Painting",
+            "Origami",
+            "Clay Modelling",
+            "Creative Craft"
+          ]
+        }
+      ]
+    }
+  ],
+  "source_reference": {
+    "official_portal": "[Karnataka Textbook Society Portal](https://textbooks.karnataka.gov.in/textbooks/en/1000?utm_source=chatgpt.com)",
+    "verified_sources": [
+      "KTBS PDF Textbooks",
+      "KSEEB Chapter Listings",
+      "NCERT-Aligned Karnataka Curriculum"
+    ]
+  }
+}

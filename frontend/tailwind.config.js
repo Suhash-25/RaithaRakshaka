@@ -47,10 +47,11 @@ export default {
         },
         'surface-text': 'rgb(var(--color-text) / <alpha-value>)',
         accent: {
-          teal:   '#2DD4BF',
-          amber:  '#FBBF24',
-          rose:   '#F23E36',
-          blue:   '#60A5FA',
+          teal:   'rgb(var(--color-accent-teal) / <alpha-value>)',
+          amber:  'rgb(var(--color-accent-amber) / <alpha-value>)',
+          rose:   'rgb(var(--color-accent-rose) / <alpha-value>)',
+          emerald: 'rgb(var(--color-accent-emerald) / <alpha-value>)',
+          blue:   'rgb(var(--color-accent-blue) / <alpha-value>)',
         },
       },
       backgroundImage: {

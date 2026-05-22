@@ -23,33 +23,33 @@ export default defineConfig({
       },
       manifest: {
         id: '/',
-        name: 'Pragna Vistara',
-        short_name: 'Pragna',
-        description: 'Installable offline-first learning app with local questions, explanations, and progress sync.',
+        name: 'KrishiRakshak AI',
+        short_name: 'KrishiRakshak',
+        description: 'AI-powered farmer welfare and rural intelligence platform.',
         lang: 'en',
         dir: 'ltr',
         start_url: '/',
         scope: '/',
-        theme_color: '#6C63FF',
-        background_color: '#0F172A',
+        theme_color: '#020b03',
+        background_color: '#020b03',
         display: 'standalone',
         display_override: ['window-controls-overlay', 'standalone', 'minimal-ui'],
         orientation: 'portrait-primary',
-        categories: ['education', 'productivity'],
+        categories: ['productivity', 'utilities'],
         screenshots: [
           {
             src: 'pwa-512x512.png',
             sizes: '512x512',
             type: 'image/png',
             form_factor: 'narrow',
-            label: 'Pragna Vistara learning app',
+            label: 'KrishiRakshak AI learning app',
           },
           {
             src: 'pwa-512x512.png',
             sizes: '512x512',
             type: 'image/png',
             form_factor: 'wide',
-            label: 'Pragna Vistara desktop app',
+            label: 'KrishiRakshak AI desktop app',
           },
         ],
         icons: [
@@ -91,6 +91,7 @@ export default defineConfig({
       },
       workbox: {
         globPatterns: ['**/*.{js,css,html,svg,png,woff2,webmanifest}'],
+        maximumFileSizeToCacheInBytes: 5 * 1024 * 1024,
         cleanupOutdatedCaches: true,
         navigateFallback: '/index.html',
         navigateFallbackDenylist: [/^\/api\//],
@@ -153,7 +154,7 @@ export default defineConfig({
     port: 5173,
     proxy: {
       '/api': {
-        target: 'http://localhost:8010',
+        target: 'http://localhost:8001',
         changeOrigin: true,
       },
     },

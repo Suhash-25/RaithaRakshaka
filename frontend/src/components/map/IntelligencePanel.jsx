@@ -47,6 +47,12 @@ export default function IntelligencePanel({ data, loading, onClose }) {
               <div className="panel-subtitle">
                 <MapPin size={14} /> {data.basic.state || data.basic.district || data.basic.country}
               </div>
+              {data.land_cover && (
+                <div className={`land-cover-badge ${data.land_cover.agriculture_allowed ? 'ok' : 'limited'}`}>
+                  <strong>{data.land_cover.label}</strong>
+                  <span>{data.land_cover.message}</span>
+                </div>
+              )}
 
               <div className="map-score-row">
                 <div className="land-score">

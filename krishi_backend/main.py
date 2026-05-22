@@ -5,7 +5,7 @@ import time
 from typing import Dict, List, Optional
 from dotenv import load_dotenv
 
-load_dotenv()
+load_dotenv(os.path.join(os.path.dirname(__file__), ".env"))
 
 from fastapi import FastAPI, File, UploadFile
 from fastapi.middleware.cors import CORSMiddleware
@@ -65,6 +65,7 @@ class CropRecommendationRequest(LocationRequest):
 
 GEO_CACHE: Dict[str, dict] = {}
 CACHE_TTL_SECONDS = 15 * 60
+ENABLE_SOILGRIDS = os.getenv("ENABLE_SOILGRIDS", "true").lower() == "true"
 
 # Helper for Groq since we want to move off Ollama
 import httpx
@@ -88,6 +89,29 @@ async def groq_generate(prompt: str, system: str = "") -> str:
         )
         resp.raise_for_status()
         return resp.json()["choices"][0]["message"]["content"]
+
+def provider_status() -> dict:
+    return {
+        "live_ai": {
+            "groq_configured": bool(os.getenv("GROQ_API_KEY")),
+            "openrouter_configured": bool(os.getenv("OPENROUTER_API_KEY")),
+        },
+        "search": {"tavily_configured": bool(os.getenv("TAVILY_API_KEY"))},
+        "weather": {"open_meteo": True},
+        "soil": {"soilgrids_enabled": ENABLE_SOILGRIDS},
+        "satellite": {"nasa_earthdata_configured": bool(os.getenv("NASA_EARTHDATA_TOKEN"))},
+        "market": {"data_gov_configured": bool(os.getenv("DATA_GOV_API_KEY"))},
+        "memory": {
+            "supabase_configured": bool(
+                os.getenv("SUPABASE_URL")
+                and (
+                    os.getenv("SUPABASE_PUBLISHABLE_KEY")
+                    or os.getenv("SUPABASE_ANON_KEY")
+                    or os.getenv("SUPABASE_SERVICE_ROLE_KEY")
+                )
+            ),
+        },
+    }
 
 def cache_key(prefix: str, lat: float, lon: float) -> str:
     return f"{prefix}:{round(lat, 3)}:{round(lon, 3)}"
@@ -182,13 +206,13 @@ async def reverse_geocode(lat: float, lon: float) -> dict:
     if cached:
         return cached
     try:
-        async with httpx.AsyncClient(timeout=4, headers={"User-Agent": "RaithaRakshakaAI/2.0"}) as client:
+        async with httpx.AsyncClient(timeout=7, headers={"User-Agent": "RaithaRakshakaAI/2.0"}) as client:
             resp = await asyncio.wait_for(
                 client.get(
                     "https://nominatim.openstreetmap.org/reverse",
                     params={"lat": lat, "lon": lon, "format": "jsonv2", "zoom": 12, "addressdetails": 1},
                 ),
-                timeout=0.9,
+                timeout=3.5,
             )
             resp.raise_for_status()
             data = resp.json()
@@ -199,10 +223,52 @@ async def reverse_geocode(lat: float, lon: float) -> dict:
             "state": address.get("state") or "",
             "country": address.get("country") or "Unknown",
             "display_name": data.get("display_name") or "",
+            "category": data.get("category") or "",
+            "osm_type": data.get("type") or "",
+            "address": address,
         }
     except Exception:
-        value = {"region": "Selected land parcel", "district": "", "state": "", "country": "Unknown", "display_name": ""}
+        value = {"region": "Selected land parcel", "district": "", "state": "", "country": "Unknown", "display_name": "", "category": "", "osm_type": "", "address": {}}
     return set_cached(key, value)
+
+def classify_land(region: dict, lat: float, lon: float, agro: Optional[dict] = None) -> dict:
+    category = str(region.get("category", "")).lower()
+    osm_type = str(region.get("osm_type", "")).lower()
+    address = region.get("address") or {}
+    display = str(region.get("display_name", "")).lower()
+    text = " ".join([category, osm_type, display, " ".join(str(v).lower() for v in address.values())])
+
+    if any(token in text for token in ["sea", "ocean", "bay", "water", "river", "reservoir", "lake", "canal"]):
+        return {
+            "class": "water",
+            "label": "Water body detected",
+            "agriculture_allowed": False,
+            "confidence": 84,
+            "message": "Detected a water body. Agriculture soil analysis is not applicable here.",
+        }
+    if any(token in text for token in ["building", "residential", "commercial", "industrial", "road", "highway", "suburb", "city"]):
+        return {
+            "class": "urban",
+            "label": "Urban or built-up region",
+            "agriculture_allowed": False,
+            "confidence": 72,
+            "message": "Detected built-up or urban land. Farming analysis is limited unless this is a rooftop or peri-urban farm.",
+        }
+    if any(token in text for token in ["forest", "wood", "wildlife", "national park", "reserve"]):
+        return {
+            "class": "forest",
+            "label": "Dense vegetation or forest",
+            "agriculture_allowed": False,
+            "confidence": 76,
+            "message": "Detected dense vegetation/forest. Crop conversion may be restricted and ecological risk should be reviewed.",
+        }
+    if any(token in text for token in ["farm", "farmland", "field", "village", "hamlet", "agriculture", "crop"]):
+        return {"class": "farmland", "label": "Agricultural/rural land", "agriculture_allowed": True, "confidence": 78, "message": "Rural or agricultural landscape detected."}
+
+    ndvi = (agro or {}).get("ndvi", 0.4)
+    if ndvi >= 0.58:
+        return {"class": "vegetation", "label": "Vegetated land", "agriculture_allowed": True, "confidence": 62, "message": "Vegetation signal suggests possible farm, plantation, or green cover."}
+    return {"class": "mixed_land", "label": "Mixed land parcel", "agriculture_allowed": True, "confidence": 55, "message": "No restrictive land cover detected; running agriculture suitability scan."}
 
 async def fetch_point_weather(lat: float, lon: float) -> dict:
     key = cache_key("weather", lat, lon)
@@ -210,7 +276,7 @@ async def fetch_point_weather(lat: float, lon: float) -> dict:
     if cached:
         return cached
     try:
-        async with httpx.AsyncClient(timeout=5) as client:
+        async with httpx.AsyncClient(timeout=8) as client:
             resp = await asyncio.wait_for(
                 client.get(
                     "https://api.open-meteo.com/v1/forecast",
@@ -223,7 +289,7 @@ async def fetch_point_weather(lat: float, lon: float) -> dict:
                         "timezone": "auto",
                     },
                 ),
-                timeout=1.2,
+                timeout=4.0,
             )
             resp.raise_for_status()
             data = resp.json()
@@ -281,13 +347,13 @@ async def fetch_elevation(lat: float, lon: float) -> float:
     if cached is not None:
         return cached.get("elevation", 0)
     try:
-        async with httpx.AsyncClient(timeout=4) as client:
+        async with httpx.AsyncClient(timeout=6) as client:
             resp = await asyncio.wait_for(
                 client.get(
                     "https://api.open-meteo.com/v1/elevation",
                     params={"latitude": lat, "longitude": lon},
                 ),
-                timeout=0.9,
+                timeout=3.0,
             )
             resp.raise_for_status()
             elevation = float((resp.json().get("elevation") or [0])[0] or 0)
@@ -295,6 +361,81 @@ async def fetch_elevation(lat: float, lon: float) -> float:
         elevation = round(250 + abs(math.sin(math.radians(lat * lon))) * 650)
     set_cached(key, {"elevation": elevation})
     return elevation
+
+async def fetch_soilgrids(lat: float, lon: float) -> Optional[dict]:
+    if not ENABLE_SOILGRIDS:
+        return None
+    key = cache_key("soilgrids", lat, lon)
+    cached = get_cached(key)
+    if cached:
+        return cached
+    try:
+        params = [
+            ("lat", lat),
+            ("lon", lon),
+            ("property", "phh2o"),
+            ("property", "nitrogen"),
+            ("property", "soc"),
+            ("property", "clay"),
+            ("property", "sand"),
+            ("depth", "0-5cm"),
+            ("value", "mean"),
+        ]
+        async with httpx.AsyncClient(timeout=6) as client:
+            response = await asyncio.wait_for(
+                client.get("https://rest.isric.org/soilgrids/v2.0/properties/query", params=params),
+                timeout=3.5,
+            )
+            response.raise_for_status()
+            data = response.json()
+        layers = data.get("properties", {}).get("layers", [])
+        values = {}
+        for layer in layers:
+            name = layer.get("name")
+            depth = (layer.get("depths") or [{}])[0]
+            mean = ((depth.get("values") or {}).get("mean"))
+            if mean is not None:
+                values[name] = mean
+        if not values:
+            return None
+        ph = round(values.get("phh2o", 650) / 100, 1)
+        nitrogen = round(clamp(values.get("nitrogen", 250) / 10))
+        organic_carbon = round(values.get("soc", 180) / 10, 1)
+        clay = round(values.get("clay", 250) / 10)
+        sand = round(values.get("sand", 450) / 10)
+        if clay > 35:
+            soil_type = "Clay-rich black soil"
+        elif sand > 55:
+            soil_type = "Sandy soil"
+        elif organic_carbon > 20:
+            soil_type = "Organic-rich loam"
+        else:
+            soil_type = "Loamy agricultural soil"
+        result = {
+            "type": soil_type,
+            "ph": ph,
+            "nitrogen": nitrogen,
+            "organic_carbon": organic_carbon,
+            "clay": clay,
+            "sand": sand,
+            "source": "SoilGrids public API",
+        }
+        return set_cached(key, result)
+    except Exception:
+        return None
+
+def apply_soilgrids(agro: dict, soilgrids: Optional[dict]) -> dict:
+    if not soilgrids:
+        return agro
+    updated = dict(agro)
+    updated["soil_type"] = soilgrids.get("type", updated["soil_type"])
+    updated["soil_ph"] = soilgrids.get("ph", updated["soil_ph"])
+    updated["nitrogen"] = soilgrids.get("nitrogen", updated["nitrogen"])
+    updated["phosphorus"] = round(clamp(updated["phosphorus"] + soilgrids.get("organic_carbon", 0) * 0.15))
+    updated["potassium"] = round(clamp(updated["potassium"] + soilgrids.get("clay", 0) * 0.12))
+    updated["fertility"] = "High" if soilgrids.get("organic_carbon", 0) > 20 and updated["soil_moisture"] > 45 else updated["fertility"]
+    updated["soil_source"] = soilgrids.get("source")
+    return updated
 
 def ai_land_recommendations(region: dict, weather: dict, agro: dict) -> List[str]:
     recs = []
@@ -337,11 +478,12 @@ async def weather_data(req: LocationRequest):
 
 @app.post("/api/soil-data")
 async def soil_data(req: LocationRequest):
-    weather, elevation = await asyncio.gather(
+    weather, elevation, soilgrids = await asyncio.gather(
         fetch_point_weather(req.latitude, req.longitude),
         fetch_elevation(req.latitude, req.longitude),
+        fetch_soilgrids(req.latitude, req.longitude),
     )
-    agro = agronomy_from_weather(weather, elevation, req.latitude, req.longitude)
+    agro = apply_soilgrids(agronomy_from_weather(weather, elevation, req.latitude, req.longitude), soilgrids)
     return {
         "latitude": req.latitude,
         "longitude": req.longitude,
@@ -354,18 +496,19 @@ async def soil_data(req: LocationRequest):
             "nitrogen": agro["nitrogen"],
             "phosphorus": agro["phosphorus"],
             "potassium": agro["potassium"],
-            "source": "Open-Meteo weather + terrain-informed agronomy model",
+            "source": agro.get("soil_source") or "Open-Meteo weather + terrain-informed agronomy model",
         },
         "updated_at": now_iso(),
     }
 
 @app.post("/api/ndvi-analysis")
 async def ndvi_analysis(req: LocationRequest):
-    weather, elevation = await asyncio.gather(
+    weather, elevation, soilgrids = await asyncio.gather(
         fetch_point_weather(req.latitude, req.longitude),
         fetch_elevation(req.latitude, req.longitude),
+        fetch_soilgrids(req.latitude, req.longitude),
     )
-    agro = agronomy_from_weather(weather, elevation, req.latitude, req.longitude)
+    agro = apply_soilgrids(agronomy_from_weather(weather, elevation, req.latitude, req.longitude), soilgrids)
     return {
         "latitude": req.latitude,
         "longitude": req.longitude,
@@ -381,12 +524,13 @@ async def ndvi_analysis(req: LocationRequest):
 
 @app.post("/api/crop-recommendation")
 async def crop_recommendation(req: CropRecommendationRequest):
-    weather, region, elevation = await asyncio.gather(
+    weather, region, elevation, soilgrids = await asyncio.gather(
         fetch_point_weather(req.latitude, req.longitude),
         reverse_geocode(req.latitude, req.longitude),
         fetch_elevation(req.latitude, req.longitude),
+        fetch_soilgrids(req.latitude, req.longitude),
     )
-    agro = agronomy_from_weather(weather, elevation, req.latitude, req.longitude)
+    agro = apply_soilgrids(agronomy_from_weather(weather, elevation, req.latitude, req.longitude), soilgrids)
     return {
         "suitable_crops": agro["suitable_crops"],
         "seasonal_recommendations": [
@@ -408,13 +552,17 @@ async def crop_recommendation(req: CropRecommendationRequest):
 @app.post("/api/analyze-location")
 async def analyze_location(req: LocationRequest):
     lat, lon = req.latitude, req.longitude
-    region, weather, elevation = await asyncio.gather(
+    region, weather, elevation, soilgrids = await asyncio.gather(
         reverse_geocode(lat, lon),
         fetch_point_weather(lat, lon),
         fetch_elevation(lat, lon),
+        fetch_soilgrids(lat, lon),
     )
-    agro = agronomy_from_weather(weather, elevation, lat, lon)
+    agro = apply_soilgrids(agronomy_from_weather(weather, elevation, lat, lon), soilgrids)
+    land_cover = classify_land(region, lat, lon, agro)
     recommendations = ai_land_recommendations(region, weather, agro)
+    if not land_cover["agriculture_allowed"]:
+        recommendations = [land_cover["message"], "Select nearby rural/farm land for full crop, soil, and irrigation recommendations."]
     return {
         "status": "success",
         "updated_at": now_iso(),
@@ -427,6 +575,7 @@ async def analyze_location(req: LocationRequest):
             "country": region["country"],
             "elevation": round(elevation),
         },
+        "land_cover": land_cover,
         "weather": weather,
         "soil": {
             "type": agro["soil_type"],
@@ -436,6 +585,7 @@ async def analyze_location(req: LocationRequest):
             "nitrogen": agro["nitrogen"],
             "phosphorus": agro["phosphorus"],
             "potassium": agro["potassium"],
+            "source": agro.get("soil_source") or "SoilGrids unavailable; terrain/weather calibrated model",
         },
         "agriculture": {
             "suitable_crops": agro["suitable_crops"],
@@ -465,7 +615,7 @@ async def analyze_location(req: LocationRequest):
             weather["source"],
             "OpenStreetMap Nominatim reverse geocoding",
             "Open-Meteo elevation",
-            "terrain and weather calibrated agronomy fallback model",
+            agro.get("soil_source") or "terrain and weather calibrated agronomy fallback model",
         ],
     }
 
@@ -484,6 +634,10 @@ async def get_weather(location: str = "Bangalore"):
     result["agent_flow"] = ctx.agent_flow
     return result
 
+@app.get("/api/provider-status")
+async def get_provider_status():
+    return {"status": "ok", "providers": provider_status(), "updated_at": now_iso()}
+
 @app.post("/api/schemes/eligible")
 async def get_schemes(req: SchemeRequest):
     profile = req.model_dump()
@@ -493,21 +647,84 @@ async def get_schemes(req: SchemeRequest):
     return result
 
 @app.get("/api/market/{crop}")
-async def market_data(crop: str, state: str = "Karnataka"):
-    ctx = SharedContext(query=f"Market price for {crop}", farmer_profile={"crop": crop, "state": state})
-    result = await market_agent.run(ctx, crop=crop, state=state)
+async def market_data(
+    crop: str,
+    state: str = "Karnataka",
+    location: str = "Bangalore",
+    district: Optional[str] = None,
+    mandi: Optional[str] = None,
+    latitude: Optional[float] = None,
+    longitude: Optional[float] = None,
+):
+    requested_district = district or location
+    profile = {
+        "crop": crop,
+        "state": state,
+        "location": requested_district,
+        "district": requested_district,
+        "mandi": mandi or requested_district,
+        "latitude": latitude,
+        "longitude": longitude,
+    }
+    ctx = SharedContext(query=f"Market price for {crop}", farmer_profile=profile)
+    result = await market_agent.run(
+        ctx,
+        crop=crop,
+        state=state,
+        location=requested_district,
+        district=requested_district,
+        mandi=mandi or requested_district,
+        latitude=latitude,
+        longitude=longitude,
+    )
     result["agent_flow"] = ctx.agent_flow
     return result
 
 @app.get("/api/market")
-async def all_markets(state: str = "Karnataka"):
+async def all_markets(
+    state: str = "Karnataka",
+    location: str = "Bangalore",
+    district: Optional[str] = None,
+    mandi: Optional[str] = None,
+    latitude: Optional[float] = None,
+    longitude: Optional[float] = None,
+):
+    requested_district = district or location
     crops = ["tomato", "onion", "potato", "rice", "wheat", "maize"]
-    trending = []
-    for crop in crops:
-        ctx = SharedContext(query=f"Market price for {crop}", farmer_profile={"crop": crop, "state": state})
-        data = await market_agent.run(ctx, crop=crop, state=state)
-        trending.append({"crop": data["crop"], "price": data["current_price"], "change": data["price_change"], "source": data["source"]})
-    return {"trending": trending, "updated_at": now_iso()}
+    async def fetch_crop(crop: str):
+        profile = {
+            "crop": crop,
+            "state": state,
+            "location": requested_district,
+            "district": requested_district,
+            "mandi": mandi or requested_district,
+            "latitude": latitude,
+            "longitude": longitude,
+        }
+        ctx = SharedContext(query=f"Market price for {crop}", farmer_profile=profile)
+        data = await market_agent.run(
+            ctx,
+            crop=crop,
+            state=state,
+            location=requested_district,
+            district=requested_district,
+            mandi=mandi or requested_district,
+            latitude=latitude,
+            longitude=longitude,
+        )
+        if data.get("available"):
+            return {
+                "crop": data["crop"],
+                "price": data["current_price"],
+                "change": data["price_change"],
+                "source": data["source"],
+                "location": data.get("location") or requested_district,
+                "state": data.get("state") or state,
+            }
+        return None
+    results = await asyncio.gather(*(fetch_crop(crop) for crop in crops), return_exceptions=True)
+    trending = [item for item in results if isinstance(item, dict)]
+    return {"trending": trending, "location": requested_district, "state": state, "updated_at": now_iso()}
 
 @app.post("/api/wellness/support")
 async def wellness(req: WellnessRequest):
@@ -536,12 +753,14 @@ async def wellness(req: WellnessRequest):
 @app.get("/api/dashboard")
 async def dashboard(location: str = "Bangalore", crop: str = "Tomato", state: str = "Karnataka", land_acres: float = 2):
     profile = {"location": location, "crop": crop, "state": state, "land_acres": land_acres, "category": "small"}
+    weather_ctx = SharedContext(query=f"Weather risk for {location}", farmer_profile=profile)
     scheme_ctx = SharedContext(query=f"Find schemes for {crop}", farmer_profile=profile)
-    schemes = await scheme_agent.run(scheme_ctx, profile)
-    market = market_agent.cached_market(crop)
     market_ctx = SharedContext(query=f"Market price for {crop}", farmer_profile=profile)
-    market_ctx.agent_flow.append({"agent": "Market Price Agent", "status": "success", "message": "Used instant cached mandi baseline"})
-    weather = weather_agent.offline_weather(location, "fast dashboard mode")
+    weather, schemes, market = await asyncio.gather(
+        weather_agent.run(weather_ctx, location=location),
+        scheme_agent.run(scheme_ctx, profile),
+        market_agent.run(market_ctx, crop=crop, state=state, location=location),
+    )
     
     fungal = weather.get("risk_scores", {}).get("fungal_spread", 0)
     health_score = max(35, 100 - int(fungal * 0.35))
@@ -560,7 +779,8 @@ async def dashboard(location: str = "Bangalore", crop: str = "Tomato", state: st
         "market_trend": market.get("trend", "stable").title(),
         "ai_tip": ai_tip,
         "agent_flow": [
-            {"agent": "Fast Dashboard Orchestrator", "status": "success", "message": "Returned instant cached agronomy summary"},
+            {"agent": "Live Dashboard Orchestrator", "status": "success", "message": "Merged weather, scheme, and market intelligence"},
+            *weather_ctx.agent_flow,
             *scheme_ctx.agent_flow,
             *market_ctx.agent_flow,
         ],
@@ -579,6 +799,7 @@ async def custom_health():
         "status": "healthy",
         "service": "RaithaRakshaka Multi-Agent AI",
         "version": "2.0.0",
+        "providers": provider_status(),
         "agents": [
             "Weather Tool",
             "Market Tool",

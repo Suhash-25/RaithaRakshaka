@@ -1,8 +1,21 @@
 import axios from 'axios';
 
 const BASE = import.meta.env.VITE_API_URL || 'http://localhost:8001';
-
 const api = axios.create({ baseURL: BASE, timeout: 30000 });
+
+// Simple memory cache for instant navigation
+const cache = new Map();
+const CACHE_TTL = 5 * 60 * 1000; // 5 minutes
+
+const fetchWithCache = async (key, fetcher) => {
+  const cached = cache.get(key);
+  if (cached && Date.now() - cached.timestamp < CACHE_TTL) {
+    return Promise.resolve(cached.data);
+  }
+  const data = await fetcher();
+  cache.set(key, { data, timestamp: Date.now() });
+  return data;
+};
 
 // ─── CHAT ─────────────────────────────────────────────
 export const sendChat = (message, language = 'en') =>
@@ -19,18 +32,26 @@ export const detectDisease = (file) => {
 
 // ─── WEATHER ──────────────────────────────────────────
 export const getWeather = (location = 'Bangalore') =>
-  api.get(`/api/weather?location=${encodeURIComponent(location)}`).then(r => r.data);
+  fetchWithCache(`weather-${location}`, () => 
+    api.get(`/api/weather?location=${encodeURIComponent(location)}`).then(r => r.data)
+  );
 
 // ─── SCHEMES ──────────────────────────────────────────
 export const getSchemes = (payload) =>
-  api.post('/api/schemes/eligible', payload).then(r => r.data);
+  fetchWithCache(`schemes-${JSON.stringify(payload)}`, () =>
+    api.post('/api/schemes/eligible', payload).then(r => r.data)
+  );
 
 // ─── MARKET ───────────────────────────────────────────
 export const getMarket = (crop) =>
-  api.get(`/api/market/${encodeURIComponent(crop)}`).then(r => r.data);
+  fetchWithCache(`market-${crop}`, () =>
+    api.get(`/api/market/${encodeURIComponent(crop)}`).then(r => r.data)
+  );
 
 export const getAllMarkets = () =>
-  api.get('/api/market').then(r => r.data);
+  fetchWithCache('markets-all', () =>
+    api.get('/api/market').then(r => r.data)
+  );
 
 // ─── WELLNESS ─────────────────────────────────────────
 export const getWellness = (concern, language = 'en') =>
@@ -38,4 +59,6 @@ export const getWellness = (concern, language = 'en') =>
 
 // ─── DASHBOARD ────────────────────────────────────────
 export const getDashboard = () =>
-  api.get('/api/dashboard').then(r => r.data);
+  fetchWithCache('dashboard', () =>
+    api.get('/api/dashboard').then(r => r.data)
+  );

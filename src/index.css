@@ -150,6 +150,7 @@ body {
   backdrop-filter: blur(20px);
   -webkit-backdrop-filter: blur(20px);
   border-bottom: 1px solid var(--border);
+  padding-top: env(safe-area-inset-top);
 }
 
 /* ─── GLOW ORBS ─── */
@@ -410,7 +411,10 @@ body {
 /* ─── PAGE LAYOUT ─── */
 .page-container {
   min-height: 100vh;
-  padding-top: 72px;
+  padding-top: calc(72px + env(safe-area-inset-top));
+  padding-bottom: env(safe-area-inset-bottom);
+  padding-left: env(safe-area-inset-left);
+  padding-right: env(safe-area-inset-right);
   background: var(--bg-primary);
 }
 

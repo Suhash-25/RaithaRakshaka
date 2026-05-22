@@ -1,97 +1,83 @@
-# Pragna Vistara (formerly Edu-Sakhi)
+# RaithaRakshak AI
 
-AI-powered educational platform for **Classes 9 to 12** — featuring misconception detection, visual learning, offline-first study sessions, and a comprehensive, high-quality, topic-specific question bank.
+AI-powered farmer welfare and rural intelligence platform with a live multi-agent backend, real-time weather, smart map analysis, crop diagnostics, scheme matching, and mandi price integration.
 
-## Content Architecture & Workflow
+## Live System
 
-The platform has transitioned from generic, template-driven questions to a **Universal Educational Curriculum** built on highly structured, subject-specific catalogs. This ensures that questions reflect genuine technical depth and mirror the scaffolded structure of board exams (CBSE/NCERT).
+- Frontend: React 18 + Vite + Framer Motion + React Leaflet
+- Backend: FastAPI + async Python services
+- AI: Groq/OpenRouter-compatible chat synthesis, Tavily live search, local-first Ollama hooks
+- Weather: Open-Meteo live forecast and elevation
+- Soil: SoilGrids public API with terrain/weather-calibrated fallback only when the public service is unavailable
+- Maps: OpenStreetMap, click-to-analyze, land-cover detection, crop suitability, irrigation, pest/disease risk
+- Market: Agmarknet 2.0 live mandi reports filtered by crop and selected location, with Data.gov.in as fallback
 
-### 1. Catalog Registry System
-All educational content is organized into dedicated Javascript files categorized by class and subject (e.g., `catalogs/class-12/chemistry.js`).
-- **Lazy Loading**: To ensure high performance, subject catalogs are lazy-loaded via `frontend/src/data/catalogRegistry.js`. (Class 12 Physics is eagerly loaded as the benchmark).
-- **Universal Rendering**: The frontend routing and UI components (`SubjectChaptersPage`, `SubjectLearningPage`) are completely subject-agnostic. They read the active catalog from the registry and dynamically render the topics and questions.
+## Run Backend
 
-### 2. Catalog Data Schema
-Every chapter in a catalog file is broken down into specific topics. Each topic contains structured arrays of:
-- **MCQ**: Multiple-choice questions with explicit `correctIndex` and `explanation`.
-- **Numerical**: Calculation-based questions with expected `answer`, `unit`, step-by-step `solution`, and `hint`.
-- **Questions (Conceptual)**: Deep-dive theory questions. The student's free-text answer is evaluated by the AI against an array of `expectedConcepts`.
-- **Misconceptions**: Specialized probes designed to catch common student errors. The AI evaluates student responses against `detectKeywords` and provides a predefined `correction`.
-
-### 3. File Structure
-```text
-frontend/src/data/
-├── catalogRegistry.js             # Central registry and loader
-├── learningCatalog.js             # Subject metadata, icons, and colors
-└── catalogs/
-    ├── class-12/
-    │   ├── chemistry.js           # E.g., Solutions, Electrochemistry
-    │   ├── mathematics.js         # E.g., Calculus, Algebra
-    │   ├── biology.js             # E.g., Genetics, Ecology
-    │   └── english.js             # E.g., Flamingo, Vistas
-    ├── class-11/ ...
-    └── class-10/ ...
+```powershell
+cd krishi_backend
+.\venv\Scripts\activate
+pip install -r requirements.txt
+python -m uvicorn main:app --host 127.0.0.1 --port 8001
 ```
 
-## Tech Stack
+Health and provider status:
 
-| Layer    | Technology                           |
-|----------|--------------------------------------|
-| Frontend | React 18 + Vite + Tailwind CSS + PWA |
-| Backend  | FastAPI (Python 3.11+)               |
-| Storage  | IndexedDB (offline) via `idb`        |
-
-## Project Structure
-
-```text
-Edu-Sakhi/
-├── frontend/                  # React + Vite PWA
-│   ├── src/
-│   │   ├── components/        # Layout, Navbar, UI elements
-│   │   ├── data/              # Content architecture (catalogs)
-│   │   ├── hooks/             # Custom React hooks
-│   │   ├── pages/             # Subject pages, learning interfaces
-│   │   ├── services/          # API client
-│   │   └── utils/             # IndexedDB utilities
-│   ├── vite.config.js
-│   ├── tailwind.config.js
-│   └── package.json
-│
-├── backend/                   # FastAPI server
-│   ├── app/
-│   │   ├── routes/            # AI analysis endpoints
-│   │   ├── config.py          # Environment settings
-│   │   └── schemas.py         # Request/response validation
-│   ├── main.py                # Server entry point
-│   └── requirements.txt
+```powershell
+Invoke-RestMethod http://127.0.0.1:8001/api/health
+Invoke-RestMethod http://127.0.0.1:8001/api/provider-status
 ```
 
-## Getting Started
+## Run Frontend
 
-### Frontend
-
-```bash
+```powershell
 cd frontend
 npm install
-npm run dev          # http://localhost:5173
+npm run dev -- --host=127.0.0.1 --port=5173
 ```
 
-### Backend
+Open:
 
-```bash
-cd backend
-python -m venv .venv
-.venv\Scripts\activate   # Windows
-pip install -r requirements.txt
-cp .env.example .env
-python main.py           # http://localhost:8000
+```text
+http://127.0.0.1:5173
 ```
 
-## Roadmap
+## Environment
 
-- [x] Phase 1 — Core App Scaffolding (React + FastAPI)
-- [x] Phase 2 — Transition to Pragna Vistara Branding
-- [x] Phase 3 — Universal Content Architecture & Catalog Registry
-- [ ] Phase 4 — AI Integration (Gemini for conceptual evaluation)
-- [ ] Phase 5 — Visual diagram generation
-- [ ] Phase 6 — Authentication & Teacher Dashboard
+Backend secrets live in `krishi_backend/.env`, which is ignored by git. Required keys:
+
+```env
+GROQ_API_KEY=
+OPENROUTER_API_KEY=
+TAVILY_API_KEY=
+NASA_EARTHDATA_TOKEN=
+DATA_GOV_API_KEY=
+ENABLE_LIVE_AI=true
+ENABLE_TAVILY_SEARCH=true
+ENABLE_SOILGRIDS=true
+ENABLE_OLLAMA_SUMMARY=false
+```
+
+Supabase memory is not enabled until both the real project API URL and an anon/service key are added:
+
+```env
+SUPABASE_URL=
+SUPABASE_ANON_KEY=
+```
+
+## Main Endpoints
+
+- `POST /api/chat`
+- `POST /api/analyze-location`
+- `POST /api/weather-data`
+- `POST /api/soil-data`
+- `POST /api/ndvi-analysis`
+- `POST /api/crop-recommendation`
+- `GET /api/weather?location=Mysuru`
+- `GET /api/market/Tomato`
+- `GET /api/dashboard`
+- `GET /api/provider-status`
+
+## Notes
+
+The app avoids fake market values. Market prices now come from the public Agmarknet 2.0 report API behind `https://agmarknet.gov.in/daily-price-and-arrival-report`; if that service and the Data.gov.in fallback return no records, the UI shows a live-feed unavailable state instead of invented prices. The smart map still returns weather, terrain, land-cover, and agronomy intelligence, and labels data sources in the response.

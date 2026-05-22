@@ -80,7 +80,7 @@ function TypingIndicator() {
 }
 
 export default function ChatPage() {
-  const { showToast, language } = useApp();
+  const { showToast, language, location } = useApp();
   const [messages, setMessages] = useState([WELCOME]);
   const [input, setInput] = useState('');
   const [loading, setLoading] = useState(false);
@@ -99,7 +99,7 @@ export default function ChatPage() {
     setMessages(prev => [...prev, { role: 'user', text: msg, time: new Date() }]);
     setLoading(true);
     try {
-      const data = await sendChat(msg, language);
+      const data = await sendChat(msg, language, { location, state: 'Karnataka' });
       setMessages(prev => [...prev, { role: 'ai', text: data.response, time: new Date() }]);
     } catch {
       setMessages(prev => [...prev, { role: 'ai', text: 'Sorry, I am having trouble connecting. Please try again or call Kisan Helpline: 1551', time: new Date() }]);

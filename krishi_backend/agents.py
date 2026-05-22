@@ -9,13 +9,39 @@ from datetime import datetime, timedelta
 from typing import Any, Callable, Dict, List, Optional
 
 import httpx
+from dotenv import load_dotenv
 
+load_dotenv(os.path.join(os.path.dirname(__file__), ".env"))
 
 OLLAMA_URL = os.getenv("OLLAMA_URL", "http://localhost:11434")
 OLLAMA_TEXT_MODEL = os.getenv("OLLAMA_TEXT_MODEL", "llama3.2:3b")
 OLLAMA_VISION_MODEL = os.getenv("OLLAMA_VISION_MODEL", "llama3.2-vision")
 DATA_GOV_API_KEY = os.getenv("DATA_GOV_API_KEY", "")
 ENABLE_OLLAMA_SUMMARY = os.getenv("ENABLE_OLLAMA_SUMMARY", "false").lower() == "true"
+ENABLE_LIVE_AI = os.getenv("ENABLE_LIVE_AI", "true").lower() == "true"
+ENABLE_TAVILY_SEARCH = os.getenv("ENABLE_TAVILY_SEARCH", "true").lower() == "true"
+GROQ_API_KEY = os.getenv("GROQ_API_KEY", "")
+OPENROUTER_API_KEY = os.getenv("OPENROUTER_API_KEY", "")
+TAVILY_API_KEY = os.getenv("TAVILY_API_KEY", "")
+
+MASTER_SYSTEM_PROMPT = """
+You are the core AI engine for RaithaRakshak AI, a real-time farmer welfare and rural intelligence platform.
+You are an agriculture intelligence assistant, geospatial analyst, crop advisor, market assistant, scheme advisor,
+weather-aware farming assistant, and rural support AI.
+
+Critical rules:
+- Never give generic or static answers when live tools/context are available.
+- Never invent weather, scheme, soil, map, or market data.
+- Always use the SharedContext findings from specialist agents before answering.
+- Always adapt to crop, location, weather, land, market, scheme, and timestamp context.
+- If crop or location is required but missing, ask one short clarification instead of guessing.
+- If a data source fails, say so briefly and do not replace it with fake values.
+
+Response style:
+- Farmer-friendly, practical, concise.
+- Include live source/timestamp when data is present.
+- Give next actions, not textbook explanations.
+""".strip()
 
 
 def now_iso() -> str:
@@ -69,6 +95,91 @@ async def ollama_generate(
         response = await client.post(f"{OLLAMA_URL}/api/generate", json=payload)
         response.raise_for_status()
         return response.json().get("response", "")
+
+
+async def live_ai_generate(prompt: str, system: str = "", timeout: float = 8) -> str:
+    errors: List[str] = []
+    if GROQ_API_KEY:
+        try:
+            async with httpx.AsyncClient(timeout=timeout) as client:
+                response = await client.post(
+                    "https://api.groq.com/openai/v1/chat/completions",
+                    headers={"Authorization": f"Bearer {GROQ_API_KEY}", "Content-Type": "application/json"},
+                    json={
+                        "model": os.getenv("GROQ_MODEL", "llama-3.3-70b-versatile"),
+                        "messages": [
+                            {"role": "system", "content": system},
+                            {"role": "user", "content": prompt},
+                        ],
+                        "temperature": 0.25,
+                        "max_tokens": 650,
+                    },
+                )
+                response.raise_for_status()
+                return response.json()["choices"][0]["message"]["content"]
+        except Exception as exc:
+            errors.append(f"Groq unavailable: {type(exc).__name__}")
+
+    if OPENROUTER_API_KEY:
+        try:
+            async with httpx.AsyncClient(timeout=timeout) as client:
+                response = await client.post(
+                    "https://openrouter.ai/api/v1/chat/completions",
+                    headers={
+                        "Authorization": f"Bearer {OPENROUTER_API_KEY}",
+                        "Content-Type": "application/json",
+                        "HTTP-Referer": "http://localhost:5173",
+                        "X-Title": "RaithaRakshaka AI",
+                    },
+                    json={
+                        "model": os.getenv("OPENROUTER_MODEL", "meta-llama/llama-3.1-8b-instruct:free"),
+                        "messages": [
+                            {"role": "system", "content": system},
+                            {"role": "user", "content": prompt},
+                        ],
+                        "temperature": 0.25,
+                        "max_tokens": 650,
+                    },
+                )
+                response.raise_for_status()
+                return response.json()["choices"][0]["message"]["content"]
+        except Exception as exc:
+            errors.append(f"OpenRouter unavailable: {type(exc).__name__}")
+
+    raise RuntimeError("; ".join(errors) or "No live AI provider configured")
+
+
+async def tavily_search(query: str, timeout: float = 5) -> List[Dict[str, str]]:
+    if not ENABLE_TAVILY_SEARCH or not TAVILY_API_KEY:
+        return []
+    try:
+        async with httpx.AsyncClient(timeout=timeout) as client:
+            response = await client.post(
+                "https://api.tavily.com/search",
+                json={
+                    "api_key": TAVILY_API_KEY,
+                    "query": query,
+                    "search_depth": "basic",
+                    "max_results": 4,
+                    "include_answer": True,
+                },
+            )
+            response.raise_for_status()
+            data = response.json()
+        results = data.get("results") or []
+        compact = [
+            {
+                "title": item.get("title", ""),
+                "url": item.get("url", ""),
+                "content": item.get("content", "")[:450],
+            }
+            for item in results
+        ]
+        if data.get("answer"):
+            compact.insert(0, {"title": "Tavily synthesis", "url": "", "content": data["answer"][:450]})
+        return compact[:4]
+    except Exception:
+        return []
 
 
 @dataclass
@@ -172,13 +283,13 @@ class WeatherRiskAgent:
     name = "Weather & Risk Agent"
 
     async def geocode(self, location: str) -> Optional[dict]:
-        async with httpx.AsyncClient(timeout=4) as client:
+        async with httpx.AsyncClient(timeout=6) as client:
             resp = await asyncio.wait_for(
                 client.get(
                     "https://geocoding-api.open-meteo.com/v1/search",
                     params={"name": location, "count": 1, "language": "en", "format": "json"},
                 ),
-                timeout=0.9,
+                timeout=3.0,
             )
             resp.raise_for_status()
             results = resp.json().get("results") or []
@@ -199,10 +310,10 @@ class WeatherRiskAgent:
                 "forecast_days": 5,
                 "timezone": "auto",
             }
-            async with httpx.AsyncClient(timeout=5) as client:
+            async with httpx.AsyncClient(timeout=8) as client:
                 resp = await asyncio.wait_for(
                     client.get("https://api.open-meteo.com/v1/forecast", params=params),
-                    timeout=1.2,
+                    timeout=4.0,
                 )
                 resp.raise_for_status()
                 data = resp.json()
@@ -362,6 +473,24 @@ class GovernmentSchemeAgent:
         profile = {**ctx.farmer_profile, **(profile or {})}
         query = normalise(" ".join([ctx.query, profile.get("crop", ""), profile.get("category", ""), profile.get("distress_level", "")]))
         acres = float(profile.get("land_acres") or 2)
+        state = profile.get("state") or profile.get("location") or "Karnataka"
+        crop = profile.get("crop") or "farmer"
+
+        live_sources = []
+        if ENABLE_TAVILY_SEARCH:
+            ctx.start("Scheme Search Agent", "Searching live government and agriculture scheme sources")
+            search_query = (
+                f"{state} {crop} farmer subsidy scheme irrigation crop insurance equipment agriculture 2026"
+            )
+            live_sources = await tavily_search(search_query, timeout=5)
+            if not live_sources and "irrigation" in query:
+                live_sources = await tavily_search(f"PMKSY drip irrigation subsidy {state} {crop} farmers", timeout=5)
+            ctx.findings["scheme_web_sources"] = live_sources
+            ctx.finish(
+                "Scheme Search Agent",
+                f"Found {len(live_sources)} live scheme references" if live_sources else "No live scheme references returned",
+                "success" if live_sources else "warning",
+            )
 
         ranked = []
         for scheme in self.SCHEMES:
@@ -369,8 +498,10 @@ class GovernmentSchemeAgent:
             if scheme["min_acres"] <= acres <= scheme["max_acres"]:
                 score += 55
             score += sum(10 for kw in scheme["keywords"] if kw in query)
-            if profile.get("state", "").lower() == "karnataka":
+            if str(profile.get("state", "")).lower() == "karnataka":
                 score += 5
+            if live_sources and any(normalise(s.get("content", "")) and any(kw in normalise(s.get("content", "")) for kw in scheme["keywords"]) for s in live_sources):
+                score += 10
             item = {k: v for k, v in scheme.items() if k != "keywords"}
             item["match_score"] = min(score, 100)
             item["status"] = "Eligible" if score >= 55 else "Check Eligibility"
@@ -385,9 +516,11 @@ class GovernmentSchemeAgent:
                 "eligible_count": len(eligible),
                 "total": len(ranked),
                 "estimated_benefit": self.estimate_benefit(eligible),
-                "state": profile.get("state", "Karnataka"),
-                "crop": profile.get("crop", "Tomato"),
-                "source": "local RAG knowledge base",
+                "state": state,
+                "crop": crop,
+                "source": "local RAG knowledge base + live Tavily scheme search" if live_sources else "local RAG knowledge base",
+                "live_sources": live_sources,
+                "updated_at": now_iso(),
             },
         }
         ctx.finish(self.name, f"Matched {len(eligible)} eligible schemes")
@@ -417,49 +550,393 @@ class GovernmentSchemeAgent:
 class MarketPriceAgent:
     name = "Market Price Agent"
 
-    CACHE = {
-        "tomato": 2800,
-        "onion": 3500,
-        "potato": 1800,
-        "rice": 4200,
-        "wheat": 2300,
-        "maize": 1900,
-        "cotton": 6200,
-        "sugarcane": 350,
-        "soybean": 4800,
-        "groundnut": 5500,
+    FILTER_CACHE: Dict[str, Any] = {"created_at": None, "data": None}
+    REPORT_CACHE: Dict[str, Any] = {}
+    COMMON_COMMODITIES = {
+        "tomato": {"cmdt_id": 65, "cmdt_name": "Tomato", "cmdt_group_id": 6},
+        "onion": {"cmdt_id": 23, "cmdt_name": "Onion", "cmdt_group_id": 6},
+        "potato": {"cmdt_id": 24, "cmdt_name": "Potato", "cmdt_group_id": 6},
+        "rice": {"cmdt_id": 3, "cmdt_name": "Rice", "cmdt_group_id": 1},
+        "paddy": {"cmdt_id": 3, "cmdt_name": "Rice", "cmdt_group_id": 1},
+        "wheat": {"cmdt_id": 1, "cmdt_name": "Wheat", "cmdt_group_id": 1},
+        "maize": {"cmdt_id": 4, "cmdt_name": "Maize", "cmdt_group_id": 1},
+        "cotton": {"cmdt_id": 15, "cmdt_name": "Cotton", "cmdt_group_id": 4},
+        "groundnut": {"cmdt_id": 10, "cmdt_name": "Groundnut", "cmdt_group_id": 3},
+    }
+    COMMON_STATES = {"karnataka": 16}
+    LOCATION_ALIASES = {
+        "mysuru": ["mysore"],
+        "mysore": ["mysuru"],
+        "bengaluru": ["bangalore"],
+        "bangalore": ["bengaluru"],
+        "hubballi": ["hubli"],
+        "hubli": ["hubballi"],
+        "belgaum": ["belagavi"],
+        "belagavi": ["belgaum"],
+        "tumakuru": ["tumkur"],
+        "tumkur": ["tumakuru"],
+        "shivamogga": ["shimoga"],
+        "shimoga": ["shivamogga"],
+        "chikkaballapur": ["chikkaballapura", "chikballapur", "chik ballapur"],
+        "chikkaballapura": ["chikkaballapur", "chikballapur", "chik ballapur"],
+    }
+    AGMARKNET_HEADERS = {
+        "User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/125 Safari/537.36",
+        "Origin": "https://agmarknet.gov.in",
+        "Referer": "https://agmarknet.gov.in/daily-price-and-arrival-report",
+        "Accept": "application/json, text/plain, */*",
     }
 
-    async def run(self, ctx: SharedContext, crop: Optional[str] = None, state: str = "Karnataka") -> Dict[str, Any]:
+    async def run(
+        self,
+        ctx: SharedContext,
+        crop: Optional[str] = None,
+        state: str = "Karnataka",
+        location: Optional[str] = None,
+        district: Optional[str] = None,
+        mandi: Optional[str] = None,
+        latitude: Optional[float] = None,
+        longitude: Optional[float] = None,
+    ) -> Dict[str, Any]:
         ctx.start(self.name, "Fetching mandi price and trend signal")
         crop = str(crop or ctx.farmer_profile.get("crop") or "Tomato")
-        live = await self.fetch_data_gov(crop, state)
-        result = live or self.cached_market(crop)
-        ctx.finish(self.name, f"Market signal ready for {result['crop']}")
+        district = district or ctx.farmer_profile.get("district")
+        location = location or district or ctx.farmer_profile.get("location") or state
+        live = await self.fetch_agmarknet(crop, state, location, district=district, mandi=mandi)
+        if not live:
+            live = await self.fetch_data_gov(crop, state, district=district or location, mandi=mandi)
+        result = live or self.unavailable_market(crop, location=location, state=state, district=district or location)
+        status = "success" if live else "warning"
+        message = f"Live mandi signal ready for {result['crop']}" if live else "Live mandi feed unavailable"
+        ctx.finish(self.name, message, status)
         ctx.findings["market"] = result
         return result
 
-    async def fetch_data_gov(self, crop: str, state: str) -> Optional[Dict[str, Any]]:
-        if not DATA_GOV_API_KEY:
-            return None
-        params = {
-            "api-key": DATA_GOV_API_KEY,
-            "format": "json",
-            "limit": 10,
-            "filters[commodity]": crop.title(),
-            "filters[state]": state,
-        }
+    async def fetch_agmarknet_filters(self) -> Optional[Dict[str, Any]]:
+        created_at = self.FILTER_CACHE.get("created_at")
+        if created_at and datetime.now() - created_at < timedelta(hours=6):
+            return self.FILTER_CACHE.get("data")
         try:
-            async with httpx.AsyncClient(timeout=5) as client:
-                resp = await asyncio.wait_for(
-                    client.get(
-                        "https://api.data.gov.in/resource/9ef84268-d588-465a-a308-a864a43d0070",
-                        params=params,
-                    ),
-                    timeout=1.2,
+            for _ in range(2):
+                try:
+                    async with httpx.AsyncClient(timeout=30, headers=self.AGMARKNET_HEADERS) as client:
+                        resp = await client.get("https://api.agmarknet.gov.in/v1/daily-price-arrival/filters")
+                        resp.raise_for_status()
+                        payload = resp.json()
+                    data = payload.get("data") or {}
+                    self.FILTER_CACHE = {"created_at": datetime.now(), "data": data}
+                    return data
+                except Exception:
+                    await asyncio.sleep(0.4)
+        except Exception:
+            pass
+        return self.FILTER_CACHE.get("data")
+
+    def resolve_commodity(self, filters: Dict[str, Any], crop: str) -> Optional[Dict[str, Any]]:
+        crop_norm = normalise(crop)
+        aliases = {
+            "paddy": "rice",
+            "corn": "maize",
+            "chilli": "green chilli",
+            "sugar cane": "sugarcane",
+        }
+        target = aliases.get(crop_norm, crop_norm)
+        if not filters and target in self.COMMON_COMMODITIES:
+            return self.COMMON_COMMODITIES[target]
+        if not filters:
+            return None
+        commodities = filters.get("cmdt_data") or []
+        exact = [c for c in commodities if normalise(c.get("cmdt_name")) == target]
+        if exact:
+            return exact[0]
+        starts = [c for c in commodities if normalise(c.get("cmdt_name")).startswith(target)]
+        if starts:
+            return starts[0]
+        contains = [c for c in commodities if target in normalise(c.get("cmdt_name"))]
+        return contains[0] if contains else None
+
+    def resolve_state_id(self, filters: Dict[str, Any], state: str) -> Optional[int]:
+        target = normalise(state or "Karnataka")
+        if not filters and target in self.COMMON_STATES:
+            return self.COMMON_STATES[target]
+        if not filters:
+            return None
+        for item in filters.get("state_data") or []:
+            if normalise(item.get("state_name")) == target:
+                return item.get("state_id")
+        for item in filters.get("state_data") or []:
+            if target in normalise(item.get("state_name")):
+                return item.get("state_id")
+        return None
+
+    def market_location_score(self, market_name: str, location: str) -> int:
+        name = normalise(market_name)
+        loc = normalise(location)
+        tokens = [t for t in re.split(r"\s+", loc) if len(t) > 2]
+        for src, alts in self.LOCATION_ALIASES.items():
+            if src in loc:
+                tokens.extend(alts)
+        score = 0
+        for token in tokens:
+            if token in name:
+                score += 10
+        return score
+
+    def location_tokens(self, *values: Optional[str]) -> List[str]:
+        tokens: List[str] = []
+        for value in values:
+            norm = normalise(value or "")
+            if not norm:
+                continue
+            parts = [norm, *[p for p in re.split(r"\s+", norm) if len(p) > 2]]
+            for src, aliases in self.LOCATION_ALIASES.items():
+                if src in norm:
+                    parts.extend(aliases)
+            for part in parts:
+                part = part.strip()
+                if part and part not in tokens:
+                    tokens.append(part)
+        return tokens
+
+    def resolve_market_scope(
+        self,
+        filters: Optional[Dict[str, Any]],
+        state_id: Optional[int],
+        district: Optional[str],
+        mandi: Optional[str],
+        location: Optional[str],
+    ) -> Dict[str, Any]:
+        requested = mandi or district or location or ""
+        tokens = self.location_tokens(mandi, district, location)
+        district_ids = set()
+        market_ids = set()
+        if filters:
+            for item in filters.get("district_data") or []:
+                item_state = item.get("state_id") or item.get("stateId")
+                if state_id and item_state and item_state != state_id:
+                    continue
+                name = normalise(item.get("district_name") or item.get("districtName") or item.get("name"))
+                if any(token in name or name in token for token in tokens):
+                    district_ids.add(item.get("district_id") or item.get("districtId") or item.get("id"))
+            for item in filters.get("market_data") or []:
+                item_state = item.get("state_id") or item.get("stateId")
+                if state_id and item_state and item_state != state_id:
+                    continue
+                name = normalise(item.get("market_name") or item.get("marketName") or item.get("name"))
+                item_district = item.get("district_id") or item.get("districtId")
+                name_match = any(token in name for token in tokens)
+                district_match = bool(item_district and item_district in district_ids)
+                if name_match or district_match:
+                    market_ids.add(item.get("market_id") or item.get("marketId") or item.get("id"))
+        return {
+            "requested": requested,
+            "tokens": tokens,
+            "district_ids": {item for item in district_ids if item is not None},
+            "market_ids": {item for item in market_ids if item is not None},
+            "strict": bool(tokens),
+        }
+
+    def market_matches_scope(self, market: Dict[str, Any], scope: Dict[str, Any]) -> bool:
+        market_id = market.get("marketId") or market.get("market_id") or market.get("id")
+        market_ids = scope.get("market_ids") or set()
+        if market_ids:
+            return market_id in market_ids
+        tokens = scope.get("tokens") or []
+        market_name = normalise(market.get("marketName") or market.get("market_name") or "")
+        return any(token in market_name for token in tokens)
+
+    def flatten_agmarknet_records(
+        self,
+        data: Dict[str, Any],
+        state_id: Optional[int],
+        location: str,
+        market_scope: Optional[Dict[str, Any]] = None,
+    ) -> List[dict]:
+        records: List[dict] = []
+        for state in data.get("states") or []:
+            if state_id and state.get("stateId") != state_id:
+                continue
+            for market in state.get("markets") or []:
+                if market_scope and market_scope.get("strict") and not self.market_matches_scope(market, market_scope):
+                    continue
+                location_score = self.market_location_score(market.get("marketName", ""), location)
+                for row in market.get("data") or []:
+                    modal = row.get("modalPrice")
+                    if modal is None:
+                        continue
+                    records.append(
+                        {
+                            "state": state.get("stateName"),
+                            "market_id": market.get("marketId"),
+                            "name": market.get("marketName"),
+                            "price": int(float(modal)),
+                            "min_price": int(float(row.get("minimumPrice") or modal)),
+                            "max_price": int(float(row.get("maximumPrice") or modal)),
+                            "arrivals": row.get("arrivals"),
+                            "arrival_unit": row.get("unitOfArrivals"),
+                            "variety": row.get("variety"),
+                            "grade": row.get("grade"),
+                            "unit": row.get("unitOfPrice") or "Rs./Quintal",
+                            "location_score": location_score,
+                        }
+                    )
+        records.sort(key=lambda r: (r["location_score"], r.get("arrivals") or 0, r["price"]), reverse=True)
+        return records
+
+    async def fetch_agmarknet_report(self, commodity: Dict[str, Any], date_value: datetime, timeout: float = 14) -> Optional[Dict[str, Any]]:
+        key = f"{commodity.get('cmdt_id')}:{date_value.strftime('%Y-%m-%d')}"
+        cached = self.REPORT_CACHE.get(key)
+        if cached and datetime.now() - cached["created_at"] < timedelta(minutes=20):
+            return cached["data"]
+        try:
+            async with httpx.AsyncClient(timeout=timeout, headers=self.AGMARKNET_HEADERS) as client:
+                resp = await client.get(
+                    "https://api.agmarknet.gov.in/v1/prices-and-arrivals/market-report/specific",
+                    params={
+                        "date": date_value.strftime("%Y-%m-%d"),
+                        "commodityGroupId": commodity.get("cmdt_group_id"),
+                        "commodityId": commodity.get("cmdt_id"),
+                        "includeExcel": "false",
+                    },
                 )
                 resp.raise_for_status()
-                records = resp.json().get("records") or []
+                payload = resp.json()
+            if payload.get("success"):
+                self.REPORT_CACHE[key] = {"created_at": datetime.now(), "data": payload}
+                return payload
+            self.REPORT_CACHE[key] = {"created_at": datetime.now(), "data": None}
+            return None
+        except Exception:
+            self.REPORT_CACHE[key] = {"created_at": datetime.now(), "data": None}
+            return None
+
+    async def fetch_agmarknet(
+        self,
+        crop: str,
+        state: str,
+        location: str,
+        district: Optional[str] = None,
+        mandi: Optional[str] = None,
+    ) -> Optional[Dict[str, Any]]:
+        crop_key = normalise(crop)
+        commodity = self.COMMON_COMMODITIES.get(crop_key)
+        filters = self.FILTER_CACHE.get("data")
+        if not commodity:
+            filters = await self.fetch_agmarknet_filters()
+        commodity = commodity or self.resolve_commodity(filters, crop)
+        if not commodity:
+            return None
+        state_id = self.COMMON_STATES.get(normalise(state or "Karnataka")) or self.resolve_state_id(filters, state)
+        market_scope = self.resolve_market_scope(filters, state_id, district, mandi, location)
+        display_location = district or location
+        today = datetime.now()
+        current_payload = None
+        current_date = today
+        for days_back in range(0, 3):
+            report_date = today - timedelta(days=days_back)
+            current_payload = await self.fetch_agmarknet_report(commodity, report_date, timeout=5)
+            records = self.flatten_agmarknet_records(current_payload or {}, state_id, display_location, market_scope) if current_payload else []
+            if records:
+                current_date = report_date
+                break
+        else:
+            return self.unavailable_market(
+                crop,
+                location=display_location,
+                state=state,
+                district=district or location,
+                source="Agmarknet 2.0 live report",
+                message="No market data available for selected district.",
+            )
+
+        records = self.flatten_agmarknet_records(current_payload or {}, state_id, display_location, market_scope)
+        if not records:
+            return self.unavailable_market(
+                crop,
+                location=display_location,
+                state=state,
+                district=district or location,
+                source="Agmarknet 2.0 live report",
+                message="No market data available for selected district.",
+            )
+
+        selected = records[:5]
+        current = round(sum(r["price"] for r in selected) / len(selected))
+        previous = None
+        previous_label = "Previous"
+        for days_back in range(1, 3):
+            report_date = current_date - timedelta(days=days_back)
+            previous_payload = await self.fetch_agmarknet_report(commodity, report_date, timeout=4)
+            previous_records = self.flatten_agmarknet_records(previous_payload or {}, state_id, display_location, market_scope) if previous_payload else []
+            if previous_records:
+                previous_selected = previous_records[:5]
+                previous = round(sum(r["price"] for r in previous_selected) / len(previous_selected))
+                previous_label = report_date.strftime("%d %b")
+                break
+
+        markets = [
+            {
+                "name": r["name"],
+                "price": r["price"],
+                "distance_km": "selected district",
+                "arrivals": r["arrivals"],
+                "arrival_unit": r["arrival_unit"],
+                "variety": r["variety"],
+                "grade": r["grade"],
+                "min_price": r["min_price"],
+                "max_price": r["max_price"],
+            }
+            for r in selected
+        ]
+        source = f"Agmarknet 2.0 live report ({current_date.strftime('%d %b %Y')})"
+        return self.market_payload(
+            crop,
+            current,
+            source,
+            markets,
+            previous_price=previous,
+            previous_label=previous_label,
+            location=display_location,
+            state=state,
+            district=district or location,
+        )
+
+    async def fetch_data_gov(
+        self,
+        crop: str,
+        state: str,
+        district: Optional[str] = None,
+        mandi: Optional[str] = None,
+    ) -> Optional[Dict[str, Any]]:
+        if not DATA_GOV_API_KEY:
+            return None
+        params = [
+            ("api-key", DATA_GOV_API_KEY),
+            ("format", "json"),
+            ("limit", 25),
+            ("filters[commodity]", crop.title()),
+            ("filters[state]", state),
+        ]
+        if district:
+            params.append(("filters[district]", district.title()))
+        if mandi:
+            params.append(("filters[market]", mandi.title()))
+        urls = [
+            "https://api.data.gov.in/resource/current-daily-price-various-commodities-various-markets-mandi",
+            "https://api.data.gov.in/resource/9ef84268-d588-465a-a308-a864a43d0070",
+        ]
+        try:
+            async with httpx.AsyncClient(timeout=5) as client:
+                records = []
+                for url in urls:
+                    try:
+                        resp = await asyncio.wait_for(client.get(url, params=params), timeout=4.5)
+                        resp.raise_for_status()
+                        records = resp.json().get("records") or []
+                        if records:
+                            break
+                    except Exception:
+                        continue
             prices = [float(r.get("modal_price") or 0) for r in records if r.get("modal_price")]
             if not prices:
                 return None
@@ -468,50 +945,85 @@ class MarketPriceAgent:
                 {
                     "name": f"{r.get('market', 'Mandi')} {r.get('district', '')}".strip(),
                     "price": int(float(r.get("modal_price") or current)),
-                    "distance_km": "-",
+                    "distance_km": "selected district",
+                    "min_price": int(float(r.get("min_price") or r.get("modal_price") or current)),
+                    "max_price": int(float(r.get("max_price") or r.get("modal_price") or current)),
                 }
                 for r in records[:3]
             ]
-            return self.market_payload(crop, current, "data.gov.in Agmarknet API", markets)
+            return self.market_payload(crop, current, "data.gov.in Agmarknet API", markets, location=district or mandi or "", state=state, district=district or "")
         except Exception:
             return None
 
-    def cached_market(self, crop: str) -> Dict[str, Any]:
-        base = self.CACHE.get(crop.lower(), 2600)
-        day = datetime.now().timetuple().tm_yday
-        wave = math.sin(day / 7) * 0.08
-        current = int(base * (1 + wave))
-        markets = [
-            {"name": "APMC Bangalore", "price": int(current * 1.02), "distance_km": 35},
-            {"name": "Kolar APMC", "price": int(current * 0.98), "distance_km": 70},
-            {"name": "Mysuru APMC", "price": int(current * 1.01), "distance_km": 145},
-        ]
-        return self.market_payload(crop, current, "local cached mandi baseline", markets)
-
-    def market_payload(self, crop: str, current: int, source: str, markets: List[dict]) -> Dict[str, Any]:
-        week_ago = int(current * 0.96)
-        month_ago = int(current * 0.91)
-        change = round(((current - week_ago) / week_ago) * 100, 2)
+    def unavailable_market(
+        self,
+        crop: str,
+        location: str = "",
+        state: str = "",
+        district: str = "",
+        source: str = "Agmarknet/Data.gov.in live feed",
+        message: str = "Live mandi data could not be fetched right now. Retry in a few minutes or check Agmarknet/Data.gov.in connectivity.",
+    ) -> Dict[str, Any]:
         return {
+            "available": False,
             "crop": crop.title(),
+            "location": location,
+            "state": state,
+            "district": district,
+            "current_price": None,
+            "week_ago": None,
+            "month_ago": None,
+            "unit": "per quintal (100 kg)",
+            "price_change": 0,
+            "trend": "unavailable",
+            "msp": None,
+            "best_market": "No market data available for selected district",
+            "demand": "Unknown",
+            "source": source,
+            "updated_at": now_iso(),
+            "ai_prediction": message,
+            "chart": [],
+            "top_markets": [],
+        }
+
+    def market_payload(
+        self,
+        crop: str,
+        current: int,
+        source: str,
+        markets: List[dict],
+        previous_price: Optional[int] = None,
+        previous_label: str = "Previous",
+        location: str = "",
+        state: str = "",
+        district: str = "",
+    ) -> Dict[str, Any]:
+        week_ago = previous_price or current
+        month_ago = previous_price or current
+        change = round(((current - week_ago) / week_ago) * 100, 2) if week_ago else 0
+        predicted = int(current * (1.03 if change >= 0 else 0.97))
+        return {
+            "available": True,
+            "crop": crop.title(),
+            "location": location,
+            "state": state,
+            "district": district,
             "current_price": current,
             "week_ago": week_ago,
             "month_ago": month_ago,
             "unit": "per quintal (100 kg)",
             "price_change": change,
-            "trend": "rising" if change >= 0 else "falling",
+            "trend": "rising" if change > 0 else "falling" if change < 0 else "stable",
             "msp": int(current * 0.85),
             "best_market": max(markets, key=lambda m: m["price"])["name"],
-            "demand": "High" if change > 3 else "Moderate",
+            "demand": "High" if sum(float(m.get("arrivals") or 0) for m in markets) > 100 else "Moderate",
             "source": source,
             "updated_at": now_iso(),
-            "ai_prediction": f"Near-term prices may {'rise' if change >= 0 else 'soften'} by 3-8% based on current mandi signal and seasonal baseline.",
+            "ai_prediction": f"Agmarknet live prices show {crop.title()} around Rs {current}/quintal near {location or 'the selected region'}. Compare arrivals before deciding the selling market.",
             "chart": [
-                {"label": "30 days ago", "price": month_ago},
-                {"label": "2 weeks ago", "price": int((month_ago + week_ago) / 2)},
-                {"label": "1 week ago", "price": week_ago},
+                {"label": previous_label, "price": week_ago},
                 {"label": "Today", "price": current},
-                {"label": "Predicted", "price": int(current * (1.06 if change >= 0 else 0.96))},
+                {"label": "Signal", "price": predicted},
             ],
             "top_markets": markets,
         }
@@ -519,6 +1031,15 @@ class MarketPriceAgent:
 
 class OrchestratorAgent:
     name = "Orchestrator Agent"
+    KNOWN_LOCATIONS = [
+        "mysore", "mysuru", "bangalore", "bengaluru", "mandya", "kolar", "hassan",
+        "tumkur", "hubli", "dharwad", "belagavi", "mangalore", "shivamogga",
+        "raichur", "ballari", "koppal", "udupi", "kalaburagi",
+    ]
+    KNOWN_CROPS = [
+        "tomato", "rice", "paddy", "wheat", "maize", "onion", "potato", "cotton",
+        "sugarcane", "soybean", "groundnut", "ragi", "millet", "chilli", "banana",
+    ]
 
     def __init__(self) -> None:
         self.crop_agent = CropDiagnosticAgent()
@@ -529,9 +1050,11 @@ class OrchestratorAgent:
     def plan(self, query: str, has_image: bool = False) -> List[str]:
         q = normalise(query)
         agents = []
-        if has_image or any(w in q for w in ["disease", "leaf", "yellow", "pest", "deficiency", "spots"]):
+        crop_issue = any(w in q for w in ["disease", "leaf", "yellow", "pest", "deficiency", "spots", "turning", "wilting", "fungal", "blight"])
+        has_location_hint = any(w in q for w in [*self.KNOWN_LOCATIONS, "today", "tomorrow"])
+        if has_image or crop_issue:
             agents.append("diagnosis")
-        if any(w in q for w in ["weather", "rain", "humidity", "spray", "irrigation", "risk"]):
+        if crop_issue or has_location_hint or any(w in q for w in ["weather", "rain", "humidity", "spray", "irrigation", "risk"]):
             agents.append("weather")
         if any(w in q for w in ["scheme", "subsidy", "pm kisan", "pm-kisan", "loan", "insurance", "kcc"]):
             agents.append("schemes")
@@ -541,6 +1064,47 @@ class OrchestratorAgent:
             agents = ["diagnosis", "weather", "schemes", "market"]
         return agents
 
+    def enrich_profile_from_query(self, query: str, profile: Dict[str, Any]) -> Dict[str, Any]:
+        enriched = dict(profile or {})
+        q = normalise(query)
+        detected_crop = None
+        for crop in self.KNOWN_CROPS:
+            if crop in q:
+                detected_crop = "Rice" if crop == "paddy" else crop.title()
+                break
+        if detected_crop:
+            enriched["crop"] = detected_crop
+            enriched["crop_source"] = "query"
+        elif enriched.get("crop"):
+            enriched["crop_source"] = "profile"
+
+        detected_location = None
+        for loc in self.KNOWN_LOCATIONS:
+            if loc in q:
+                detected_location = "Mysuru" if loc == "mysore" else "Bengaluru" if loc == "bangalore" else loc.title()
+                break
+        if detected_location:
+            enriched["location"] = detected_location
+            enriched["location_source"] = "query"
+            enriched.setdefault("state", "Karnataka")
+        elif enriched.get("location"):
+            enriched["location_source"] = "profile"
+        if enriched.get("state"):
+            enriched["state_source"] = "profile_or_query"
+        return enriched
+
+    def clarification_message(self, plan: List[str], profile: Dict[str, Any]) -> Optional[str]:
+        location_needed = any(agent in plan for agent in ["weather", "market", "diagnosis"])
+        state_needed = "schemes" in plan
+        crop_needed = any(agent in plan for agent in ["market", "diagnosis"])
+        if location_needed and not profile.get("location"):
+            return "Please share your village/city or district first, so I can check local weather, mandi, and crop risk data accurately."
+        if state_needed and not (profile.get("state") or profile.get("location")):
+            return "Please share your state or district first, so I can search relevant central and state agriculture schemes."
+        if crop_needed and not profile.get("crop"):
+            return "Which crop should I analyze? Please tell me the crop name and your location."
+        return None
+
     async def run(
         self,
         query: str,
@@ -549,10 +1113,26 @@ class OrchestratorAgent:
         image_bytes: Optional[bytes] = None,
         file_name: str = "",
     ) -> Dict[str, Any]:
-        ctx = SharedContext(query=query, language=language, farmer_profile=profile or {})
+        farmer_profile = self.enrich_profile_from_query(query, profile or {})
+        ctx = SharedContext(query=query, language=language, farmer_profile=farmer_profile)
         ctx.start(self.name, "Analyzing query and selecting specialist agents")
         plan = self.plan(query, has_image=bool(image_bytes))
         ctx.finish(self.name, " -> ".join(plan))
+        clarification = self.clarification_message(plan, farmer_profile)
+        if clarification:
+            ctx.findings["missing_context"] = {
+                "message": clarification,
+                "required_for": plan,
+                "profile": farmer_profile,
+                "updated_at": now_iso(),
+            }
+            return {
+                "status": "needs_context",
+                "response": clarification,
+                "agent_flow": ctx.agent_flow,
+                "shared_context": ctx.findings,
+                "updated_at": now_iso(),
+            }
 
         tasks = []
         if "diagnosis" in plan:
@@ -562,9 +1142,30 @@ class OrchestratorAgent:
         if "schemes" in plan:
             tasks.append(self.scheme_agent.run(ctx))
         if "market" in plan:
-            tasks.append(self.market_agent.run(ctx, crop=ctx.farmer_profile.get("crop"), state=ctx.farmer_profile.get("state", "Karnataka")))
+            tasks.append(
+                self.market_agent.run(
+                    ctx,
+                    crop=ctx.farmer_profile.get("crop"),
+                    state=ctx.farmer_profile.get("state", "Karnataka"),
+                    location=ctx.farmer_profile.get("location"),
+                )
+            )
         if tasks:
             await asyncio.gather(*tasks, return_exceptions=True)
+
+        if ENABLE_TAVILY_SEARCH:
+            ctx.start("Live Web Intelligence Agent", "Searching current agriculture advisories")
+            search_query = (
+                f"{farmer_profile.get('crop', '')} crop advisory disease market weather schemes "
+                f"{farmer_profile.get('location', '')} {farmer_profile.get('state', '')} India"
+            )
+            web_results = await tavily_search(search_query)
+            ctx.findings["web_intelligence"] = web_results
+            ctx.finish(
+                "Live Web Intelligence Agent",
+                f"Found {len(web_results)} current advisory sources" if web_results else "No live web results available",
+                "success" if web_results else "warning",
+            )
 
         response = await self.summarize(ctx)
         return {
@@ -576,12 +1177,38 @@ class OrchestratorAgent:
         }
 
     async def summarize(self, ctx: SharedContext) -> str:
+        if ENABLE_LIVE_AI:
+            compact = json.dumps(ctx.findings, ensure_ascii=True)[:5500]
+            system = (
+                MASTER_SYSTEM_PROMPT
+                + "\n\nUse only the provided SharedContext, web search snippets, weather, market, map, soil, and scheme data. "
+                "For market answers include market name, min price, max price, modal price, state/location, timestamp, and source when present. "
+                "For scheme answers include why it matches the crop/location/profile and cite live scheme source titles when present. "
+                "Do not repeat a generic template."
+            )
+            prompt = (
+                f"Farmer query: {ctx.query}\n"
+                f"Farmer profile: {json.dumps(ctx.farmer_profile, ensure_ascii=True)}\n"
+                f"Current timestamp: {now_iso()}\n"
+                f"Shared live context: {compact}\n\n"
+                "Return a short farmer-friendly answer. Use bullet points only when useful. "
+                "Include source/timestamp confidence in one line if live data was used."
+            )
+            try:
+                ctx.start("Live AI Synthesis Agent", "Generating contextual response from live context")
+                answer = await live_ai_generate(prompt, system=system, timeout=8)
+                ctx.findings["ai_provider"] = "live"
+                ctx.finish("Live AI Synthesis Agent", "Contextual live response generated")
+                return answer
+            except Exception as exc:
+                ctx.findings["ai_provider_error"] = str(exc)
+                ctx.finish("Live AI Synthesis Agent", "Live model unavailable; using deterministic fallback", "warning")
         if not ENABLE_OLLAMA_SUMMARY:
             return self.offline_summary(ctx)
         compact = json.dumps(ctx.findings, ensure_ascii=True)[:3500]
         system = (
-            "You are RaithaRakshaka AI, a practical agriculture assistant for Indian farmers. "
-            "Use the shared context to answer in simple language. Mention uncertainty and next actions."
+            MASTER_SYSTEM_PROMPT
+            + "\nUse the shared context to answer in simple language. Mention uncertainty and next actions."
         )
         prompt = f"Farmer query: {ctx.query}\nLanguage: {ctx.language}\nSharedContext: {compact}\nGive a concise actionable answer."
         try:
@@ -599,9 +1226,19 @@ class OrchestratorAgent:
             parts.append(f"Crop check: {diagnosis.get('disease')} ({diagnosis.get('confidence')}% confidence). Next step: {diagnosis.get('treatment', ['Inspect field'])[0]}.")
         if weather:
             risk = weather.get("risk_scores", {})
-            parts.append(f"Weather risk: fungal {risk.get('fungal_spread')}%, heat {risk.get('heat_stress')}%. {weather.get('advisory')}")
+            parts.append(f"Weather risk for {weather.get('location', ctx.farmer_profile.get('location', 'selected location'))}: fungal {risk.get('fungal_spread')}%, heat {risk.get('heat_stress')}%. {weather.get('advisory')} Source: {weather.get('source')} at {weather.get('updated_at')}.")
         if schemes:
-            parts.append(f"Schemes: {schemes['summary']['eligible_count']} likely matches. Top match: {schemes['schemes'][0]['name']}.")
+            source_titles = [s.get("title") for s in schemes.get("summary", {}).get("live_sources", [])[:2] if s.get("title")]
+            source_note = f" Live references: {', '.join(source_titles)}." if source_titles else ""
+            parts.append(f"Schemes for {schemes['summary'].get('crop')} in {schemes['summary'].get('state')}: {schemes['summary']['eligible_count']} likely matches. Top match: {schemes['schemes'][0]['name']}.{source_note}")
         if market:
-            parts.append(f"Market: {market['crop']} is Rs {market['current_price']}/quintal, trend {market['trend']}.")
+            if market.get("available"):
+                top = (market.get("top_markets") or [{}])[0]
+                parts.append(
+                    f"Market: {market['crop']} near {market.get('location')} is Rs {market['current_price']}/quintal average, trend {market['trend']}. "
+                    f"Best market {top.get('name')} modal Rs {top.get('price')}, min Rs {top.get('min_price')}, max Rs {top.get('max_price')}. "
+                    f"Source: {market.get('source')} at {market.get('updated_at')}."
+                )
+            else:
+                parts.append(f"Market: live price feed unavailable for {market.get('crop')}. Source: {market.get('source')}.")
         return "\n".join(parts) or "I checked the local agents, but need more crop, location, or image details to give specific advice."

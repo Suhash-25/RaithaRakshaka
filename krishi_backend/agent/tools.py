@@ -170,36 +170,30 @@ async def detect_crop_disease(crop: str, symptoms: str) -> dict:
 
 async def get_market_prices(crop: str, state: str = "Karnataka") -> dict:
     """Get current mandi market prices, trends, and nearby market data for a crop."""
-    CACHE = {
-        "tomato": 2800, "onion": 3500, "potato": 1800, "rice": 4200, "wheat": 2300, 
-        "maize": 1900, "cotton": 6200, "sugarcane": 350, "soybean": 4800, "groundnut": 5500,
-    }
-    
-    crop_lower = crop.lower()
-    base = CACHE.get(crop_lower, 2600)
-    day = datetime.now().timetuple().tm_yday
-    wave = math.sin(day / 7) * 0.08
-    current = int(base * (1 + wave))
-    source = "local cached mandi baseline"
-    markets = [
-        {"name": "APMC Bangalore", "price": int(current * 1.02), "distance_km": 35},
-        {"name": "Kolar APMC", "price": int(current * 0.98), "distance_km": 70},
-        {"name": "Mysuru APMC", "price": int(current * 1.01), "distance_km": 145},
-    ]
-
     if DATA_GOV_API_KEY:
         try:
             params = {
                 "api-key": DATA_GOV_API_KEY,
                 "format": "json",
-                "limit": 10,
+                "limit": 25,
                 "filters[commodity]": crop.title(),
                 "filters[state]": state,
             }
-            async with httpx.AsyncClient(timeout=20) as client:
-                resp = await client.get("https://api.data.gov.in/resource/9ef84268-d588-465a-a308-a864a43d0070", params=params)
-                resp.raise_for_status()
-                records = resp.json().get("records") or []
+            urls = [
+                "https://api.data.gov.in/resource/current-daily-price-various-commodities-various-markets-mandi",
+                "https://api.data.gov.in/resource/9ef84268-d588-465a-a308-a864a43d0070",
+            ]
+            records = []
+            async with httpx.AsyncClient(timeout=5) as client:
+                for url in urls:
+                    try:
+                        resp = await client.get(url, params=params)
+                        resp.raise_for_status()
+                        records = resp.json().get("records") or []
+                        if records:
+                            break
+                    except Exception:
+                        continue
             prices = [float(r.get("modal_price") or 0) for r in records if r.get("modal_price")]
             if prices:
                 current = int(sum(prices) / len(prices))
@@ -211,36 +205,53 @@ async def get_market_prices(crop: str, state: str = "Karnataka") -> dict:
                     }
                     for r in records[:3]
                 ]
-                source = "data.gov.in Agmarknet API"
+                week_ago = int(current * 0.96)
+                month_ago = int(current * 0.91)
+                change = round(((current - week_ago) / week_ago) * 100, 2)
+                return {
+                    "available": True,
+                    "crop": crop.title(),
+                    "current_price": current,
+                    "week_ago": week_ago,
+                    "month_ago": month_ago,
+                    "unit": "per quintal (100 kg)",
+                    "price_change": change,
+                    "trend": "rising" if change >= 0 else "falling",
+                    "msp": int(current * 0.85),
+                    "best_market": max(markets, key=lambda m: m["price"])["name"] if markets else "-",
+                    "demand": "High" if change > 3 else "Moderate",
+                    "source": "data.gov.in Agmarknet API",
+                    "updated_at": now_iso(),
+                    "ai_prediction": f"Near-term prices may {'rise' if change >= 0 else 'soften'} by 3-8% based on the current mandi feed.",
+                    "chart": [
+                        {"label": "30 days ago", "price": month_ago},
+                        {"label": "2 weeks ago", "price": int((month_ago + week_ago) / 2)},
+                        {"label": "1 week ago", "price": week_ago},
+                        {"label": "Today", "price": current},
+                        {"label": "Predicted", "price": int(current * (1.06 if change >= 0 else 0.96))},
+                    ],
+                    "top_markets": markets,
+                }
         except Exception:
             pass
 
-    week_ago = int(current * 0.96)
-    month_ago = int(current * 0.91)
-    change = round(((current - week_ago) / week_ago) * 100, 2)
-    
     return {
+        "available": False,
         "crop": crop.title(),
-        "current_price": current,
-        "week_ago": week_ago,
-        "month_ago": month_ago,
+        "current_price": None,
+        "week_ago": None,
+        "month_ago": None,
         "unit": "per quintal (100 kg)",
-        "price_change": change,
-        "trend": "rising" if change >= 0 else "falling",
-        "msp": int(current * 0.85),
-        "best_market": max(markets, key=lambda m: m["price"])["name"] if markets else "-",
-        "demand": "High" if change > 3 else "Moderate",
-        "source": source,
+        "price_change": 0,
+        "trend": "unavailable",
+        "msp": None,
+        "best_market": "Live feed unavailable",
+        "demand": "Unknown",
+        "source": "Data.gov.in live feed unavailable",
         "updated_at": now_iso(),
-        "ai_prediction": f"Near-term prices may {'rise' if change >= 0 else 'soften'} by 3-8% based on current mandi signal and seasonal baseline.",
-        "chart": [
-            {"label": "30 days ago", "price": month_ago},
-            {"label": "2 weeks ago", "price": int((month_ago + week_ago) / 2)},
-            {"label": "1 week ago", "price": week_ago},
-            {"label": "Today", "price": current},
-            {"label": "Predicted", "price": int(current * (1.06 if change >= 0 else 0.96))},
-        ],
-        "top_markets": markets,
+        "ai_prediction": "Live mandi data could not be fetched right now. Retry in a few minutes or check Data.gov.in connectivity.",
+        "chart": [],
+        "top_markets": [],
     }
 
 async def find_eligible_schemes(state: str, crop: str, land_acres: float, category: str = "small") -> dict:

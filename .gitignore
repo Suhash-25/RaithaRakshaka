@@ -1,81 +1,31 @@
-# Node / Frontend
+# Dependencies
 node_modules/
-dist/
-dist-ssr/
-*.local
-.vite/
-.cache/
-coverage/
-*.log
 npm-debug.log*
 yarn-debug.log*
-
 yarn-error.log*
 pnpm-debug.log*
+lerna-debug.log*
 
-# Python / Backend
-__pycache__/
-*.py[cod]
-*$py.class
-.venv/
-.server-venv/
-.extractor-venv/
-venv/
-env/
-ENV/
-*.egg-info/
-.pytest_cache/
-.mypy_cache/
-.ruff_cache/
-.coverage
-htmlcov/
+# Build outputs
+dist/
 build/
-develop-eggs/
-downloads/
-eggs/
-.eggs/
-parts/
-sdist/
-var/
-wheels/
-share/python-wheels/
-pip-wheel-metadata/
+*.local
 
-# Environment / Secrets
+# Environment variables
 .env
-.env.*
-!.env.example
-!.env.production
-.secret
-.credentials
+.env.local
+.env.development.local
+.env.test.local
+.env.production.local
 
-# Local Data and Documents
-dataset/
-*.pdf
-backend/generated/
-!backend/generated/.gitkeep
-
-# Model / Checkpoint Binaries
-*.bin
-*.ckpt
-*.gguf
-*.onnx
-*.pt
-*.pth
-*.safetensors
-*.model
-*.weights
-
-# Editor / IDE
+# Editor directories and files
 .vscode/
-!.vscode/extensions.json
 .idea/
 *.swp
 *.swo
-.history/
-.ipynb_checkpoints/
+*~
 
-# OS / System
+# OS generated files
 .DS_Store
 .DS_Store?
 ._*
@@ -83,11 +33,159 @@ backend/generated/
 .Trashes
 ehthumbs.db
 Thumbs.db
-desktop.ini
 
-# App-specific generated / temp
-frontend/dev-dist/
-backend/scratch/
-backend/service_images/
-backend/qdrant_storage/
-backend/vector_store/
+# Python
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+.Python
+env/
+venv/
+.venv/
+ENV/
+env.bak/
+venv.bak/
+.pytest_cache/
+.coverage
+htmlcov/
+.tox/
+.cache
+nosetests.xml
+coverage.xml
+*.cover
+.hypothesis/
+
+# FastAPI specific
+.pytest_cache/
+instance/
+.webassets-cache
+
+# Logs
+logs/
+*.log
+
+# Runtime data
+pids/
+*.pid
+*.seed
+*.pid.lock
+
+# Coverage directory used by tools like istanbul
+coverage/
+
+# nyc test coverage
+.nyc_output
+
+# Dependency directories
+jspm_packages/
+
+# Optional npm cache directory
+.npm
+
+# Optional REPL history
+.node_repl_history
+
+# Output of 'npm pack'
+*.tgz
+
+# Yarn Integrity file
+.yarn-integrity
+
+# parcel-bundler cache (https://parceljs.org/)
+.cache
+.parcel-cache
+
+# next.js build output
+.next
+
+# nuxt.js build output
+.nuxt
+
+# vuepress build output
+.vuepress/dist
+
+# Serverless directories
+.serverless
+
+# FuseBox cache
+.fusebox/
+
+# DynamoDB Local files
+.dynamodb/
+
+# TernJS port file
+.tern-port
+
+# Stores VSCode versions used for testing VSCode extensions
+.vscode-test
+
+# Temporary folders
+tmp/
+temp/
+
+# Database
+*.db
+*.sqlite
+*.sqlite3
+
+# IDEs
+*.sublime-project
+*.sublime-workspace
+
+# Compiled source
+*.com
+*.class
+*.dll
+*.exe
+*.o
+*.so
+
+# Packages
+*.7z
+*.dmg
+*.gz
+*.iso
+*.jar
+*.rar
+*.tar
+*.zip
+
+# Unit test / coverage reports
+.coverage
+.pytest_cache/
+htmlcov/
+.tox/
+.coverage.*
+.cache
+nosetests.xml
+coverage.xml
+*.cover
+.hypothesis/
+
+# Jupyter Notebook
+.ipynb_checkpoints
+
+# pyenv
+.python-version
+
+# celery beat schedule file
+celerybeat-schedule
+
+# SageMath parsed files
+*.sage.py
+
+# Spyder project settings
+.spyderproject
+.spyproject
+
+# Rope project settings
+.ropeproject
+
+# mkdocs documentation
+/site
+
+# mypy
+.mypy_cache/
+.dmypy.json
+dmypy.json

@@ -42,68 +42,30 @@ export default function Navbar() {
   return (
     <>
       <nav className="navbar" style={{ boxShadow: scrolled ? '0 4px 30px rgba(0,0,0,0.3)' : 'none' }}>
-        <div className="content-wrapper" style={{ padding: '0 1.5rem', maxWidth: '1280px', margin: '0 auto' }}>
-          <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', height: '68px' }}>
-            <Link to="/" style={{ textDecoration: 'none', display: 'flex', alignItems: 'center', gap: '0.6rem' }}>
+        <div className="nav-shell">
+          <div className="nav-main-row">
+            <Link to="/" className="nav-brand">
               <motion.div
                 whileHover={{ rotate: 15, scale: 1.1 }}
-                style={{
-                  width: 38, height: 38, borderRadius: '10px',
-                  background: 'linear-gradient(135deg, #166534, #22c55e)',
-                  display: 'flex', alignItems: 'center', justifyContent: 'center',
-                  boxShadow: '0 4px 15px rgba(34,197,94,0.3)',
-                }}
+                className="nav-brand-icon"
               >
                 <Leaf size={20} color="white" />
               </motion.div>
-              <div>
-                <div style={{ fontFamily: 'Outfit', fontWeight: 800, fontSize: '1.1rem', color: '#f0fdf4', lineHeight: 1 }}>
-                  KrishiRakshak
-                </div>
-                <div style={{ fontSize: '0.6rem', color: '#4ade80', fontWeight: 600, letterSpacing: '0.08em', textTransform: 'uppercase' }}>{t('app.tagline')}</div>
+              <div className="nav-brand-copy">
+                <div className="nav-brand-title">KrishiRakshak</div>
+                <div className="nav-brand-tagline">{t('app.tagline')}</div>
               </div>
             </Link>
 
-            <div style={{ display: 'flex', alignItems: 'center', gap: '0.25rem' }} className="hidden md:flex">
-              {NAV_LINKS.map(({ path, key, icon: Icon }) => {
-                const active = pathname === path;
-                return (
-                  <Link key={path} to={path} style={{ textDecoration: 'none' }}>
-                    <motion.div
-                      whileHover={{ y: -1 }}
-                      style={{
-                        display: 'flex', alignItems: 'center', gap: '0.4rem',
-                        padding: '0.45rem 0.8rem', borderRadius: '10px',
-                        fontSize: '0.82rem', fontWeight: 500,
-                        color: active ? '#4ade80' : '#86efac',
-                        background: active ? 'rgba(34,197,94,0.12)' : 'transparent',
-                        border: active ? '1px solid rgba(34,197,94,0.25)' : '1px solid transparent',
-                        transition: 'all 0.2s',
-                        cursor: 'pointer',
-                      }}
-                    >
-                      <Icon size={14} />
-                      {t(key)}
-                    </motion.div>
-                  </Link>
-                );
-              })}
-            </div>
-
-            <div style={{ display: 'flex', alignItems: 'center', gap: '0.75rem' }}>
-              <div data-no-translate style={{ position: 'relative' }}>
+            <div className="nav-actions">
+              <div data-no-translate className="nav-language">
                 <motion.button
                   whileHover={{ scale: 1.05 }}
                   onClick={() => setLangOpen(v => !v)}
-                  style={{
-                    display: 'flex', alignItems: 'center', gap: '0.4rem',
-                    background: 'rgba(255,255,255,0.05)', border: '1px solid var(--border)',
-                    borderRadius: '10px', padding: '0.45rem 0.75rem',
-                    color: '#86efac', fontSize: '0.82rem', cursor: 'pointer',
-                  }}
+                  className="nav-language-button"
                 >
                   <Globe size={14} />
-                  {t(LANGS.find(l => l.code === language)?.key || 'language.english')}
+                  <span>{t(LANGS.find(l => l.code === language)?.key || 'language.english')}</span>
                 </motion.button>
                 <AnimatePresence>
                   {langOpen && (
@@ -111,24 +73,13 @@ export default function Navbar() {
                       initial={{ opacity: 0, y: -8, scale: 0.95 }}
                       animate={{ opacity: 1, y: 0, scale: 1 }}
                       exit={{ opacity: 0, y: -8, scale: 0.95 }}
-                      style={{
-                        position: 'absolute', top: '110%', right: 0, zIndex: 200,
-                        background: '#050f06', border: '1px solid var(--border)',
-                        borderRadius: '12px', overflow: 'hidden', minWidth: '120px',
-                        boxShadow: '0 8px 30px rgba(0,0,0,0.5)',
-                      }}
+                      className="nav-language-menu"
                     >
                       {LANGS.map(l => (
                         <button
                           key={l.code}
                           onClick={() => { setLanguage(l.code); setLangOpen(false); }}
-                          style={{
-                            display: 'block', width: '100%', padding: '0.6rem 1rem',
-                            textAlign: 'left', background: language === l.code ? 'rgba(34,197,94,0.1)' : 'transparent',
-                            color: language === l.code ? '#4ade80' : '#86efac',
-                            fontSize: '0.85rem', cursor: 'pointer', border: 'none',
-                            fontFamily: 'Inter', transition: 'background 0.2s',
-                          }}
+                          className={language === l.code ? 'active' : ''}
                         >
                           {t(l.key)}
                         </button>
@@ -138,21 +89,27 @@ export default function Navbar() {
                 </AnimatePresence>
               </div>
 
-              <Link to="/dashboard" style={{ textDecoration: 'none' }} className="hidden md:block">
-                <motion.button whileHover={{ scale: 1.03 }} whileTap={{ scale: 0.97 }} className="btn-primary" style={{ padding: '0.5rem 1.2rem', fontSize: '0.85rem' }}>
-                  {t('app.openDashboard')}
-                </motion.button>
-              </Link>
-
               <motion.button
                 whileTap={{ scale: 0.9 }}
                 onClick={() => setOpen(v => !v)}
-                className="md:hidden"
-                style={{ background: 'none', border: 'none', color: '#86efac', cursor: 'pointer', padding: '0.25rem' }}
+                className="nav-menu-button"
+                aria-label={open ? 'Close navigation' : 'Open navigation'}
               >
                 {open ? <X size={24} /> : <Menu size={24} />}
               </motion.button>
             </div>
+          </div>
+
+          <div className="nav-tab-rail" aria-label="Primary navigation">
+            {NAV_LINKS.map(({ path, key, icon: Icon }) => {
+              const active = pathname === path;
+              return (
+                <Link key={path} to={path} className={`nav-tab ${active ? 'active' : ''}`}>
+                  <Icon size={16} />
+                  <span>{t(key)}</span>
+                </Link>
+              );
+            })}
           </div>
         </div>
       </nav>
@@ -164,9 +121,10 @@ export default function Navbar() {
             animate={{ opacity: 1, height: 'auto' }}
             exit={{ opacity: 0, height: 0 }}
             style={{
-              position: 'fixed', top: '68px', left: 0, right: 0, zIndex: 99,
+              position: 'fixed', top: '72px', left: 0, right: 0, zIndex: 99,
               background: 'rgba(2,11,3,0.97)', backdropFilter: 'blur(20px)',
               borderBottom: '1px solid var(--border)', padding: '1rem',
+              maxHeight: 'calc(100vh - 72px)', overflowY: 'auto',
             }}
           >
             {NAV_LINKS.map(({ path, key, icon: Icon }, i) => (

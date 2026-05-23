@@ -1,16 +1,24 @@
 import io
 import json
 import os
+import re
 from functools import lru_cache
 from typing import Any, Dict, List, Optional
 
-from PIL import Image
+import httpx
+from PIL import Image, ImageFilter, ImageStat
 
 
 DEFAULT_MODEL_PATH = os.getenv(
     "CROP_DISEASE_MODEL_PATH",
     os.path.join(os.path.dirname(os.path.dirname(__file__)), "models", "crop_disease_mobilenet_v3_small.pt"),
 )
+HF_CROP_DISEASE_MODEL = os.getenv(
+    "HF_CROP_DISEASE_MODEL",
+    "linkanjarad/mobilenet_v2_1.0_224-plant-disease-identification",
+)
+HF_API_TOKEN = os.getenv("HF_API_TOKEN", "")
+MIN_CONFIDENCE = float(os.getenv("CROP_DISEASE_MIN_CONFIDENCE", "55"))
 
 
 DISEASE_CATALOG: Dict[str, Dict[str, Any]] = {
@@ -168,17 +176,47 @@ def _severity_from_confidence(confidence: float) -> str:
     return "Low"
 
 
+def _clean_label(label: str) -> str:
+    label = str(label or "").strip()
+    label = re.sub(r"^\s*label[_\s-]*\d+\s*[:=-]?\s*", "", label, flags=re.I)
+    label = label.replace("___", " | ").replace("__", " | ").replace("_", " ")
+    label = re.sub(r"\s+", " ", label).strip()
+    return label
+
+
+def _split_crop_disease(label: str, requested_crop: str = "") -> tuple[str, str]:
+    raw = str(label or "").strip()
+    if "___" in raw:
+        crop, disease = raw.split("___", 1)
+    elif "|" in _clean_label(raw):
+        crop, disease = _clean_label(raw).split("|", 1)
+    else:
+        crop, disease = requested_crop or "", _clean_label(raw)
+    crop = _clean_label(crop).replace("healthy", "").strip().title()
+    disease = _clean_label(disease).replace("disease", "").strip()
+    disease = re.sub(r"\bhealthy\b", "Healthy", disease, flags=re.I)
+    disease = disease.title() if disease else "Crop Stress"
+    return crop or requested_crop or "Crop", disease
+
+
 def _crop_from_label(label: str, requested_crop: str) -> str:
     crop = DISEASE_CATALOG.get(label, {}).get("crop")
-    return crop or requested_crop or "Crop"
+    if crop:
+        return crop
+    parsed_crop, _ = _split_crop_disease(label, requested_crop)
+    return parsed_crop or requested_crop or "Crop"
 
 
 def payload_from_prediction(label: str, confidence: float, requested_crop: str = "") -> Dict[str, Any]:
-    info = DISEASE_CATALOG.get(label, {})
+    crop, disease = _split_crop_disease(label, requested_crop)
+    catalog_key = disease
+    if disease.lower().endswith("healthy"):
+        catalog_key = "Healthy"
+    info = DISEASE_CATALOG.get(catalog_key) or DISEASE_CATALOG.get(label, {})
     crop = _crop_from_label(label, requested_crop)
     symptoms = info.get("symptoms") or ["Visible leaf or plant stress"]
     return {
-        "disease": label,
+        "disease": disease,
         "crop": crop,
         "scientific_name": info.get("scientific_name", "Field inspection recommended"),
         "confidence": round(confidence, 1),
@@ -198,6 +236,130 @@ def payload_from_prediction(label: str, confidence: float, requested_crop: str =
         "urgency": "Act soon and inspect nearby plants" if confidence >= 55 else "Low-confidence result; retake a clear leaf image",
         "model_note": "" if confidence >= 55 else "Model confidence is low. Upload a close, well-lit image of the affected leaf.",
     }
+
+
+def validate_crop_image(image_bytes: bytes) -> Dict[str, Any]:
+    try:
+        image = Image.open(io.BytesIO(image_bytes)).convert("RGB")
+    except Exception:
+        return {"valid": False, "reason": "Unable to read this image file. Please upload a clear JPG or PNG crop image."}
+
+    width, height = image.size
+    if min(width, height) < 160:
+        return {"valid": False, "reason": "Unable to confidently detect crop disease. Please upload a clearer crop image."}
+
+    resized = image.resize((min(160, width), min(160, height)))
+    gray = resized.convert("L")
+    brightness = ImageStat.Stat(gray).mean[0]
+    contrast = ImageStat.Stat(gray).stddev[0]
+    edge_strength = ImageStat.Stat(gray.filter(ImageFilter.FIND_EDGES)).mean[0]
+
+    if brightness < 18 or brightness > 238 or contrast < 8:
+        return {"valid": False, "reason": "Unable to confidently detect crop disease. Please upload a clearer crop image."}
+    if edge_strength < 3:
+        return {"valid": False, "reason": "Unable to confidently detect crop disease. Please upload a sharper crop image."}
+
+    pixels = list(resized.getdata())
+    total = max(len(pixels), 1)
+    vegetation = 0
+    crop_like = 0
+    for r, g, b in pixels:
+        green = g > 45 and g > r * 1.06 and g > b * 1.04
+        yellow = r > 100 and g > 80 and b < 115 and abs(r - g) < 85
+        brown = r > 60 and g > 35 and b < 95 and r >= g >= b * 0.7
+        if green:
+            vegetation += 1
+        if green or yellow or brown:
+            crop_like += 1
+
+    vegetation_ratio = vegetation / total
+    crop_like_ratio = crop_like / total
+    if crop_like_ratio < 0.025:
+        return {"valid": False, "reason": "Unable to confidently detect crop disease. Please upload a clear crop leaf image."}
+
+    return {
+        "valid": True,
+        "metrics": {
+            "width": width,
+            "height": height,
+            "brightness": round(brightness, 2),
+            "contrast": round(contrast, 2),
+            "edge_strength": round(edge_strength, 2),
+            "vegetation_ratio": round(vegetation_ratio, 4),
+            "crop_like_ratio": round(crop_like_ratio, 4),
+        },
+    }
+
+
+def unable_diagnosis_payload(reason: str, requested_crop: str = "") -> Dict[str, Any]:
+    return {
+        "available": False,
+        "disease": "Unable to confidently detect crop disease",
+        "crop": requested_crop or "Crop",
+        "scientific_name": "Not determined",
+        "confidence": 0,
+        "severity": "Unknown",
+        "symptoms": [],
+        "diagnosis": reason or "Unable to confidently detect crop disease. Please upload a clearer crop image.",
+        "treatment": {
+            "cultural": ["Upload a close, well-lit image of one affected leaf against a plain background."],
+            "biological": [],
+            "chemical": [],
+        },
+        "prevention": ["Retake the image in daylight and include the affected leaf surface clearly."],
+        "organic_remedy": "",
+        "urgency": "Retake image",
+        "model_note": reason,
+        "source": "no-confident-vision-detection",
+    }
+
+
+async def predict_with_huggingface(image_bytes: bytes, crop: str = "", top_k: int = 3) -> Optional[Dict[str, Any]]:
+    if not HF_CROP_DISEASE_MODEL or not HF_API_TOKEN:
+        return None
+    headers = {
+        "Authorization": f"Bearer {HF_API_TOKEN}",
+        "Content-Type": "application/octet-stream",
+    }
+    url = f"https://api-inference.huggingface.co/models/{HF_CROP_DISEASE_MODEL}"
+    try:
+        async with httpx.AsyncClient(timeout=45) as client:
+            response = await client.post(url, headers=headers, content=image_bytes)
+            if response.status_code in {503, 504}:
+                return unable_diagnosis_payload("Crop disease model is warming up. Please retry in a minute.", crop)
+            response.raise_for_status()
+            payload = response.json()
+    except Exception:
+        return None
+
+    predictions = payload if isinstance(payload, list) else payload.get("predictions") or payload.get("data") or []
+    top = []
+    for item in predictions[:top_k]:
+        label = item.get("label") or item.get("class") or item.get("class_name")
+        score = item.get("score") or item.get("confidence") or item.get("probability")
+        if label is None or score is None:
+            continue
+        confidence = float(score) * 100 if float(score) <= 1 else float(score)
+        top.append({"label": _clean_label(label), "confidence": round(confidence, 1)})
+    if not top:
+        return None
+
+    best = top[0]
+    if best["confidence"] < MIN_CONFIDENCE:
+        result = unable_diagnosis_payload(
+            "Unable to confidently detect crop disease. Please upload a clearer crop image.",
+            crop,
+        )
+        result["confidence"] = best["confidence"]
+        result["top_predictions"] = top
+        result["source"] = "huggingface-low-confidence"
+        return result
+
+    result = payload_from_prediction(best["label"], best["confidence"], crop)
+    result["top_predictions"] = top
+    result["source"] = "huggingface-crop-disease"
+    result["model_id"] = HF_CROP_DISEASE_MODEL
+    return result
 
 
 class CropDiseaseModel:
@@ -295,6 +457,9 @@ def model_status() -> Dict[str, Any]:
         "configured_path": model.model_path,
         "available": model.available,
         "error": model.error,
+        "huggingface_model": HF_CROP_DISEASE_MODEL,
+        "huggingface_configured": bool(HF_API_TOKEN and HF_CROP_DISEASE_MODEL),
+        "min_confidence": MIN_CONFIDENCE,
     }
 
 

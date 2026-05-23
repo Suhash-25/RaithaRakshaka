@@ -1,4 +1,3 @@
-import base64
 import asyncio
 import json
 import math
@@ -13,9 +12,17 @@ from dotenv import load_dotenv
 from translate import extract_json_array
 
 try:
-    from ml.disease_model import get_crop_disease_model
+    from ml.disease_model import (
+        get_crop_disease_model,
+        predict_with_huggingface,
+        unable_diagnosis_payload,
+        validate_crop_image,
+    )
 except Exception:
     get_crop_disease_model = None
+    predict_with_huggingface = None
+    unable_diagnosis_payload = None
+    validate_crop_image = None
 
 load_dotenv(os.path.join(os.path.dirname(__file__), ".env"))
 
@@ -134,7 +141,10 @@ def normalise_diagnosis_payload(payload: Dict[str, Any], fallback: Dict[str, Any
     result["treatment"] = treatment
     result["symptoms"] = symptoms
     result["prevention"] = _listify(result.get("prevention") or fallback.get("prevention"))
-    result["confidence"] = round(bounded(float(result.get("confidence") or fallback.get("confidence") or 55)), 1)
+    confidence_value = result.get("confidence")
+    if confidence_value is None or confidence_value == "":
+        confidence_value = fallback.get("confidence") or 55
+    result["confidence"] = round(bounded(float(confidence_value)), 1)
     result["severity"] = str(result.get("severity") or fallback.get("severity") or "Medium").title()
     result["disease"] = str(result.get("disease") or fallback.get("disease") or "Possible crop stress")
     result["crop"] = str(result.get("crop") or fallback.get("crop") or "Crop")
@@ -344,39 +354,40 @@ class CropDiagnosticAgent:
         fallback = self.FALLBACKS.get("rice" if "rice" in crop else "tomato", self.FALLBACKS["tomato"]).copy()
 
         if image_bytes:
-            ml_result = None
-            if get_crop_disease_model:
-                model = get_crop_disease_model()
-                ml_result = model.predict(image_bytes, crop=ctx.farmer_profile.get("crop") or "")
-                if ml_result:
-                    fallback.update(ml_result)
-                    ctx.finish(self.name, f"ML diagnosis ready: {fallback.get('disease', 'crop issue')}")
-                else:
-                    fallback["model_note"] = model.error or "Trained crop disease model is unavailable"
+            requested_crop = ctx.farmer_profile.get("crop") or ""
+            image_check = validate_crop_image(image_bytes) if validate_crop_image else {"valid": True}
+            if not image_check.get("valid"):
+                reason = image_check.get("reason") or "Unable to confidently detect crop disease. Please upload a clearer crop image."
+                fallback = unable_diagnosis_payload(reason, requested_crop) if unable_diagnosis_payload else {"disease": reason, "confidence": 0, "severity": "Unknown"}
+                ctx.finish(self.name, "Uploaded image was not suitable for crop disease detection", "warning")
+            else:
+                ml_result = None
+                if get_crop_disease_model:
+                    model = get_crop_disease_model()
+                    ml_result = model.predict(image_bytes, crop=requested_crop)
+                    if ml_result:
+                        fallback.update(ml_result)
+                        fallback["image_quality"] = image_check.get("metrics", {})
+                        ctx.finish(self.name, f"ML diagnosis ready: {fallback.get('disease', 'crop issue')}")
+                    else:
+                        fallback["model_note"] = model.error or "Local trained crop disease model is unavailable"
 
-            if not ml_result:
-                try:
-                    image_b64 = base64.b64encode(image_bytes).decode("ascii")
-                    prompt = (
-                        "Analyze this crop leaf image for disease, pest, or nutrient deficiency. "
-                        "Return JSON with keys: disease, crop, confidence, severity, symptoms, treatment, "
-                        "prevention, organic_remedy, yield_loss, urgency. Use Indian farming context."
+                if not ml_result and predict_with_huggingface:
+                    hf_result = await predict_with_huggingface(image_bytes, crop=requested_crop)
+                    if hf_result:
+                        fallback.update(hf_result)
+                        fallback["image_quality"] = image_check.get("metrics", {})
+                        status = "warning" if hf_result.get("available") is False else "success"
+                        ctx.finish(self.name, f"Vision diagnosis ready: {fallback.get('disease', 'crop issue')}", status)
+                        ml_result = hf_result
+
+                if not ml_result:
+                    reason = (
+                        fallback.get("model_note")
+                        or "No real crop disease vision model is configured. Set HF_API_TOKEN/HF_CROP_DISEASE_MODEL or deploy a trained checkpoint."
                     )
-                    raw = await ollama_generate(prompt, model=OLLAMA_VISION_MODEL, images=[image_b64], timeout=90)
-                    parsed = extract_json(raw)
-                    if parsed:
-                        fallback.update(parsed)
-                        fallback = normalise_diagnosis_payload(fallback, self.FALLBACKS.get("tomato", {}))
-                        ctx.finish(self.name, f"Vision diagnosis ready: {fallback.get('disease', 'crop issue')}")
-                    else:
-                        fallback["model_note"] = raw[:500] if raw else "Vision model returned no structured output"
-                        ctx.finish(self.name, "Vision model responded; used structured fallback fields")
-                except Exception as exc:
-                    if fallback.get("model_note"):
-                        fallback["model_note"] = f"{fallback['model_note']}; Ollama vision unavailable: {exc}"
-                    else:
-                        fallback["model_note"] = f"Ollama vision unavailable: {exc}"
-                    ctx.finish(self.name, "Vision models unavailable; used offline crop rules", "warning")
+                    fallback = unable_diagnosis_payload(reason, requested_crop) if unable_diagnosis_payload else fallback
+                    ctx.finish(self.name, "No real image classifier is available; refused to guess", "warning")
         else:
             if "yellow" in normalise(ctx.query):
                 fallback["disease"] = "Possible nutrient deficiency or early blight"
@@ -730,8 +741,6 @@ class MarketPriceAgent:
         live = await self.fetch_agmarknet(crop, state, location, district=district, mandi=mandi)
         if not live:
             live = await self.fetch_data_gov(crop, state, district=district or location, mandi=mandi)
-        if not live and (district or location):
-            live = await self.fetch_data_gov(crop, state, district=None, mandi=None)
         result = live or self.unavailable_market(crop, location=location, state=state, district=district or location)
         status = "success" if live else "warning"
         message = f"Live mandi signal ready for {result['crop']}" if live else "Live mandi feed unavailable"
@@ -960,7 +969,6 @@ class MarketPriceAgent:
         today = datetime.now()
         current_payload = None
         current_date = today
-        fallback_to_state = False
         for days_back in range(0, 3):
             report_date = today - timedelta(days=days_back)
             current_payload = await self.fetch_agmarknet_report(commodity, report_date, timeout=5)
@@ -969,19 +977,9 @@ class MarketPriceAgent:
                 current_date = report_date
                 break
         else:
-            for days_back in range(0, 5):
-                report_date = today - timedelta(days=days_back)
-                current_payload = await self.fetch_agmarknet_report(commodity, report_date, timeout=5)
-                records = self.flatten_agmarknet_records(current_payload or {}, state_id, display_location, {"strict": False}) if current_payload else []
-                if records:
-                    current_date = report_date
-                    fallback_to_state = True
-                    break
-            else:
-                return None
+            return None
 
-        active_scope = {"strict": False} if fallback_to_state else market_scope
-        records = self.flatten_agmarknet_records(current_payload or {}, state_id, display_location, active_scope)
+        records = self.flatten_agmarknet_records(current_payload or {}, state_id, display_location, market_scope)
         if not records:
             return None
 
@@ -992,7 +990,7 @@ class MarketPriceAgent:
         for days_back in range(1, 3):
             report_date = current_date - timedelta(days=days_back)
             previous_payload = await self.fetch_agmarknet_report(commodity, report_date, timeout=4)
-            previous_records = self.flatten_agmarknet_records(previous_payload or {}, state_id, display_location, active_scope) if previous_payload else []
+            previous_records = self.flatten_agmarknet_records(previous_payload or {}, state_id, display_location, market_scope) if previous_payload else []
             if previous_records:
                 previous_selected = previous_records[:5]
                 previous = round(sum(r["price"] for r in previous_selected) / len(previous_selected))
@@ -1003,7 +1001,7 @@ class MarketPriceAgent:
             {
                 "name": r["name"],
                 "price": r["price"],
-                "distance_km": "selected district" if not fallback_to_state else "nearest available state market",
+                "distance_km": "selected district",
                 "arrivals": r["arrivals"],
                 "arrival_unit": r["arrival_unit"],
                 "variety": r["variety"],
@@ -1014,8 +1012,6 @@ class MarketPriceAgent:
             for r in selected
         ]
         source = f"Agmarknet 2.0 live report ({current_date.strftime('%d %b %Y')})"
-        if fallback_to_state:
-            source += " - Karnataka fallback"
         return self.market_payload(
             crop,
             current,
@@ -1026,11 +1022,6 @@ class MarketPriceAgent:
             location=display_location,
             state=state,
             district=district or location,
-            scope_note=(
-                f"No current Agmarknet row was found for {display_location}; showing nearest available Karnataka market signal."
-                if fallback_to_state
-                else ""
-            ),
         )
 
     async def fetch_data_gov(
@@ -1094,7 +1085,7 @@ class MarketPriceAgent:
         state: str = "",
         district: str = "",
         source: str = "Agmarknet/Data.gov.in live feed",
-        message: str = "Live mandi data could not be fetched right now. Retry in a few minutes or check Agmarknet/Data.gov.in connectivity.",
+        message: str = "No live market data available for selected district.",
     ) -> Dict[str, Any]:
         return {
             "available": False,
@@ -1103,6 +1094,9 @@ class MarketPriceAgent:
             "state": state,
             "district": district,
             "current_price": None,
+            "modal_price": None,
+            "min_price": None,
+            "max_price": None,
             "week_ago": None,
             "month_ago": None,
             "unit": "per quintal (100 kg)",
@@ -1135,6 +1129,8 @@ class MarketPriceAgent:
         month_ago = previous_price or current
         change = round(((current - week_ago) / week_ago) * 100, 2) if week_ago else 0
         predicted = int(current * (1.03 if change >= 0 else 0.97))
+        min_price = min((int(m.get("min_price") or m.get("price") or current) for m in markets), default=current)
+        max_price = max((int(m.get("max_price") or m.get("price") or current) for m in markets), default=current)
         return {
             "available": True,
             "crop": crop.title(),
@@ -1142,12 +1138,15 @@ class MarketPriceAgent:
             "state": state,
             "district": district,
             "current_price": current,
+            "modal_price": current,
+            "min_price": min_price,
+            "max_price": max_price,
             "week_ago": week_ago,
             "month_ago": month_ago,
             "unit": "per quintal (100 kg)",
             "price_change": change,
             "trend": "rising" if change > 0 else "falling" if change < 0 else "stable",
-            "msp": int(current * 0.85),
+            "msp": None,
             "best_market": max(markets, key=lambda m: m["price"])["name"],
             "demand": "High" if sum(float(m.get("arrivals") or 0) for m in markets) > 100 else "Moderate",
             "source": source,

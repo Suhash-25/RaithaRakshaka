@@ -331,9 +331,18 @@ def vendor_search_terms(category: str) -> List[str]:
     return terms_by_category.get(category, terms_by_category["all"])
 
 def vendor_relevance_score(vendor: dict, category: str) -> float:
-    text = f"{vendor.get('name', '')} {vendor.get('category', '')} {vendor.get('address', '')}".lower()
-    agri_terms = ["agri", "agro", "seed", "fertil", "pesticide", "tractor", "farm", "irrigation", "nursery", "soil", "kisan", "krishi"]
-    blocked_terms = ["restaurant", "hotel", "egg", "chicken", "kitchen", "plywood", "beauty", "salon", "mobile", "electronics"]
+    category_label = "" if vendor.get("category") == "AgriTech Vendor" else vendor.get("category", "")
+    text = f"{vendor.get('name', '')} {category_label} {vendor.get('address', '')}".lower()
+    agri_terms = [
+        "agri", "agro", "seed", "fertil", "pesticide", "tractor", "farm", "irrigation",
+        "nursery", "soil", "kisan", "krishi", "crop", "sprayer", "pump", "drip",
+        "harvester", "implement", "agricultural", "agriculture",
+    ]
+    blocked_terms = [
+        "restaurant", "hotel", "egg", "chicken", "kitchen", "plywood", "beauty",
+        "salon", "mobile", "electronics", "bakery", "medical", "pharmacy",
+        "jewellery", "clothing", "fashion", "bar", "cafe", "lodge",
+    ]
     score = sum(3 for term in agri_terms if term in text)
     score -= sum(10 for term in blocked_terms if term in text)
     score += float(vendor.get("rating") or 0)
@@ -341,6 +350,31 @@ def vendor_relevance_score(vendor: dict, category: str) -> float:
     if category != "all" and category.rstrip("s") in text:
         score += 5
     return score
+
+def vendor_has_agri_signal(vendor: dict, category: str) -> bool:
+    category_label = "" if vendor.get("category") == "AgriTech Vendor" else vendor.get("category", "")
+    text = f"{vendor.get('name', '')} {category_label} {vendor.get('address', '')}".lower()
+    category_terms = {
+        "seeds": ["seed", "nursery", "sapling"],
+        "fertilizers": ["fertil", "pesticide", "agro chemical", "agrochemical", "sprayer"],
+        "irrigation": ["irrigation", "drip", "pump", "pipe", "sprinkler"],
+        "equipment": ["tractor", "farm equipment", "agricultural machinery", "implement", "harvester"],
+        "soil": ["soil", "testing", "agriculture lab", "agri lab"],
+        "all": [
+            "agri", "agro", "seed", "fertil", "pesticide", "tractor", "farm",
+            "irrigation", "nursery", "soil", "kisan", "krishi", "agricultural",
+            "agriculture", "sprayer", "drip", "pump", "implement",
+        ],
+    }
+    blocked_terms = [
+        "restaurant", "hotel", "egg", "chicken", "kitchen", "plywood", "beauty",
+        "salon", "mobile", "electronics", "bakery", "medical", "pharmacy",
+        "jewellery", "clothing", "fashion", "bar", "cafe", "lodge",
+    ]
+    if any(term in text for term in blocked_terms):
+        return False
+    terms = category_terms.get(category, category_terms["all"])
+    return any(term in text for term in terms)
 
 def strict_vendor_filter(vendors: List[dict], lat: float, lon: float, radius: int, category: str) -> List[dict]:
     seen = set()
@@ -353,8 +387,10 @@ def strict_vendor_filter(vendors: List[dict], lat: float, lon: float, radius: in
         if dist * 1000 > radius:
             continue
         vendor["distance_km"] = round(dist, 2)
+        if not vendor_has_agri_signal(vendor, category):
+            continue
         score = vendor_relevance_score(vendor, category)
-        if score < -2:
+        if score < 1:
             continue
         dedupe = (normalise_location_key(vendor.get("name", "")), round(float(vendor["latitude"]), 4), round(float(vendor["longitude"]), 4))
         if dedupe in seen:
@@ -362,7 +398,7 @@ def strict_vendor_filter(vendors: List[dict], lat: float, lon: float, radius: in
         seen.add(dedupe)
         vendor["relevance_score"] = round(score, 2)
         filtered.append(vendor)
-    filtered.sort(key=lambda item: (-item.get("relevance_score", 0), item.get("distance_km", 999), -(item.get("rating") or 0)))
+    filtered.sort(key=lambda item: (item.get("distance_km", 999), -(item.get("rating") or 0), -item.get("relevance_score", 0)))
     return filtered
 
 async def fetch_google_place_details(place_id: str, api_key: str) -> dict:
@@ -435,8 +471,9 @@ def overpass_query(lat: float, lon: float, radius: int, category: str) -> str:
         return f"""
         [out:json][timeout:10];
         (
-          node(around:{radius},{lat},{lon})["shop"~"agrarian|garden_centre|hardware|doityourself|trade|farm",i];
-          way(around:{radius},{lat},{lon})["shop"~"agrarian|garden_centre|hardware|doityourself|trade|farm",i];
+          node(around:{radius},{lat},{lon})["shop"~"agrarian|garden_centre|farm",i];
+          way(around:{radius},{lat},{lon})["shop"~"agrarian|garden_centre|farm",i];
+          node(around:{radius},{lat},{lon})["name"~"agro|agri|seed|fertili|pesticide|tractor|irrigation|nursery|farm|soil|krishi|kisan",i];
         );
         out center tags 40;
         """
@@ -490,7 +527,7 @@ async def fetch_vendors(lat: float, lon: float, radius: int = 9000, category: st
             continue
         inferred_category = vendor_category(tags)
         shop_value = str(tags.get("shop", "")).lower()
-        if inferred_category == "AgriTech Vendor" and shop_value not in {"hardware", "agrarian", "garden_centre", "doityourself", "farm"}:
+        if inferred_category == "AgriTech Vendor" and shop_value not in {"agrarian", "garden_centre", "farm"}:
             continue
         dedupe = (normalise_location_key(name), round(float(item_lat), 4), round(float(item_lon), 4))
         if dedupe in seen:

@@ -163,6 +163,11 @@ export default function DiseasePage() {
                       Trained image model is not available yet, so this is a rule-based screening result. Train the crop disease model to enable image classification.
                     </div>
                   )}
+                  {result.available === false && (
+                    <div style={{ color: '#fbbf24', background: 'rgba(251,191,36,0.08)', border: '1px solid rgba(251,191,36,0.18)', borderRadius: 12, padding: '0.75rem', fontSize: '0.78rem', lineHeight: 1.5, marginBottom: '1rem' }}>
+                      A confident crop-disease classification was not produced. The system did not guess; upload a sharper leaf photo or configure the production vision model.
+                    </div>
+                  )}
                   {result.model_note && result.source !== 'offline-rules' && (
                     <div style={{ color: '#fbbf24', background: 'rgba(251,191,36,0.08)', border: '1px solid rgba(251,191,36,0.18)', borderRadius: 12, padding: '0.75rem', fontSize: '0.78rem', lineHeight: 1.5, marginBottom: '1rem' }}>
                       {result.model_note}

@@ -177,7 +177,9 @@ export default function MarketPage() {
 
                   <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit,minmax(140px,1fr))', gap: '0.75rem', marginBottom: '1rem' }}>
                     {[
-                      { label: 'MSP Estimate', val: `Rs ${data.msp?.toLocaleString()}` },
+                      { label: 'Min Price', val: data.min_price ? `Rs ${data.min_price.toLocaleString()}` : '-' },
+                      { label: 'Modal Price', val: data.modal_price || data.current_price ? `Rs ${(data.modal_price || data.current_price).toLocaleString()}` : '-' },
+                      { label: 'Max Price', val: data.max_price ? `Rs ${data.max_price.toLocaleString()}` : '-' },
                       { label: 'Demand', val: data.demand },
                       { label: 'Best Market', val: data.best_market },
                       { label: 'Region', val: data.location || regionLabel },
@@ -203,7 +205,7 @@ export default function MarketPage() {
                     <span style={{ color: '#fbbf24', fontWeight: 700, fontSize: '0.88rem' }}>AI Price Prediction</span>
                   </div>
                   <p style={{ color: '#86efac', fontSize: '0.9rem', lineHeight: 1.6 }}>{data.ai_prediction}</p>
-                  <p style={{ color: '#4b7a58', fontSize: '0.72rem', marginTop: '0.75rem' }}>Region: {data.location || regionLabel} · Updated: {data.updated_at ? new Date(data.updated_at).toLocaleString() : 'just now'}</p>
+                  <p style={{ color: '#4b7a58', fontSize: '0.72rem', marginTop: '0.75rem' }}>Region: {data.location || regionLabel} - Updated: {data.updated_at ? new Date(data.updated_at).toLocaleString() : 'just now'}</p>
                 </motion.div>
 
                 <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ delay: 0.25 }} className="glass" style={{ borderRadius: 18, padding: '1.25rem' }}>

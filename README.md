@@ -68,6 +68,8 @@ SUPABASE_ANON_KEY=
 ## Main Endpoints
 
 - `POST /api/chat`
+- `POST /api/disease/detect`
+- `GET /api/disease/model-status`
 - `POST /api/analyze-location`
 - `POST /api/weather-data`
 - `POST /api/soil-data`
@@ -77,6 +79,34 @@ SUPABASE_ANON_KEY=
 - `GET /api/market/Tomato`
 - `GET /api/dashboard`
 - `GET /api/provider-status`
+
+## Train Crop Disease Image Model
+
+The disease upload endpoint first tries a local MobileNetV3 classifier trained from Hugging Face dataset `vishnun0027/Crop_Disease`.
+Train it once from the backend folder:
+
+```powershell
+cd krishi_backend
+python train_crop_disease_model.py --epochs 8 --batch-size 16
+```
+
+For a quick smoke test, use a small subset:
+
+```powershell
+python train_crop_disease_model.py --epochs 1 --max-samples 200 --freeze-backbone
+```
+
+The checkpoint is saved to `krishi_backend/models/crop_disease_mobilenet_v3_small.pt` by default. Override with:
+
+```env
+CROP_DISEASE_MODEL_PATH=C:\path\to\crop_disease_mobilenet_v3_small.pt
+```
+
+Check readiness:
+
+```powershell
+Invoke-RestMethod http://127.0.0.1:8001/api/disease/model-status
+```
 
 ## Notes
 

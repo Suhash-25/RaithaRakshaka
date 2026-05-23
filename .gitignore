@@ -189,3 +189,44 @@ celerybeat-schedule
 .mypy_cache/
 .dmypy.json
 dmypy.json
+
+# Large datasets and data files
+/PlantDoc-Dataset/
+PlantDoc-Dataset/
+*.csv
+*.tsv
+*.xlsx
+*.parquet
+*.parquet.gzip
+*.jsonl
+*.jsonld
+*.pkl
+*.pickle
+
+# Large machine learning models and weight files
+*.pt
+*.pth
+*.bin
+*.onnx
+*.safetensors
+*.pb
+*.h5
+*.hdf5
+*.model
+*.ckpt
+
+# Database backups and dumps
+*.sql
+*.dump
+*.backup
+
+# Media assets and document files
+*.mp4
+*.webm
+*.wav
+*.mp3
+*.pdf
+*.zip
+*.tar.gz
+*.tgz
+*.rar

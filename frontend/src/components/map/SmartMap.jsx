@@ -2,7 +2,7 @@ import { useMemo, useRef, useState } from 'react';
 import { MapContainer, Marker, Popup, TileLayer, useMapEvents } from 'react-leaflet';
 import L from 'leaflet';
 import 'leaflet/dist/leaflet.css';
-import { analyzeLocation } from '../../services/api';
+import { analyzeLocation, getVendors } from '../../services/api';
 import IntelligencePanel from './IntelligencePanel';
 import MapSearch from './MapSearch';
 import SatelliteControls from './SatelliteControls';
@@ -30,6 +30,13 @@ const analysisIcon = L.divIcon({
   iconAnchor: [17, 17],
 });
 
+const vendorMapIcon = L.divIcon({
+  className: 'vendor-marker',
+  html: '<div class="vendor-marker-pulse"></div><div class="vendor-marker-core">🌾</div>',
+  iconSize: [36, 36],
+  iconAnchor: [18, 18],
+});
+
 function ClickAnalyzer({ onAnalyze }) {
   useMapEvents({
     click: (event) => onAnalyze(event.latlng),
@@ -44,6 +51,7 @@ export default function SmartMap() {
   const [data, setData] = useState(null);
   const [loading, setLoading] = useState(false);
   const [markers, setMarkers] = useState([]);
+  const [vendors, setVendors] = useState([]);
   const tile = TILE_LAYERS[layer];
 
   const heatPoints = useMemo(() => {
@@ -57,6 +65,9 @@ export default function SmartMap() {
     try {
       const result = await analyzeLocation(lat, lng);
       setData(result);
+      getVendors({ latitude: lat, longitude: lng, radius: 8000, category: 'all' })
+        .then((vendorData) => setVendors(vendorData.vendors || []))
+        .catch(() => setVendors([]));
       setMarkers((prev) => [
         ...prev,
         {
@@ -113,6 +124,16 @@ export default function SmartMap() {
         {markers.map((marker, index) => (
           <Marker key={`${marker.lat}-${marker.lng}-${index}`} position={[marker.lat, marker.lng]} icon={analysisIcon}>
             <Popup>{marker.label}<br />Risk scan: {marker.risk}%</Popup>
+          </Marker>
+        ))}
+        {vendors.slice(0, 12).map((vendor) => (
+          <Marker key={vendor.id} position={[vendor.latitude, vendor.longitude]} icon={vendorMapIcon}>
+            <Popup>
+              <strong>{vendor.name}</strong><br />
+              {vendor.category}<br />
+              {vendor.distance_km} km away<br />
+              <a href={vendor.maps_url} target="_blank" rel="noreferrer">Open in Maps</a>
+            </Popup>
           </Marker>
         ))}
       </MapContainer>

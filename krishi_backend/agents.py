@@ -10,6 +10,12 @@ from typing import Any, Callable, Dict, List, Optional
 
 import httpx
 from dotenv import load_dotenv
+from translate import extract_json_array
+
+try:
+    from ml.disease_model import get_crop_disease_model
+except Exception:
+    get_crop_disease_model = None
 
 load_dotenv(os.path.join(os.path.dirname(__file__), ".env"))
 
@@ -74,6 +80,80 @@ def extract_json(raw: str) -> Optional[dict]:
         return None
 
 
+def _listify(value: Any) -> List[str]:
+    if value is None:
+        return []
+    if isinstance(value, list):
+        return [str(item).strip() for item in value if str(item).strip()]
+    if isinstance(value, tuple):
+        return [str(item).strip() for item in value if str(item).strip()]
+    if isinstance(value, str):
+        parts = re.split(r"\n+|;\s*", value)
+        return [part.strip(" -\t") for part in parts if part.strip(" -\t")]
+    return [str(value).strip()] if str(value).strip() else []
+
+
+def normalise_treatment(value: Any, fallback_steps: Optional[List[str]] = None) -> Dict[str, List[str]]:
+    base = {
+        "cultural": [],
+        "biological": [],
+        "chemical": [],
+    }
+    if isinstance(value, dict):
+        base["cultural"] = _listify(value.get("cultural") or value.get("cultural_controls") or value.get("preventive"))
+        base["biological"] = _listify(value.get("biological") or value.get("organic") or value.get("natural"))
+        base["chemical"] = _listify(value.get("chemical") or value.get("sprays") or value.get("fungicide"))
+        other = _listify(value.get("treatment") or value.get("general") or value.get("immediate"))
+    else:
+        other = _listify(value)
+
+    if not base["cultural"]:
+        base["cultural"] = [
+            "Isolate heavily affected leaves and remove them from the field",
+            "Improve airflow by pruning crowded lower foliage",
+            "Avoid overhead irrigation until symptoms are controlled",
+        ]
+    if not base["biological"]:
+        base["biological"] = [
+            "Use neem-based spray or a registered biocontrol as advised locally",
+            "Apply Trichoderma or Pseudomonas formulations where suitable for the crop",
+        ]
+    if not base["chemical"]:
+        base["chemical"] = other or fallback_steps or [
+            "Consult the local agriculture officer before spraying",
+            "Use only crop-labeled fungicide or bactericide at the label dose",
+        ]
+    return base
+
+
+def normalise_diagnosis_payload(payload: Dict[str, Any], fallback: Dict[str, Any]) -> Dict[str, Any]:
+    result = dict(payload or {})
+    fallback_steps = _listify(fallback.get("treatment"))
+    symptoms = _listify(result.get("symptoms") or fallback.get("symptoms"))
+    treatment = normalise_treatment(result.get("treatment"), fallback_steps)
+    result["treatment"] = treatment
+    result["symptoms"] = symptoms
+    result["prevention"] = _listify(result.get("prevention") or fallback.get("prevention"))
+    result["confidence"] = round(bounded(float(result.get("confidence") or fallback.get("confidence") or 55)), 1)
+    result["severity"] = str(result.get("severity") or fallback.get("severity") or "Medium").title()
+    result["disease"] = str(result.get("disease") or fallback.get("disease") or "Possible crop stress")
+    result["crop"] = str(result.get("crop") or fallback.get("crop") or "Crop")
+    result["scientific_name"] = str(
+        result.get("scientific_name")
+        or result.get("pathogen")
+        or fallback.get("scientific_name")
+        or "Field inspection recommended"
+    )
+    if not result.get("diagnosis"):
+        symptom_text = ", ".join(symptoms[:3]) if symptoms else "visible crop stress"
+        result["diagnosis"] = (
+            f"{result['disease']} is indicated by {symptom_text}. "
+            "Use this as a screening result and confirm in the field before spraying."
+        )
+    result["treatment_steps"] = treatment["chemical"] or treatment["cultural"]
+    return result
+
+
 async def ollama_generate(
     prompt: str,
     system: str = "",
@@ -118,7 +198,27 @@ async def live_ai_generate(prompt: str, system: str = "", timeout: float = 8) ->
                 response.raise_for_status()
                 return response.json()["choices"][0]["message"]["content"]
         except Exception as exc:
-            errors.append(f"Groq unavailable: {type(exc).__name__}")
+            errors.append(f"Groq primary model unavailable: {type(exc).__name__} ({str(exc)})")
+
+        try:
+            async with httpx.AsyncClient(timeout=timeout) as client:
+                response = await client.post(
+                    "https://api.groq.com/openai/v1/chat/completions",
+                    headers={"Authorization": f"Bearer {GROQ_API_KEY}", "Content-Type": "application/json"},
+                    json={
+                        "model": "llama-3.1-8b-instant",
+                        "messages": [
+                            {"role": "system", "content": system},
+                            {"role": "user", "content": prompt},
+                        ],
+                        "temperature": 0.25,
+                        "max_tokens": 650,
+                    },
+                )
+                response.raise_for_status()
+                return response.json()["choices"][0]["message"]["content"]
+        except Exception as exc:
+            errors.append(f"Groq failover model unavailable: {type(exc).__name__} ({str(exc)})")
 
     if OPENROUTER_API_KEY:
         try:
@@ -209,6 +309,7 @@ class CropDiagnosticAgent:
         "tomato": {
             "disease": "Possible Late Blight",
             "crop": "Tomato",
+            "scientific_name": "Phytophthora infestans",
             "confidence": 68,
             "severity": "High",
             "symptoms": ["Dark leaf spots", "Yellowing around lesions", "Rapid spread in wet weather"],
@@ -225,6 +326,7 @@ class CropDiagnosticAgent:
         "rice": {
             "disease": "Possible Bacterial Leaf Blight",
             "crop": "Rice",
+            "scientific_name": "Xanthomonas oryzae pv. oryzae",
             "confidence": 64,
             "severity": "High",
             "symptoms": ["Yellow streaks from leaf tips", "Wilting seedlings", "Water-soaked lesions"],
@@ -242,24 +344,39 @@ class CropDiagnosticAgent:
         fallback = self.FALLBACKS.get("rice" if "rice" in crop else "tomato", self.FALLBACKS["tomato"]).copy()
 
         if image_bytes:
-            try:
-                image_b64 = base64.b64encode(image_bytes).decode("ascii")
-                prompt = (
-                    "Analyze this crop leaf image for disease, pest, or nutrient deficiency. "
-                    "Return JSON with keys: disease, crop, confidence, severity, symptoms, treatment, "
-                    "prevention, organic_remedy, yield_loss, urgency. Use Indian farming context."
-                )
-                raw = await ollama_generate(prompt, model=OLLAMA_VISION_MODEL, images=[image_b64], timeout=90)
-                parsed = extract_json(raw)
-                if parsed:
-                    fallback.update(parsed)
-                    ctx.finish(self.name, f"Vision diagnosis ready: {fallback.get('disease', 'crop issue')}")
+            ml_result = None
+            if get_crop_disease_model:
+                model = get_crop_disease_model()
+                ml_result = model.predict(image_bytes, crop=ctx.farmer_profile.get("crop") or "")
+                if ml_result:
+                    fallback.update(ml_result)
+                    ctx.finish(self.name, f"ML diagnosis ready: {fallback.get('disease', 'crop issue')}")
                 else:
-                    fallback["model_note"] = raw[:500] if raw else "Vision model returned no structured output"
-                    ctx.finish(self.name, "Vision model responded; used structured fallback fields")
-            except Exception as exc:
-                fallback["model_note"] = f"Ollama vision unavailable: {exc}"
-                ctx.finish(self.name, "Local vision model unavailable; used offline crop rules", "warning")
+                    fallback["model_note"] = model.error or "Trained crop disease model is unavailable"
+
+            if not ml_result:
+                try:
+                    image_b64 = base64.b64encode(image_bytes).decode("ascii")
+                    prompt = (
+                        "Analyze this crop leaf image for disease, pest, or nutrient deficiency. "
+                        "Return JSON with keys: disease, crop, confidence, severity, symptoms, treatment, "
+                        "prevention, organic_remedy, yield_loss, urgency. Use Indian farming context."
+                    )
+                    raw = await ollama_generate(prompt, model=OLLAMA_VISION_MODEL, images=[image_b64], timeout=90)
+                    parsed = extract_json(raw)
+                    if parsed:
+                        fallback.update(parsed)
+                        fallback = normalise_diagnosis_payload(fallback, self.FALLBACKS.get("tomato", {}))
+                        ctx.finish(self.name, f"Vision diagnosis ready: {fallback.get('disease', 'crop issue')}")
+                    else:
+                        fallback["model_note"] = raw[:500] if raw else "Vision model returned no structured output"
+                        ctx.finish(self.name, "Vision model responded; used structured fallback fields")
+                except Exception as exc:
+                    if fallback.get("model_note"):
+                        fallback["model_note"] = f"{fallback['model_note']}; Ollama vision unavailable: {exc}"
+                    else:
+                        fallback["model_note"] = f"Ollama vision unavailable: {exc}"
+                    ctx.finish(self.name, "Vision models unavailable; used offline crop rules", "warning")
         else:
             if "yellow" in normalise(ctx.query):
                 fallback["disease"] = "Possible nutrient deficiency or early blight"
@@ -267,12 +384,16 @@ class CropDiagnosticAgent:
                 fallback["severity"] = "Medium"
             ctx.finish(self.name, f"Text diagnosis ready: {fallback['disease']}")
 
+        source = fallback.get("source")
+        if not source:
+            source = "ollama-vlm" if image_bytes and "model_note" not in fallback else "offline-rules"
+        fallback = normalise_diagnosis_payload(fallback, self.FALLBACKS.get("tomato", {}))
         fallback.update(
             {
                 "analysis_id": f"KR-{datetime.now().strftime('%Y%m%d%H%M%S')}",
                 "analyzed_at": now_iso(),
                 "file_name": file_name,
-                "source": "ollama-vlm" if image_bytes and "model_note" not in fallback else "offline-rules",
+                "source": source,
             }
         )
         ctx.findings["diagnosis"] = fallback
@@ -1047,22 +1168,63 @@ class OrchestratorAgent:
         self.scheme_agent = GovernmentSchemeAgent()
         self.market_agent = MarketPriceAgent()
 
-    def plan(self, query: str, has_image: bool = False) -> List[str]:
-        q = normalise(query)
-        agents = []
-        crop_issue = any(w in q for w in ["disease", "leaf", "yellow", "pest", "deficiency", "spots", "turning", "wilting", "fungal", "blight"])
-        has_location_hint = any(w in q for w in [*self.KNOWN_LOCATIONS, "today", "tomorrow"])
+    async def plan(self, query: str, has_image: bool = False) -> List[str]:
+        q_raw = (query or "").strip().lower()
+        if not q_raw or q_raw in ["hi", "hello", "namaste", "namaskara", "hey", "namaskar", "namaste!"]:
+            return []
+
+        q_clean = normalise(query)
+
+        local_agents = []
+        crop_issue = any(w in q_clean for w in ["disease", "leaf", "yellow", "pest", "deficiency", "spots", "turning", "wilting", "fungal", "blight"])
+        has_location_hint = any(w in q_clean for w in [*self.KNOWN_LOCATIONS, "today", "tomorrow"])
         if has_image or crop_issue:
-            agents.append("diagnosis")
-        if crop_issue or has_location_hint or any(w in q for w in ["weather", "rain", "humidity", "spray", "irrigation", "risk"]):
-            agents.append("weather")
-        if any(w in q for w in ["scheme", "subsidy", "pm kisan", "pm-kisan", "loan", "insurance", "kcc"]):
-            agents.append("schemes")
-        if any(w in q for w in ["price", "market", "mandi", "sell", "rate"]):
-            agents.append("market")
-        if not agents:
-            agents = ["diagnosis", "weather", "schemes", "market"]
-        return agents
+            local_agents.append("diagnosis")
+        if crop_issue or has_location_hint or any(w in q_clean for w in ["weather", "rain", "humidity", "spray", "irrigation", "risk"]):
+            local_agents.append("weather")
+        if any(w in q_clean for w in ["scheme", "subsidy", "pm kisan", "pm-kisan", "loan", "insurance", "kcc"]):
+            local_agents.append("schemes")
+        if any(w in q_clean for w in ["price", "market", "mandi", "sell", "rate"]):
+            local_agents.append("market")
+
+        if GROQ_API_KEY:
+            try:
+                system = (
+                    "You are an intent classifier for an agricultural assistant. "
+                    "Classify the user's query into one or more of these categories: 'diagnosis', 'weather', 'schemes', 'market'.\n"
+                    "Guidelines:\n"
+                    "- 'diagnosis': Use if the user describes crop symptoms, diseases, leaf issues, pests, or asks to diagnose/check a crop's health.\n"
+                    "- 'weather': Use if they ask about weather, rain, temperature, or if they ask what crops to grow/suitability based on location.\n"
+                    "- 'schemes': Use if they ask about subsidies, loans, insurance, government schemes, or financial aid.\n"
+                    "- 'market': Use if they ask about crop prices, rates, mandi prices, or selling crops.\n"
+                    "Respond with ONLY a JSON list of categories, for example: [\"schemes\", \"market\"]."
+                )
+                async with httpx.AsyncClient(timeout=4) as client:
+                    res = await client.post(
+                        "https://api.groq.com/openai/v1/chat/completions",
+                        headers={"Authorization": f"Bearer {GROQ_API_KEY}", "Content-Type": "application/json"},
+                        json={
+                            "model": "llama-3.1-8b-instant",
+                            "messages": [
+                                {"role": "system", "content": system},
+                                {"role": "user", "content": query}
+                            ],
+                            "temperature": 0.0
+                        }
+                    )
+                    res.raise_for_status()
+                    content = res.json()["choices"][0]["message"]["content"]
+                    parsed = extract_json_array(content)
+                    if parsed is not None:
+                        valid_categories = {"diagnosis", "weather", "schemes", "market"}
+                        agents = [item for item in parsed if item in valid_categories]
+                        return agents
+            except Exception:
+                pass
+
+        if not local_agents:
+            return []
+        return local_agents
 
     def enrich_profile_from_query(self, query: str, profile: Dict[str, Any]) -> Dict[str, Any]:
         enriched = dict(profile or {})
@@ -1093,16 +1255,29 @@ class OrchestratorAgent:
             enriched["state_source"] = "profile_or_query"
         return enriched
 
-    def clarification_message(self, plan: List[str], profile: Dict[str, Any]) -> Optional[str]:
+    def clarification_message(self, query: str, plan: List[str], profile: Dict[str, Any]) -> Optional[str]:
+        # If the query contains non-ASCII characters, it's a regional language (Hindi, Kannada).
+        # Our naive English keyword matching will fail, so we bypass this hardcoded blocker 
+        # and trust the powerful Llama-3 LLM to handle the conversation naturally!
+        if any(ord(c) > 127 for c in query):
+            return None
+            
         location_needed = any(agent in plan for agent in ["weather", "market", "diagnosis"])
         state_needed = "schemes" in plan
         crop_needed = any(agent in plan for agent in ["market", "diagnosis"])
+        
+        # If the user is asking for crop recommendations, don't demand a crop name!
+        q = normalise(query)
+        asking_for_recommendation = any(w in q for w in ["what crop", "which crop", "grow", "suitable", "recommend", "best crop", "yava", "bele", "bade", "baleyu", "badey", "baleyali"])
+        if asking_for_recommendation:
+            crop_needed = False
+
         if location_needed and not profile.get("location"):
             return "Please share your village/city or district first, so I can check local weather, mandi, and crop risk data accurately."
         if state_needed and not (profile.get("state") or profile.get("location")):
             return "Please share your state or district first, so I can search relevant central and state agriculture schemes."
         if crop_needed and not profile.get("crop"):
-            return "Which crop should I analyze? Please tell me the crop name and your location."
+            return "Which crop should I analyze? Please tell me the crop name."
         return None
 
     async def run(
@@ -1116,19 +1291,20 @@ class OrchestratorAgent:
         farmer_profile = self.enrich_profile_from_query(query, profile or {})
         ctx = SharedContext(query=query, language=language, farmer_profile=farmer_profile)
         ctx.start(self.name, "Analyzing query and selecting specialist agents")
-        plan = self.plan(query, has_image=bool(image_bytes))
+        plan = await self.plan(query, has_image=bool(image_bytes))
         ctx.finish(self.name, " -> ".join(plan))
-        clarification = self.clarification_message(plan, farmer_profile)
+        
+        clarification = self.clarification_message(query, plan, farmer_profile)
         if clarification:
             ctx.findings["missing_context"] = {
-                "message": clarification,
+                "instruction_for_llm": f"The user is missing required context: {clarification}. You MUST ask the user for this information IN THEIR OWN LANGUAGE (language code: {language}). DO NOT provide generic advice, just ask for the missing details.",
                 "required_for": plan,
-                "profile": farmer_profile,
-                "updated_at": now_iso(),
             }
+            # We skip heavy tool execution if context is missing, and go straight to LLM for translation
+            response = await self.summarize(ctx)
             return {
                 "status": "needs_context",
-                "response": clarification,
+                "response": response,
                 "agent_flow": ctx.agent_flow,
                 "shared_context": ctx.findings,
                 "updated_at": now_iso(),
@@ -1184,10 +1360,11 @@ class OrchestratorAgent:
                 + "\n\nUse only the provided SharedContext, web search snippets, weather, market, map, soil, and scheme data. "
                 "For market answers include market name, min price, max price, modal price, state/location, timestamp, and source when present. "
                 "For scheme answers include why it matches the crop/location/profile and cite live scheme source titles when present. "
-                "Do not repeat a generic template."
+                "Do not repeat a generic template. Respond only in the requested language code."
             )
             prompt = (
                 f"Farmer query: {ctx.query}\n"
+                f"Required response language code: {ctx.language}\n"
                 f"Farmer profile: {json.dumps(ctx.farmer_profile, ensure_ascii=True)}\n"
                 f"Current timestamp: {now_iso()}\n"
                 f"Shared live context: {compact}\n\n"
@@ -1196,7 +1373,7 @@ class OrchestratorAgent:
             )
             try:
                 ctx.start("Live AI Synthesis Agent", "Generating contextual response from live context")
-                answer = await live_ai_generate(prompt, system=system, timeout=8)
+                answer = await live_ai_generate(prompt, system=system, timeout=15)
                 ctx.findings["ai_provider"] = "live"
                 ctx.finish("Live AI Synthesis Agent", "Contextual live response generated")
                 return answer
@@ -1223,7 +1400,13 @@ class OrchestratorAgent:
         schemes = ctx.findings.get("schemes")
         market = ctx.findings.get("market")
         if diagnosis:
-            parts.append(f"Crop check: {diagnosis.get('disease')} ({diagnosis.get('confidence')}% confidence). Next step: {diagnosis.get('treatment', ['Inspect field'])[0]}.")
+            treatment = diagnosis.get("treatment")
+            if isinstance(treatment, dict):
+                steps = treatment.get("chemical") or treatment.get("cultural") or treatment.get("biological") or []
+            else:
+                steps = _listify(treatment)
+            next_step = steps[0] if steps else "Inspect the affected leaves closely"
+            parts.append(f"Crop check: {diagnosis.get('disease')} ({diagnosis.get('confidence')}% confidence). Next step: {next_step}.")
         if weather:
             risk = weather.get("risk_scores", {})
             parts.append(f"Weather risk for {weather.get('location', ctx.farmer_profile.get('location', 'selected location'))}: fungal {risk.get('fungal_spread')}%, heat {risk.get('heat_stress')}%. {weather.get('advisory')} Source: {weather.get('source')} at {weather.get('updated_at')}.")

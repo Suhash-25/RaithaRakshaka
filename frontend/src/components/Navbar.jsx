@@ -1,7 +1,7 @@
 import { useState, useEffect } from 'react';
 import { Link, useLocation } from 'react-router-dom';
 import { motion, AnimatePresence } from 'framer-motion';
-import { Leaf, LayoutDashboard, Microscope, MessageSquare, Cloud, BookOpen, TrendingUp, Heart, Menu, X, Globe, Map } from 'lucide-react';
+import { Leaf, LayoutDashboard, Microscope, MessageSquare, Cloud, BookOpen, TrendingUp, Heart, Menu, X, Globe, Map, Store } from 'lucide-react';
 import { useApp } from '../context/AppContext';
 
 const NAV_LINKS = [
@@ -12,13 +12,14 @@ const NAV_LINKS = [
   { path: '/map', label: 'Smart Map', icon: Map },
   { path: '/schemes', label: 'Schemes', icon: BookOpen },
   { path: '/market', label: 'Market', icon: TrendingUp },
+  { path: '/vendors', label: 'Stores', icon: Store },
   { path: '/wellness', label: 'Wellness', icon: Heart },
 ];
 
 const LANGS = [
   { code: 'en', label: 'English' },
-  { code: 'hi', label: 'हिन्दी' },
-  { code: 'kn', label: 'ಕನ್ನಡ' },
+  { code: 'hi', label: 'Hindi' },
+  { code: 'kn', label: 'Kannada' },
 ];
 
 export default function Navbar() {

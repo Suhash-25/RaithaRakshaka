@@ -13,6 +13,7 @@ import SchemesPage from './pages/SchemesPage';
 import MarketPage from './pages/MarketPage';
 import WellnessPage from './pages/WellnessPage';
 import MapPage from './pages/MapPage';
+import VendorsPage from './pages/VendorsPage';
 
 export default function App() {
   return (
@@ -31,6 +32,7 @@ export default function App() {
             <Route path="/map" element={<MapPage />} />
             <Route path="/schemes" element={<SchemesPage />} />
             <Route path="/market" element={<MarketPage />} />
+            <Route path="/vendors" element={<VendorsPage />} />
             <Route path="/wellness" element={<WellnessPage />} />
             <Route path="*" element={<Navigate to="/" replace />} />
           </Routes>

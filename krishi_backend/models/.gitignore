@@ -1,0 +1,7 @@
+*.pt
+*.pth
+*.onnx
+*.safetensors
+*.bin
+crop_disease_treatment_catalog.json
+!.gitignore

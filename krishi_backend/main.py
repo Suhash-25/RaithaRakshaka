@@ -1,13 +1,15 @@
 import asyncio
+import json
 import math
 import os
+import re
 import time
 from typing import Dict, List, Optional
 from dotenv import load_dotenv
 
 load_dotenv(os.path.join(os.path.dirname(__file__), ".env"))
 
-from fastapi import FastAPI, File, UploadFile, Form, Depends
+from fastapi import FastAPI, File, UploadFile, Form, Depends, HTTPException, Query
 from fastapi.middleware.cors import CORSMiddleware
 from pydantic import BaseModel
 
@@ -21,7 +23,12 @@ from agents import (
     now_iso,
 )
 
-from translate import router as translate_router
+from translate import router as translate_router, detect_language, translate_many
+
+try:
+    from ml.disease_model import model_status as crop_disease_model_status
+except Exception:
+    crop_disease_model_status = None
 
 app = FastAPI(title="RaithaRakshaka API", version="2.0.0")
 
@@ -68,6 +75,7 @@ class CropRecommendationRequest(LocationRequest):
     land_acres: float = 2.0
 
 GEO_CACHE: Dict[str, dict] = {}
+VENDOR_CACHE: Dict[str, dict] = {}
 CACHE_TTL_SECONDS = 15 * 60
 ENABLE_SOILGRIDS = os.getenv("ENABLE_SOILGRIDS", "true").lower() == "true"
 
@@ -94,6 +102,13 @@ async def groq_generate(prompt: str, system: str = "") -> str:
         resp.raise_for_status()
         return resp.json()["choices"][0]["message"]["content"]
 
+def response_matches_language(text: str, language: str) -> bool:
+    if language == "hi":
+        return bool(re.search(r"[\u0900-\u097F]", text or ""))
+    if language == "kn":
+        return bool(re.search(r"[\u0C80-\u0CFF]", text or ""))
+    return True
+
 def provider_status() -> dict:
     return {
         "live_ai": {
@@ -105,6 +120,9 @@ def provider_status() -> dict:
         "soil": {"soilgrids_enabled": ENABLE_SOILGRIDS},
         "satellite": {"nasa_earthdata_configured": bool(os.getenv("NASA_EARTHDATA_TOKEN"))},
         "market": {"data_gov_configured": bool(os.getenv("DATA_GOV_API_KEY"))},
+        "crop_disease_model": crop_disease_model_status()
+        if crop_disease_model_status
+        else {"available": False, "error": "Crop disease model module unavailable"},
         "memory": {
             "supabase_configured": bool(
                 os.getenv("SUPABASE_URL")
@@ -234,6 +252,212 @@ async def reverse_geocode(lat: float, lon: float) -> dict:
     except Exception:
         value = {"region": "Selected land parcel", "district": "", "state": "", "country": "Unknown", "display_name": "", "category": "", "osm_type": "", "address": {}}
     return set_cached(key, value)
+
+async def geocode_location_text(location: str) -> dict:
+    key = f"geocode:{normalise_location_key(location)}"
+    cached = get_cached(key)
+    if cached:
+        return cached
+    try:
+        async with httpx.AsyncClient(timeout=8, headers={"User-Agent": "RaithaRakshakaAI/2.0"}) as client:
+            response = await client.get(
+                "https://nominatim.openstreetmap.org/search",
+                params={"format": "jsonv2", "limit": 1, "addressdetails": 1, "q": location},
+            )
+            response.raise_for_status()
+            item = (response.json() or [])[0]
+        address = item.get("address", {})
+        value = {
+            "latitude": float(item["lat"]),
+            "longitude": float(item["lon"]),
+            "label": item.get("display_name") or location,
+            "district": address.get("state_district") or address.get("county") or address.get("city") or location,
+            "state": address.get("state") or "",
+            "country": address.get("country") or "",
+        }
+    except Exception:
+        raise HTTPException(status_code=404, detail="Location not found. Try city, district, village, or pincode.")
+    return set_cached(key, value)
+
+def normalise_location_key(value: str) -> str:
+    return re.sub(r"[^a-z0-9]+", "-", (value or "").lower()).strip("-")
+
+def distance_km(lat1: float, lon1: float, lat2: float, lon2: float) -> float:
+    radius = 6371
+    p1, p2 = math.radians(lat1), math.radians(lat2)
+    dp = math.radians(lat2 - lat1)
+    dl = math.radians(lon2 - lon1)
+    a = math.sin(dp / 2) ** 2 + math.cos(p1) * math.cos(p2) * math.sin(dl / 2) ** 2
+    return radius * 2 * math.atan2(math.sqrt(a), math.sqrt(1 - a))
+
+def vendor_category(tags: dict) -> str:
+    text = " ".join(str(tags.get(k, "")).lower() for k in ["name", "shop", "amenity", "operator", "description"])
+    if any(word in text for word in ["tractor", "farm equipment", "machinery", "implement"]):
+        return "Farm Equipment"
+    if any(word in text for word in ["irrigation", "drip", "pump", "pipe"]):
+        return "Irrigation"
+    if any(word in text for word in ["fertilizer", "fertiliser", "pesticide", "agro chemical", "agrochemical"]):
+        return "Fertilizers & Pesticides"
+    if any(word in text for word in ["seed", "nursery"]):
+        return "Seeds"
+    if any(word in text for word in ["soil", "lab", "testing"]):
+        return "Soil Testing"
+    if "garden_centre" in text or "agrarian" in text:
+        return "Agri Store"
+    return "AgriTech Vendor"
+
+def overpass_query(lat: float, lon: float, radius: int, category: str) -> str:
+    if category == "all":
+        return f"""
+        [out:json][timeout:10];
+        (
+          node(around:{radius},{lat},{lon})["shop"~"agrarian|garden_centre|hardware|doityourself|trade|farm",i];
+          way(around:{radius},{lat},{lon})["shop"~"agrarian|garden_centre|hardware|doityourself|trade|farm",i];
+        );
+        out center tags 40;
+        """
+    category_regex = {
+        "seeds": "seed|nursery|garden",
+        "fertilizers": "fertili|pesticide|agro",
+        "irrigation": "irrigation|drip|pump|pipe",
+        "equipment": "tractor|machinery|equipment|implement",
+        "soil": "soil|testing|lab",
+    }.get(category, "agro|agri|seed|fertili|pesticide|tractor|irrigation|nursery|farm|soil")
+    return f"""
+    [out:json][timeout:12];
+    (
+      node(around:{radius},{lat},{lon})["shop"~"agrarian|garden_centre|hardware|doityourself|trade|farm",i];
+      way(around:{radius},{lat},{lon})["shop"~"agrarian|garden_centre|hardware|doityourself|trade|farm",i];
+      node(around:{radius},{lat},{lon})["name"~"{category_regex}",i];
+      node(around:{radius},{lat},{lon})["amenity"="marketplace"]["name"~"{category_regex}",i];
+    );
+    out center tags 40;
+    """
+
+async def fetch_vendors(lat: float, lon: float, radius: int = 9000, category: str = "all") -> List[dict]:
+    key = f"vendors:{round(lat, 3)}:{round(lon, 3)}:{radius}:{category}"
+    cached = VENDOR_CACHE.get(key)
+    if cached and time.time() - cached["created_at"] < CACHE_TTL_SECONDS:
+        return cached["value"]
+    query = overpass_query(lat, lon, radius, category)
+    try:
+        async with httpx.AsyncClient(timeout=22, headers={"User-Agent": "RaithaRakshakaAI/2.0"}) as client:
+            response = await client.post("https://overpass-api.de/api/interpreter", data={"data": query})
+            response.raise_for_status()
+            data = response.json()
+    except Exception:
+        return []
+    seen = set()
+    vendors = []
+    for item in data.get("elements") or []:
+        tags = item.get("tags") or {}
+        name = tags.get("name")
+        item_lat = item.get("lat") or (item.get("center") or {}).get("lat")
+        item_lon = item.get("lon") or (item.get("center") or {}).get("lon")
+        if not name or item_lat is None or item_lon is None:
+            continue
+        tag_text = " ".join(str(v).lower() for v in tags.values())
+        if any(blocked in tag_text for blocked in ["egg", "kitchen", "plywood", "laminate"]):
+            continue
+        inferred_category = vendor_category(tags)
+        shop_value = str(tags.get("shop", "")).lower()
+        if inferred_category == "AgriTech Vendor" and shop_value not in {"hardware", "agrarian", "garden_centre", "doityourself", "farm"}:
+            continue
+        dedupe = (normalise_location_key(name), round(float(item_lat), 4), round(float(item_lon), 4))
+        if dedupe in seen:
+            continue
+        seen.add(dedupe)
+        dist = distance_km(lat, lon, float(item_lat), float(item_lon))
+        address = tags.get("addr:full") or ", ".join(
+            part for part in [
+                tags.get("addr:housename") or tags.get("addr:housenumber"),
+                tags.get("addr:street"),
+                tags.get("addr:suburb"),
+                tags.get("addr:city") or tags.get("addr:district"),
+                tags.get("addr:state"),
+            ] if part
+        )
+        vendors.append({
+            "id": f"{item.get('type')}-{item.get('id')}",
+            "name": name,
+            "category": inferred_category,
+            "address": address or "Address available on map",
+            "phone": tags.get("phone") or tags.get("contact:phone") or "",
+            "rating": None,
+            "opening_status": tags.get("opening_hours") or "Opening hours not listed",
+            "latitude": float(item_lat),
+            "longitude": float(item_lon),
+            "distance_km": round(dist, 2),
+            "maps_url": f"https://www.google.com/maps/search/?api=1&query={item_lat},{item_lon}",
+            "source": "OpenStreetMap Overpass live data",
+        })
+    vendors.sort(key=lambda item: item["distance_km"])
+    if not vendors:
+        vendors = await fetch_nominatim_vendor_search(lat, lon, radius, category)
+    result = vendors[:24]
+    VENDOR_CACHE[key] = {"created_at": time.time(), "value": result}
+    return result
+
+async def fetch_nominatim_vendor_search(lat: float, lon: float, radius: int, category: str) -> List[dict]:
+    terms_by_category = {
+        "seeds": ["seed shop", "nursery"],
+        "fertilizers": ["fertilizer shop", "pesticide shop", "agro chemicals"],
+        "irrigation": ["irrigation equipment", "drip irrigation", "water pump shop"],
+        "equipment": ["tractor dealer", "farm equipment", "agricultural machinery"],
+        "soil": ["soil testing lab", "agriculture lab"],
+        "all": ["agriculture store", "agro agency", "seed shop", "fertilizer shop", "tractor dealer", "irrigation equipment"],
+    }
+    region = await reverse_geocode(lat, lon)
+    place = ", ".join(part for part in [region.get("district") or region.get("region"), region.get("state"), region.get("country")] if part)
+    terms = terms_by_category.get(category, terms_by_category["all"])
+    results = []
+    seen = set()
+    try:
+        async with httpx.AsyncClient(timeout=8, headers={"User-Agent": "RaithaRakshakaAI/2.0"}) as client:
+            for term in terms:
+                response = await client.get(
+                    "https://nominatim.openstreetmap.org/search",
+                    params={
+                        "format": "jsonv2",
+                        "limit": 8,
+                        "addressdetails": 1,
+                        "q": f"{term} {place}",
+                    },
+                )
+                response.raise_for_status()
+                for item in response.json() or []:
+                    item_lat = float(item.get("lat"))
+                    item_lon = float(item.get("lon"))
+                    dist = distance_km(lat, lon, item_lat, item_lon)
+                    if dist * 1000 > radius:
+                        continue
+                    name = item.get("name") or str(item.get("display_name", "")).split(",")[0]
+                    if not name:
+                        continue
+                    dedupe = (normalise_location_key(name), round(item_lat, 4), round(item_lon, 4))
+                    if dedupe in seen:
+                        continue
+                    seen.add(dedupe)
+                    address = item.get("display_name") or "Address available on map"
+                    tags = {"name": f"{name} {term}", "shop": item.get("type", "")}
+                    results.append({
+                        "id": f"nominatim-{item.get('place_id')}",
+                        "name": name,
+                        "category": vendor_category(tags),
+                        "address": address,
+                        "phone": "",
+                        "rating": None,
+                        "opening_status": "Opening hours not listed",
+                        "latitude": item_lat,
+                        "longitude": item_lon,
+                        "distance_km": round(dist, 2),
+                        "maps_url": f"https://www.google.com/maps/search/?api=1&query={item_lat},{item_lon}",
+                        "source": "OpenStreetMap Nominatim live data",
+                    })
+    except Exception:
+        return []
+    results.sort(key=lambda item: item["distance_km"])
+    return results
 
 def classify_land(region: dict, lat: float, lon: float, agro: Optional[dict] = None) -> dict:
     category = str(region.get("category", "")).lower()
@@ -462,15 +686,90 @@ def ai_land_recommendations(region: dict, weather: dict, agro: dict) -> List[str
 
 @app.post("/api/chat")
 async def chat(req: ChatRequest):
-    return await orchestrator_agent.run(
+    active_language = detect_language(req.message, req.language or "auto")
+    profile = dict(req.profile or {})
+    profile["preferred_language"] = active_language
+    result = await orchestrator_agent.run(
         query=req.message,
-        language=req.language,
-        profile=req.profile or {},
+        language=active_language,
+        profile=profile,
     )
+    if active_language != "en" and result.get("response") and not response_matches_language(result["response"], active_language):
+        translated = await translate_many([result["response"]], active_language, "en")
+        result["response"] = translated[0]
+        result["translation_applied"] = True
+    result["detected_language"] = active_language
+    result["language"] = active_language
+    return result
 
 @app.post("/api/orchestrate")
 async def orchestrate(req: ChatRequest):
     return await chat(req)
+
+async def transcribe_audio_with_groq(audio_bytes: bytes, filename: str, content_type: str = "audio/webm") -> dict:
+    groq_key = os.getenv("GROQ_API_KEY")
+    if not groq_key:
+        raise HTTPException(status_code=503, detail="GROQ_API_KEY is required for server-side voice transcription.")
+    files = {
+        "file": (filename or "voice.webm", audio_bytes, content_type or "audio/webm"),
+    }
+    data = {
+        "model": os.getenv("GROQ_STT_MODEL", "whisper-large-v3"),
+        "response_format": "verbose_json",
+    }
+    async with httpx.AsyncClient(timeout=45) as client:
+        response = await client.post(
+            "https://api.groq.com/openai/v1/audio/transcriptions",
+            headers={"Authorization": f"Bearer {groq_key}"},
+            data=data,
+            files=files,
+        )
+        response.raise_for_status()
+        payload = response.json()
+    text = payload.get("text") or ""
+    detected = detect_language(text, "auto")
+    return {
+        "text": text,
+        "detected_language": detected,
+        "provider": "Groq Whisper",
+        "raw_language": payload.get("language"),
+    }
+
+@app.post("/api/voice/transcribe")
+async def voice_transcribe(file: UploadFile = File(...), preferred_language: str = Form("auto")):
+    audio = await file.read()
+    result = await transcribe_audio_with_groq(audio, file.filename or "voice.webm", file.content_type or "audio/webm")
+    if preferred_language in {"en", "hi", "kn"} and not result.get("text"):
+        result["detected_language"] = preferred_language
+    return result
+
+@app.post("/api/voice/chat")
+async def voice_chat(
+    file: UploadFile = File(...),
+    preferred_language: str = Form("auto"),
+    profile: str = Form("{}"),
+):
+    audio = await file.read()
+    transcription = await transcribe_audio_with_groq(audio, file.filename or "voice.webm", file.content_type or "audio/webm")
+    message = transcription.get("text", "").strip()
+    if not message:
+        raise HTTPException(status_code=400, detail="Could not transcribe speech. Please try again closer to the microphone.")
+    try:
+        parsed_profile = json.loads(profile or "{}")
+    except Exception:
+        parsed_profile = {}
+    active_language = detect_language(message, preferred_language or transcription.get("detected_language") or "auto")
+    chat_result = await chat(ChatRequest(message=message, language=active_language, profile=parsed_profile))
+    return {
+        **chat_result,
+        "transcript": message,
+        "detected_language": chat_result.get("detected_language", active_language),
+        "voice": {
+            "tts_provider": "browser-speech-synthesis",
+            "recommended_lang": {"en": "en-IN", "hi": "hi-IN", "kn": "kn-IN"}.get(active_language, "en-IN"),
+            "stt_provider": transcription.get("provider"),
+        },
+    }
 
 @app.post("/api/weather-data")
 async def weather_data(req: LocationRequest):
@@ -624,7 +923,11 @@ async def analyze_location(req: LocationRequest):
     }
 
 @app.post("/api/disease/detect")
-async def detect_disease(file: UploadFile = File(...), crop: str = "Tomato", location: str = "Bangalore"):
+async def detect_disease(
+    file: UploadFile = File(...),
+    crop: str = Form("Tomato"),
+    location: str = Form("Bangalore"),
+):
     image_bytes = await file.read()
     ctx = SharedContext(query=f"Diagnose crop disease for {crop}", farmer_profile={"crop": crop, "location": location})
     result = await crop_agent.run(ctx, image_bytes=image_bytes, file_name=file.filename or "upload.jpg")
@@ -641,6 +944,50 @@ async def get_weather(location: str = "Bangalore"):
 @app.get("/api/provider-status")
 async def get_provider_status():
     return {"status": "ok", "providers": provider_status(), "updated_at": now_iso()}
+
+@app.get("/api/disease/model-status")
+async def disease_model_status():
+    if not crop_disease_model_status:
+        return {"available": False, "error": "Crop disease model module unavailable"}
+    return crop_disease_model_status()
+
+@app.get("/api/vendors")
+async def vendor_search(
+    location: Optional[str] = Query(None),
+    latitude: Optional[float] = Query(None),
+    longitude: Optional[float] = Query(None),
+    radius: int = Query(9000, ge=1000, le=25000),
+    category: str = Query("all"),
+):
+    if latitude is None or longitude is None:
+        if not location:
+            raise HTTPException(status_code=400, detail="Provide location text or latitude/longitude.")
+        place = await geocode_location_text(location)
+        latitude = place["latitude"]
+        longitude = place["longitude"]
+    else:
+        region = await reverse_geocode(latitude, longitude)
+        place = {
+            "latitude": latitude,
+            "longitude": longitude,
+            "label": region.get("display_name") or region.get("region") or "Selected location",
+            "district": region.get("district") or region.get("region") or "",
+            "state": region.get("state") or "",
+            "country": region.get("country") or "",
+        }
+    
+    # Ensure latitude and longitude are floats at this point
+    assert latitude is not None and longitude is not None
+    vendors = await fetch_vendors(latitude, longitude, radius=radius, category=category)
+    return {
+        "location": place,
+        "vendors": vendors,
+        "count": len(vendors),
+        "category": category,
+        "radius_m": radius,
+        "source": "OpenStreetMap Overpass live data",
+        "updated_at": now_iso(),
+    }
 
 @app.post("/api/schemes/eligible")
 async def get_schemes(req: SchemeRequest):

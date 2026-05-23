@@ -7,11 +7,25 @@ const api = axios.create({ baseURL: BASE, timeout: 30000 });
 export const sendChat = (message, language = 'en', profile = {}) =>
   api.post('/api/chat', { message, language, profile }).then(r => r.data);
 
-export const detectDisease = (file) => {
+export const sendVoiceChat = (audioBlob, language = 'auto', profile = {}) => {
+  const fd = new FormData();
+  fd.append('file', audioBlob, 'voice.webm');
+  fd.append('preferred_language', language);
+  fd.append('profile', JSON.stringify(profile));
+  return api.post('/api/voice/chat', fd, {
+    headers: { 'Content-Type': 'multipart/form-data' },
+    timeout: 60000,
+  }).then(r => r.data);
+};
+
+export const detectDisease = (file, crop = 'Tomato', location = 'Bangalore') => {
   const fd = new FormData();
   fd.append('file', file);
+  fd.append('crop', crop);
+  fd.append('location', location);
   return api.post('/api/disease/detect', fd, {
     headers: { 'Content-Type': 'multipart/form-data' },
+    timeout: 120000,
   }).then(r => r.data);
 };
 
@@ -79,3 +93,11 @@ export const getLocationSoil = (latitude, longitude) =>
 
 export const getLocationNdvi = (latitude, longitude) =>
   api.post('/api/ndvi-analysis', { latitude, longitude }).then(r => r.data);
+
+export const getVendors = ({ location, latitude, longitude, radius = 9000, category = 'all' }) => {
+  const params = new URLSearchParams({ radius, category });
+  if (location) params.set('location', location);
+  if (latitude) params.set('latitude', latitude);
+  if (longitude) params.set('longitude', longitude);
+  return api.get(`/api/vendors?${params.toString()}`).then(r => r.data);
+};

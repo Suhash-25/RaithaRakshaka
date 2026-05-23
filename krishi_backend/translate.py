@@ -53,6 +53,32 @@ def should_skip(text: str) -> bool:
     value = clean_text(text)
     return not value or not re.search(r"[A-Za-z]", value)
 
+def detect_language(text: str, preferred: str = "auto") -> str:
+    value = text or ""
+    if re.search(r"[\u0C80-\u0CFF]", value):
+        return "kn"
+    if re.search(r"[\u0900-\u097F]", value):
+        return "hi"
+    preferred = preferred if preferred in LANGUAGE_NAMES else "auto"
+    if preferred != "auto":
+        return preferred
+    kannada_latin = [
+        "ragi", "bisi", "bele", "holige", "mannu", "neeru", "soppu", "jola", "akki",
+        "raita", "raitha", "krushi", "huli", "gidda", "tengu", "adike",
+    ]
+    hindi_latin = [
+        "kisan", "fasal", "kheti", "mitti", "paani", "beej", "khad", "rog", "daam",
+        "mandi", "gehu", "chawal", "pyaz", "tamatar", "aloo",
+    ]
+    lowered = value.lower()
+    kn_score = sum(1 for word in kannada_latin if re.search(rf"\b{re.escape(word)}\b", lowered))
+    hi_score = sum(1 for word in hindi_latin if re.search(rf"\b{re.escape(word)}\b", lowered))
+    if kn_score > hi_score and kn_score:
+        return "kn"
+    if hi_score > kn_score and hi_score:
+        return "hi"
+    return "en"
+
 def has_kannada(text: str) -> bool:
     return bool(re.search(r"[\u0C80-\u0CFF]", text or ""))
 
@@ -115,7 +141,7 @@ async def translate_with_chat_provider(texts: List[str], target_lang: str) -> Li
                     "https://api.groq.com/openai/v1/chat/completions",
                     headers={"Authorization": f"Bearer {groq_key}", "Content-Type": "application/json"},
                     json={
-                        "model": os.getenv("GROQ_MODEL", "llama-3.3-70b-versatile"),
+                        "model": os.getenv("GROQ_MODEL", "llama-3.1-8b-instant"),
                         "messages": [
                             {"role": "system", "content": system},
                             {"role": "user", "content": prompt},

@@ -4,13 +4,40 @@ import { Upload, X, CheckCircle, AlertTriangle, ShieldAlert, Sparkles, RefreshCw
 import { detectDisease } from '../services/api';
 import { useApp } from '../context/AppContext';
 
+const toList = (value) => {
+  if (!value) return [];
+  if (Array.isArray(value)) return value.filter(Boolean).map(String);
+  if (typeof value === 'string') return value.split(/\n|;/).map(item => item.trim()).filter(Boolean);
+  return [String(value)];
+};
+
+const normaliseResult = (data) => {
+  const treatment = data?.treatment || {};
+  const listTreatment = Array.isArray(treatment) ? treatment : [];
+  return {
+    ...data,
+    disease: data?.disease || 'Possible crop stress',
+    scientific_name: data?.scientific_name || data?.pathogen || 'Field inspection recommended',
+    confidence: Number(data?.confidence || 0).toFixed(1).replace(/\.0$/, ''),
+    severity: data?.severity || 'Medium',
+    diagnosis: data?.diagnosis || `${data?.disease || 'Crop stress'} detected from the uploaded image. Confirm with field symptoms before applying sprays.`,
+    symptoms: toList(data?.symptoms),
+    treatment: {
+      cultural: toList(treatment.cultural || treatment.cultural_controls || listTreatment),
+      biological: toList(treatment.biological || treatment.organic || data?.organic_remedy),
+      chemical: toList(treatment.chemical || treatment.sprays || listTreatment),
+    },
+  };
+};
+
 export default function DiseasePage() {
-  const { showToast } = useApp();
+  const { showToast, selectedLocation } = useApp();
   const [file, setFile] = useState(null);
   const [preview, setPreview] = useState('');
   const [loading, setLoading] = useState(false);
   const [result, setResult] = useState(null);
   const [dragOver, setDragOver] = useState(false);
+  const [crop, setCrop] = useState('Tomato');
   const inputRef = useRef(null);
 
   const handleFile = (f) => {
@@ -27,23 +54,13 @@ export default function DiseasePage() {
     if (!file) return;
     setLoading(true);
     try {
-      const d = await detectDisease(file);
-      setResult(d);
+      const location = selectedLocation?.district || selectedLocation?.mandi || 'Bangalore';
+      const d = await detectDisease(file, crop, location);
+      setResult(normaliseResult(d));
       showToast('Analysis completed successfully!', 'success');
-    } catch {
-      showToast('API issue. Using mock disease analysis for demo.', 'warning');
-      setResult({
-        disease: "Tomato Early Blight",
-        scientific_name: "Alternaria solani",
-        confidence: 94.2,
-        severity: "medium",
-        diagnosis: "Fungal leaf spot disease causing brown concentric rings. Left untreated, it defoliates tomatoes and burns fruit stems.",
-        treatment: {
-          chemical: ["Copper oxychloride spray (50% WP) @ 3g/L", "Mancozeb (75% WP) @ 2g/L"],
-          biological: ["Trichoderma viride bio-fungicide", "Neem oil spray (10,000 ppm) @ 5ml/L"],
-          cultural: ["Prune lower leaves to enhance airflow", "Avoid overhead watering; use drip irrigation"]
-        }
-      });
+    } catch (err) {
+      const message = err?.response?.data?.detail || err?.message || 'Disease analysis failed';
+      showToast(message, 'error');
     } finally { setLoading(false); }
   };
 
@@ -141,6 +158,16 @@ export default function DiseasePage() {
                   </div>
 
                   <p style={{ color: '#86efac', fontSize: '0.85rem', lineHeight: 1.6, marginBottom: '1.25rem' }}>{result.diagnosis}</p>
+                  {result.source === 'offline-rules' && (
+                    <div style={{ color: '#fbbf24', background: 'rgba(251,191,36,0.08)', border: '1px solid rgba(251,191,36,0.18)', borderRadius: 12, padding: '0.75rem', fontSize: '0.78rem', lineHeight: 1.5, marginBottom: '1rem' }}>
+                      Trained image model is not available yet, so this is a rule-based screening result. Train the crop disease model to enable image classification.
+                    </div>
+                  )}
+                  {result.model_note && result.source !== 'offline-rules' && (
+                    <div style={{ color: '#fbbf24', background: 'rgba(251,191,36,0.08)', border: '1px solid rgba(251,191,36,0.18)', borderRadius: 12, padding: '0.75rem', fontSize: '0.78rem', lineHeight: 1.5, marginBottom: '1rem' }}>
+                      {result.model_note}
+                    </div>
+                  )}
 
                   {/* Treatments */}
                   <div style={{ display: 'flex', flexDirection: 'column', gap: '0.8rem' }}>
@@ -154,7 +181,7 @@ export default function DiseasePage() {
                           <sec.icon size={14} color={sec.color} />
                           <h4 style={{ color: '#f0fdf4', fontWeight: 700, fontSize: '0.82rem' }}>{sec.title}</h4>
                         </div>
-                        {sec.items.map((it, j) => (
+                        {(sec.items.length ? sec.items : ['Confirm symptoms in the field before treatment.']).map((it, j) => (
                           <div key={j} style={{ display: 'flex', gap: '0.4rem', marginBottom: '0.25rem', paddingLeft: '0.5rem' }}>
                             <div style={{ width: 4, height: 4, borderRadius: '50%', background: sec.color, marginTop: '0.35rem', flexShrink: 0 }} />
                             <span style={{ color: '#86efac', fontSize: '0.78rem', lineHeight: 1.4 }}>{it}</span>

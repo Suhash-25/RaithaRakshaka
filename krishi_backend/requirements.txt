@@ -5,3 +5,7 @@ httpx
 python-multipart
 pydantic
 pydantic-settings
+datasets
+pillow
+torch
+torchvision

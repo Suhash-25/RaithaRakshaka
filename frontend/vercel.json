@@ -5,5 +5,8 @@
   "installCommand": "npm install --legacy-peer-deps",
   "buildCommand": "npm run build",
   "outputDirectory": "dist",
-  "framework": "vite"
+  "framework": "vite",
+  "env": {
+    "VITE_API_URL": "https://raitharakshaka-api.onrender.com"
+  }
 }

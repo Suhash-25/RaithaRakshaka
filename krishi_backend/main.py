@@ -1334,13 +1334,13 @@ async def custom_health():
         "status": "healthy",
         "service": "RaithaRakshaka Multi-Agent AI",
         "version": "2.0.0",
-        "providers": provider_status(),
         "agents": [
             "Weather Tool",
             "Market Tool",
             "Schemes Tool",
             "Crop Diagnostic Tool"
         ],
+        "updated_at": now_iso(),
     }
 
 if __name__ == "__main__":

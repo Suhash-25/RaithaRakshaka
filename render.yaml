@@ -11,7 +11,7 @@ services:
       - key: PORT
         value: 8001
       - key: WEB_CONCURRENCY
-        value: 2
+        value: 1
       - key: WEB_TIMEOUT
         value: 180
       - key: CORS_ORIGINS

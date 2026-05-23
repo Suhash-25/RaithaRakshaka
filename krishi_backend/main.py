@@ -332,7 +332,7 @@ def vendor_search_terms(category: str) -> List[str]:
 
 def vendor_relevance_score(vendor: dict, category: str) -> float:
     category_label = "" if vendor.get("category") == "AgriTech Vendor" else vendor.get("category", "")
-    text = f"{vendor.get('name', '')} {category_label} {vendor.get('address', '')}".lower()
+    text = f"{vendor.get('name', '')} {category_label} {vendor.get('address', '')} {vendor.get('matched_query', '')}".lower()
     agri_terms = [
         "agri", "agro", "seed", "fertil", "pesticide", "tractor", "farm", "irrigation",
         "nursery", "soil", "kisan", "krishi", "crop", "sprayer", "pump", "drip",
@@ -353,7 +353,7 @@ def vendor_relevance_score(vendor: dict, category: str) -> float:
 
 def vendor_has_agri_signal(vendor: dict, category: str) -> bool:
     category_label = "" if vendor.get("category") == "AgriTech Vendor" else vendor.get("category", "")
-    text = f"{vendor.get('name', '')} {category_label} {vendor.get('address', '')}".lower()
+    text = f"{vendor.get('name', '')} {category_label} {vendor.get('address', '')} {vendor.get('matched_query', '')}".lower()
     category_terms = {
         "seeds": ["seed", "nursery", "sapling"],
         "fertilizers": ["fertil", "pesticide", "agro chemical", "agrochemical", "sprayer"],
@@ -461,6 +461,7 @@ async def fetch_google_places_vendors(lat: float, lon: float, radius: int, categ
                         "distance_km": 0,
                         "maps_url": maps_url,
                         "source": "Google Places live nearby search",
+                        "matched_query": term,
                     })
     except Exception:
         return []
@@ -619,6 +620,7 @@ async def fetch_nominatim_vendor_search(lat: float, lon: float, radius: int, cat
                         "distance_km": round(dist, 2),
                         "maps_url": f"https://www.google.com/maps/search/?api=1&query={item_lat},{item_lon}",
                         "source": "OpenStreetMap Nominatim live data",
+                        "matched_query": term,
                     })
     except Exception:
         return []

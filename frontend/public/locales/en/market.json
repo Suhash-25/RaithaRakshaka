@@ -1,0 +1,30 @@
+{
+  "eyebrow": "Live Price Intelligence",
+  "title": "Market Insights",
+  "subtitle": "Agmarknet 2.0 mandi prices filtered by selected location",
+  "currentRegion": "Current Market Region: {{region}}",
+  "cityPlaceholder": "City / mandi...",
+  "cropPlaceholder": "Search crop...",
+  "connecting": "Connecting market feed",
+  "serviceError": "Live mandi price service is unavailable. Please verify the backend and Agmarknet access.",
+  "unavailable": "Unavailable",
+  "thisWeek": "this week",
+  "labels": {
+    "msp": "MSP Estimate",
+    "demand": "Demand",
+    "bestMarket": "Best Market",
+    "region": "Region",
+    "prediction": "AI Price Prediction",
+    "marketsIn": "Markets in {{region}}",
+    "trending": "Trending Today in {{region}}",
+    "updated": "Updated",
+    "chartPredicted": "Predicted"
+  },
+  "empty": "No market data available for selected district.",
+  "trend": {
+    "up": "Up",
+    "down": "Down",
+    "rising": "Rising",
+    "falling": "Falling"
+  }
+}

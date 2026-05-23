@@ -1,0 +1,49 @@
+{
+  "app": {
+    "name": "KrishiRakshak",
+    "tagline": "AI Farmer Platform",
+    "openDashboard": "Open Dashboard"
+  },
+  "nav": {
+    "dashboard": "Dashboard",
+    "disease": "Disease AI",
+    "chat": "AI Chat",
+    "weather": "Weather",
+    "map": "Smart Map",
+    "schemes": "Schemes",
+    "market": "Market",
+    "vendors": "Stores",
+    "wellness": "Wellness"
+  },
+  "language": {
+    "english": "English",
+    "hindi": "Hindi",
+    "kannada": "Kannada"
+  },
+  "actions": {
+    "search": "Search",
+    "find": "Find",
+    "apply": "Apply",
+    "refresh": "Refresh",
+    "openInMaps": "Open in Maps",
+    "loading": "Loading",
+    "retry": "Retry"
+  },
+  "status": {
+    "live": "Live",
+    "unavailable": "Unavailable",
+    "justNow": "just now",
+    "source": "Source"
+  },
+  "footer": {
+    "features": "Features",
+    "resources": "Govt Resources",
+    "helplines": "Helplines",
+    "description": "Empowering Indian farmers with AI-driven intelligence, real-time insights, and government scheme access.",
+    "copyright": "© 2026 KrishiRakshak AI · Built for Indian Farmers · AI for Rural Empowerment",
+    "privacy": "Privacy Policy",
+    "terms": "Terms of Use",
+    "accessibility": "Accessibility",
+    "panIndia": "Pan India — 18 States"
+  }
+}

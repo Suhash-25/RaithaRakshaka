@@ -1,0 +1,24 @@
+{
+  "title": "Nearby AgriTech Stores & Vendors",
+  "eyebrow": "Live AgriTech Discovery",
+  "subtitle": "Find real seed shops, fertilizer vendors, irrigation suppliers, equipment dealers, and agri-service centers near the selected location.",
+  "placeholder": "Search city, village, district, pincode...",
+  "sourceFallback": "Live nearby places search",
+  "near": "Vendors near {{location}}",
+  "count": "{{count}} real map results within {{radius}} km",
+  "empty": "No real agritech vendors were returned for this selected location/category. Try a larger nearby town or another category.",
+  "error": "Could not fetch nearby vendors for this location.",
+  "phoneMissing": "Phone not listed",
+  "away": "{{distance}} km away",
+  "ratingFallback": "Map",
+  "openNow": "Open Now",
+  "openingUnknown": "Opening hours not listed",
+  "categories": {
+    "all": "All Vendors",
+    "seeds": "Seeds",
+    "fertilizers": "Fertilizers",
+    "irrigation": "Irrigation",
+    "equipment": "Equipment",
+    "soil": "Soil Testing"
+  }
+}

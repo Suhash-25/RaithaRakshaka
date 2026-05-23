@@ -1,4 +1,5 @@
 import axios from 'axios';
+import i18n from '../i18n';
 
 const BASE = import.meta.env.VITE_API_URL || 'http://localhost:8001';
 
@@ -41,6 +42,65 @@ export const translateBatch = (texts = [], targetLang = 'en', sourceLang = 'en')
     target_lang: targetLang,
     source_lang: sourceLang,
   }).then(r => r.data);
+
+const SKIP_DYNAMIC_KEYS = new Set([
+  'id', 'url', 'href', 'maps_url', 'source', 'provider', 'updated_at', 'created_at',
+  'latitude', 'longitude', 'lat', 'lng', 'price', 'min_price', 'max_price', 'modal_price',
+  'current_price', 'distance_km', 'radius_m', 'count', 'available', 'coordinates',
+]);
+
+const shouldTranslateString = (value) =>
+  typeof value === 'string'
+  && /[A-Za-z]/.test(value)
+  && !/^https?:\/\//i.test(value)
+  && !/^[A-Z0-9_-]{2,}$/i.test(value.trim());
+
+export const translateDynamicPayload = async (payload, targetLang = i18n.language || 'en') => {
+  if (!payload || targetLang === 'en') return payload;
+  const refs = [];
+  const texts = [];
+
+  const walk = (value, key = '', parent = null, index = null) => {
+    if (typeof value === 'string') {
+      if (!SKIP_DYNAMIC_KEYS.has(key) && shouldTranslateString(value)) {
+        refs.push({ set: parent, key: index, value });
+        texts.push(value);
+      }
+      return value;
+    }
+    if (Array.isArray(value)) {
+      value.forEach((item, childIndex) => walk(item, key, value, childIndex));
+      return value;
+    }
+    if (value && typeof value === 'object') {
+      Object.entries(value).forEach(([childKey, childValue]) => {
+        if (SKIP_DYNAMIC_KEYS.has(childKey)) return;
+        if (typeof childValue === 'string' && shouldTranslateString(childValue)) {
+          refs.push({ set: value, key: childKey, value: childValue });
+          texts.push(childValue);
+          return;
+        }
+        walk(childValue, childKey, value, childKey);
+      });
+    }
+    return value;
+  };
+
+  walk(payload);
+  if (!texts.length) return payload;
+  const unique = Array.from(new Set(texts));
+  try {
+    const response = await translateBatch(unique, targetLang, 'en');
+    const translated = response?.translated || [];
+    const dictionary = new Map(unique.map((text, index) => [text, translated[index] || text]));
+    refs.forEach(ref => {
+      if (ref.set && ref.key !== null && ref.key !== undefined) ref.set[ref.key] = dictionary.get(ref.value) || ref.value;
+    });
+  } catch {
+    // Dynamic translation is additive; API data remains usable if translation fails.
+  }
+  return payload;
+};
 
 const normaliseMarketLocation = (location = 'Bangalore', state = 'Karnataka') => {
   if (typeof location === 'string') {
@@ -94,8 +154,8 @@ export const getLocationSoil = (latitude, longitude) =>
 export const getLocationNdvi = (latitude, longitude) =>
   api.post('/api/ndvi-analysis', { latitude, longitude }).then(r => r.data);
 
-export const getVendors = ({ location, latitude, longitude, radius = 9000, category = 'all' }) => {
-  const params = new URLSearchParams({ radius, category });
+export const getVendors = ({ location, latitude, longitude, radius = 9000, category = 'all', language = i18n.language || 'en' }) => {
+  const params = new URLSearchParams({ radius, category, language });
   if (location) params.set('location', location);
   if (latitude) params.set('latitude', latitude);
   if (longitude) params.set('longitude', longitude);

@@ -1,8 +1,8 @@
 import { createContext, useContext, useState, useCallback, useMemo, useEffect } from 'react';
+import i18n, { DEFAULT_LANGUAGE, LANGUAGE_STORAGE_KEY, SUPPORTED_LANGUAGES } from '../i18n';
 
 const AppContext = createContext(null);
 const LOCATION_STORAGE_KEY = 'raitha:selectedLocation';
-const LANGUAGE_STORAGE_KEY = 'raitha:language';
 const DEFAULT_LOCATION = {
   district: 'Bangalore',
   state: 'Karnataka',
@@ -40,9 +40,10 @@ export function AppProvider({ children }) {
   const [toast, setToast] = useState(null);
   const [language, setLanguageState] = useState(() => {
     try {
-      return localStorage.getItem(LANGUAGE_STORAGE_KEY) || 'en';
+      const stored = localStorage.getItem(LANGUAGE_STORAGE_KEY) || i18n.language || DEFAULT_LANGUAGE;
+      return SUPPORTED_LANGUAGES.includes(stored) ? stored : DEFAULT_LANGUAGE;
     } catch {
-      return 'en';
+      return DEFAULT_LANGUAGE;
     }
   });
   const [selectedLocation, setSelectedLocationState] = useState(loadStoredLocation);
@@ -56,14 +57,21 @@ export function AppProvider({ children }) {
   }, [selectedLocation]);
 
   const setLanguage = useCallback((next) => {
-    const lang = next || 'en';
+    const lang = SUPPORTED_LANGUAGES.includes(next) ? next : DEFAULT_LANGUAGE;
     setLanguageState(lang);
+    i18n.changeLanguage(lang);
+    document.documentElement.lang = lang;
     try {
       localStorage.setItem(LANGUAGE_STORAGE_KEY, lang);
     } catch {
       // Language still changes for this session if localStorage is unavailable.
     }
   }, []);
+
+  useEffect(() => {
+    i18n.changeLanguage(language);
+    document.documentElement.lang = language;
+  }, [language]);
 
   const showToast = useCallback((message, type = 'success', duration = 3500) => {
     setToast({ message, type, id: Date.now() });

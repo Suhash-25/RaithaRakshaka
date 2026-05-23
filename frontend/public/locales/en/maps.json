@@ -1,0 +1,23 @@
+{
+  "eyebrow": "AI Geospatial Command",
+  "title": "Smart Agriculture Map",
+  "subtitle": "Click any land parcel to scan weather, soil, NDVI, drought, pest, irrigation, and crop suitability.",
+  "riskScan": "Risk scan: {{risk}}%",
+  "openInMaps": "Open in Maps",
+  "ticker": {
+    "weather": "Live Open-Meteo",
+    "geocoding": "OSM Geocoding",
+    "terrain": "Terrain Intelligence",
+    "ndvi": "NDVI Proxy",
+    "advisory": "AI Crop Advisory"
+  },
+  "loading": "Collecting weather, terrain, vegetation, and soil intelligence...",
+  "metrics": {
+    "temp": "Temp",
+    "humidity": "Humidity",
+    "rainfall": "Rainfall",
+    "wind": "Wind",
+    "pressure": "Pressure",
+    "uv": "UV"
+  }
+}

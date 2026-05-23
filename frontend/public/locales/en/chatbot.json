@@ -1,0 +1,8 @@
+{
+  "title": "AI Farmer Assistant",
+  "placeholder": "Ask about crops, weather, schemes, prices, vendors...",
+  "send": "Send",
+  "voice": "Voice",
+  "listening": "Listening",
+  "nearbyVendors": "Nearby suppliers found near {{location}}"
+}

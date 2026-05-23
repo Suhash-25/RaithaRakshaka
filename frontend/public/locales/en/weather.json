@@ -1,0 +1,23 @@
+{
+  "eyebrow": "Live Weather",
+  "title": "Weather & Risk Alerts",
+  "placeholder": "Enter city...",
+  "sourceFallback": "Live weather intelligence",
+  "serviceError": "Live weather service is unavailable. Please confirm the backend is running.",
+  "toastError": "Weather data unavailable",
+  "feelsLike": "Feels like {{temp}} C",
+  "forecast": "5-Day Forecast",
+  "rain": "Rain {{value}}%",
+  "alerts": "Farming Alerts",
+  "noAlerts": "No active alerts",
+  "normal": "Live service returned normal conditions.",
+  "continueMonitoring": "Continue field monitoring",
+  "action": "Action:",
+  "advisory": "AI Weather Advisory",
+  "labels": {
+    "humidity": "Humidity",
+    "wind": "Wind",
+    "uv": "UV Index",
+    "rainfall": "Rainfall"
+  }
+}

@@ -2,7 +2,9 @@ import { useMemo, useRef, useState } from 'react';
 import { MapContainer, Marker, Popup, TileLayer, useMapEvents } from 'react-leaflet';
 import L from 'leaflet';
 import 'leaflet/dist/leaflet.css';
+import { useTranslation } from 'react-i18next';
 import { analyzeLocation, getVendors } from '../../services/api';
+import { useApp } from '../../context/AppContext';
 import IntelligencePanel from './IntelligencePanel';
 import MapSearch from './MapSearch';
 import SatelliteControls from './SatelliteControls';
@@ -32,7 +34,7 @@ const analysisIcon = L.divIcon({
 
 const vendorMapIcon = L.divIcon({
   className: 'vendor-marker',
-  html: '<div class="vendor-marker-pulse"></div><div class="vendor-marker-core">🌾</div>',
+  html: '<div class="vendor-marker-pulse"></div><div class="vendor-marker-core">AG</div>',
   iconSize: [36, 36],
   iconAnchor: [18, 18],
 });
@@ -45,6 +47,8 @@ function ClickAnalyzer({ onAnalyze }) {
 }
 
 export default function SmartMap() {
+  const { t } = useTranslation(['maps', 'common', 'vendors']);
+  const { language } = useApp();
   const mapRef = useRef(null);
   const [layer, setLayer] = useState('street');
   const [selected, setSelected] = useState({ lat: 13.1986, lng: 77.7066 });
@@ -65,7 +69,7 @@ export default function SmartMap() {
     try {
       const result = await analyzeLocation(lat, lng);
       setData(result);
-      getVendors({ latitude: lat, longitude: lng, radius: 8000, category: 'all' })
+      getVendors({ latitude: lat, longitude: lng, radius: 8000, category: 'all', language })
         .then((vendorData) => setVendors(vendorData.vendors || []))
         .catch(() => setVendors([]));
       setMarkers((prev) => [
@@ -103,9 +107,9 @@ export default function SmartMap() {
     <div className="smart-map-shell">
       <div className="map-hud">
         <div>
-          <span>AI Geospatial Command</span>
-          <h1>Smart Agriculture Map</h1>
-          <p>Click any land parcel to scan weather, soil, NDVI, drought, pest, irrigation, and crop suitability.</p>
+          <span>{t('eyebrow')}</span>
+          <h1>{t('title')}</h1>
+          <p>{t('subtitle')}</p>
         </div>
       </div>
       <MapSearch onSelect={goTo} />
@@ -123,7 +127,7 @@ export default function SmartMap() {
         <WeatherLayer points={heatPoints} />
         {markers.map((marker, index) => (
           <Marker key={`${marker.lat}-${marker.lng}-${index}`} position={[marker.lat, marker.lng]} icon={analysisIcon}>
-            <Popup>{marker.label}<br />Risk scan: {marker.risk}%</Popup>
+            <Popup>{marker.label}<br />{t('riskScan', { risk: marker.risk })}</Popup>
           </Marker>
         ))}
         {vendors.slice(0, 12).map((vendor) => (
@@ -131,18 +135,18 @@ export default function SmartMap() {
             <Popup>
               <strong>{vendor.name}</strong><br />
               {vendor.category}<br />
-              {vendor.distance_km} km away<br />
-              <a href={vendor.maps_url} target="_blank" rel="noreferrer">Open in Maps</a>
+              {t('away', { ns: 'vendors', distance: vendor.distance_km })}<br />
+              <a href={vendor.maps_url} target="_blank" rel="noreferrer">{t('actions.openInMaps', { ns: 'common' })}</a>
             </Popup>
           </Marker>
         ))}
       </MapContainer>
       <div className="map-bottom-ticker">
-        <span>Live Open-Meteo</span>
-        <span>OSM Geocoding</span>
-        <span>Terrain Intelligence</span>
-        <span>NDVI Proxy</span>
-        <span>AI Crop Advisory</span>
+        <span>{t('ticker.weather')}</span>
+        <span>{t('ticker.geocoding')}</span>
+        <span>{t('ticker.terrain')}</span>
+        <span>{t('ticker.ndvi')}</span>
+        <span>{t('ticker.advisory')}</span>
       </div>
       <IntelligencePanel data={data} loading={loading} onClose={() => setData(null)} />
     </div>

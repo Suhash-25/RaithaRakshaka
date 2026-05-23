@@ -1,28 +1,30 @@
 import { useState, useEffect } from 'react';
 import { Link, useLocation } from 'react-router-dom';
 import { motion, AnimatePresence } from 'framer-motion';
+import { useTranslation } from 'react-i18next';
 import { Leaf, LayoutDashboard, Microscope, MessageSquare, Cloud, BookOpen, TrendingUp, Heart, Menu, X, Globe, Map, Store } from 'lucide-react';
 import { useApp } from '../context/AppContext';
 
 const NAV_LINKS = [
-  { path: '/dashboard', label: 'Dashboard', icon: LayoutDashboard },
-  { path: '/disease', label: 'Disease AI', icon: Microscope },
-  { path: '/chat', label: 'AI Chat', icon: MessageSquare },
-  { path: '/weather', label: 'Weather', icon: Cloud },
-  { path: '/map', label: 'Smart Map', icon: Map },
-  { path: '/schemes', label: 'Schemes', icon: BookOpen },
-  { path: '/market', label: 'Market', icon: TrendingUp },
-  { path: '/vendors', label: 'Stores', icon: Store },
-  { path: '/wellness', label: 'Wellness', icon: Heart },
+  { path: '/dashboard', key: 'nav.dashboard', icon: LayoutDashboard },
+  { path: '/disease', key: 'nav.disease', icon: Microscope },
+  { path: '/chat', key: 'nav.chat', icon: MessageSquare },
+  { path: '/weather', key: 'nav.weather', icon: Cloud },
+  { path: '/map', key: 'nav.map', icon: Map },
+  { path: '/schemes', key: 'nav.schemes', icon: BookOpen },
+  { path: '/market', key: 'nav.market', icon: TrendingUp },
+  { path: '/vendors', key: 'nav.vendors', icon: Store },
+  { path: '/wellness', key: 'nav.wellness', icon: Heart },
 ];
 
 const LANGS = [
-  { code: 'en', label: 'English' },
-  { code: 'hi', label: 'Hindi' },
-  { code: 'kn', label: 'Kannada' },
+  { code: 'en', key: 'language.english' },
+  { code: 'hi', key: 'language.hindi' },
+  { code: 'kn', key: 'language.kannada' },
 ];
 
 export default function Navbar() {
+  const { t } = useTranslation('common');
   const { pathname } = useLocation();
   const { language, setLanguage } = useApp();
   const [open, setOpen] = useState(false);
@@ -58,12 +60,12 @@ export default function Navbar() {
                 <div style={{ fontFamily: 'Outfit', fontWeight: 800, fontSize: '1.1rem', color: '#f0fdf4', lineHeight: 1 }}>
                   KrishiRakshak
                 </div>
-                <div style={{ fontSize: '0.6rem', color: '#4ade80', fontWeight: 600, letterSpacing: '0.08em' }}>AI FARMER PLATFORM</div>
+                <div style={{ fontSize: '0.6rem', color: '#4ade80', fontWeight: 600, letterSpacing: '0.08em', textTransform: 'uppercase' }}>{t('app.tagline')}</div>
               </div>
             </Link>
 
             <div style={{ display: 'flex', alignItems: 'center', gap: '0.25rem' }} className="hidden md:flex">
-              {NAV_LINKS.map(({ path, label, icon: Icon }) => {
+              {NAV_LINKS.map(({ path, key, icon: Icon }) => {
                 const active = pathname === path;
                 return (
                   <Link key={path} to={path} style={{ textDecoration: 'none' }}>
@@ -81,7 +83,7 @@ export default function Navbar() {
                       }}
                     >
                       <Icon size={14} />
-                      {label}
+                      {t(key)}
                     </motion.div>
                   </Link>
                 );
@@ -101,7 +103,7 @@ export default function Navbar() {
                   }}
                 >
                   <Globe size={14} />
-                  {LANGS.find(l => l.code === language)?.label || 'EN'}
+                  {t(LANGS.find(l => l.code === language)?.key || 'language.english')}
                 </motion.button>
                 <AnimatePresence>
                   {langOpen && (
@@ -128,7 +130,7 @@ export default function Navbar() {
                             fontFamily: 'Inter', transition: 'background 0.2s',
                           }}
                         >
-                          {l.label}
+                          {t(l.key)}
                         </button>
                       ))}
                     </motion.div>
@@ -138,7 +140,7 @@ export default function Navbar() {
 
               <Link to="/dashboard" style={{ textDecoration: 'none' }} className="hidden md:block">
                 <motion.button whileHover={{ scale: 1.03 }} whileTap={{ scale: 0.97 }} className="btn-primary" style={{ padding: '0.5rem 1.2rem', fontSize: '0.85rem' }}>
-                  Open Dashboard
+                  {t('app.openDashboard')}
                 </motion.button>
               </Link>
 
@@ -167,7 +169,7 @@ export default function Navbar() {
               borderBottom: '1px solid var(--border)', padding: '1rem',
             }}
           >
-            {NAV_LINKS.map(({ path, label, icon: Icon }, i) => (
+            {NAV_LINKS.map(({ path, key, icon: Icon }, i) => (
               <motion.div
                 key={path}
                 initial={{ opacity: 0, x: -20 }}
@@ -182,7 +184,7 @@ export default function Navbar() {
                     background: pathname === path ? 'rgba(34,197,94,0.1)' : 'transparent',
                     marginBottom: '0.25rem', fontSize: '0.95rem',
                   }}>
-                    <Icon size={18} /> {label}
+                    <Icon size={18} /> {t(key)}
                   </div>
                 </Link>
               </motion.div>

@@ -52,6 +52,7 @@ OPENROUTER_API_KEY=
 TAVILY_API_KEY=
 NASA_EARTHDATA_TOKEN=
 DATA_GOV_API_KEY=
+GOOGLE_PLACES_API_KEY=
 ENABLE_LIVE_AI=true
 ENABLE_TAVILY_SEARCH=true
 ENABLE_SOILGRIDS=true
@@ -107,6 +108,10 @@ Check readiness:
 ```powershell
 Invoke-RestMethod http://127.0.0.1:8001/api/disease/model-status
 ```
+
+## Real-Time Vendor Discovery
+
+Vendor search uses Google Places when `GOOGLE_PLACES_API_KEY` or `GOOGLE_MAPS_API_KEY` is configured, then falls back to live OpenStreetMap Overpass/Nominatim. Google Places gives the closest match to Google Maps-style nearby stores, including ratings, opening status, phone details, and strict radius filtering.
 
 ## Notes
 

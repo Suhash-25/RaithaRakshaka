@@ -120,6 +120,10 @@ def provider_status() -> dict:
         "soil": {"soilgrids_enabled": ENABLE_SOILGRIDS},
         "satellite": {"nasa_earthdata_configured": bool(os.getenv("NASA_EARTHDATA_TOKEN"))},
         "market": {"data_gov_configured": bool(os.getenv("DATA_GOV_API_KEY"))},
+        "places": {
+            "google_places_configured": bool(os.getenv("GOOGLE_PLACES_API_KEY") or os.getenv("GOOGLE_MAPS_API_KEY")),
+            "fallback": "OpenStreetMap Overpass and Nominatim",
+        },
         "crop_disease_model": crop_disease_model_status()
         if crop_disease_model_status
         else {"available": False, "error": "Crop disease model module unavailable"},
@@ -306,6 +310,117 @@ def vendor_category(tags: dict) -> str:
         return "Agri Store"
     return "AgriTech Vendor"
 
+def vendor_search_terms(category: str) -> List[str]:
+    terms_by_category = {
+        "seeds": ["seed shop", "agriculture seeds", "nursery"],
+        "fertilizers": ["fertilizer shop", "pesticide shop", "agro chemicals"],
+        "irrigation": ["irrigation equipment", "drip irrigation", "water pump shop"],
+        "equipment": ["tractor dealer", "farm equipment", "agricultural machinery"],
+        "soil": ["soil testing lab", "agriculture lab"],
+        "all": ["agriculture store", "agro agency", "seed shop", "fertilizer shop", "pesticide shop", "tractor dealer", "irrigation equipment"],
+    }
+    return terms_by_category.get(category, terms_by_category["all"])
+
+def vendor_relevance_score(vendor: dict, category: str) -> float:
+    text = f"{vendor.get('name', '')} {vendor.get('category', '')} {vendor.get('address', '')}".lower()
+    agri_terms = ["agri", "agro", "seed", "fertil", "pesticide", "tractor", "farm", "irrigation", "nursery", "soil", "kisan", "krishi"]
+    blocked_terms = ["restaurant", "hotel", "egg", "chicken", "kitchen", "plywood", "beauty", "salon", "mobile", "electronics"]
+    score = sum(3 for term in agri_terms if term in text)
+    score -= sum(10 for term in blocked_terms if term in text)
+    score += float(vendor.get("rating") or 0)
+    score -= float(vendor.get("distance_km") or 0) * 0.25
+    if category != "all" and category.rstrip("s") in text:
+        score += 5
+    return score
+
+def strict_vendor_filter(vendors: List[dict], lat: float, lon: float, radius: int, category: str) -> List[dict]:
+    seen = set()
+    filtered = []
+    for vendor in vendors:
+        try:
+            dist = distance_km(lat, lon, float(vendor["latitude"]), float(vendor["longitude"]))
+        except Exception:
+            continue
+        if dist * 1000 > radius:
+            continue
+        vendor["distance_km"] = round(dist, 2)
+        score = vendor_relevance_score(vendor, category)
+        if score < -2:
+            continue
+        dedupe = (normalise_location_key(vendor.get("name", "")), round(float(vendor["latitude"]), 4), round(float(vendor["longitude"]), 4))
+        if dedupe in seen:
+            continue
+        seen.add(dedupe)
+        vendor["relevance_score"] = round(score, 2)
+        filtered.append(vendor)
+    filtered.sort(key=lambda item: (-item.get("relevance_score", 0), item.get("distance_km", 999), -(item.get("rating") or 0)))
+    return filtered
+
+async def fetch_google_place_details(place_id: str, api_key: str) -> dict:
+    try:
+        async with httpx.AsyncClient(timeout=8) as client:
+            response = await client.get(
+                "https://maps.googleapis.com/maps/api/place/details/json",
+                params={
+                    "place_id": place_id,
+                    "fields": "formatted_phone_number,international_phone_number,opening_hours,url,website",
+                    "key": api_key,
+                },
+            )
+            response.raise_for_status()
+            return (response.json() or {}).get("result") or {}
+    except Exception:
+        return {}
+
+async def fetch_google_places_vendors(lat: float, lon: float, radius: int, category: str) -> List[dict]:
+    api_key = os.getenv("GOOGLE_PLACES_API_KEY") or os.getenv("GOOGLE_MAPS_API_KEY")
+    if not api_key:
+        return []
+    vendors = []
+    try:
+        async with httpx.AsyncClient(timeout=12) as client:
+            for term in vendor_search_terms(category):
+                response = await client.get(
+                    "https://maps.googleapis.com/maps/api/place/nearbysearch/json",
+                    params={
+                        "location": f"{lat},{lon}",
+                        "radius": radius,
+                        "keyword": term,
+                        "key": api_key,
+                    },
+                )
+                response.raise_for_status()
+                payload = response.json()
+                if payload.get("status") not in {"OK", "ZERO_RESULTS"}:
+                    continue
+                for item in payload.get("results") or []:
+                    loc = (item.get("geometry") or {}).get("location") or {}
+                    item_lat = loc.get("lat")
+                    item_lon = loc.get("lng")
+                    if item_lat is None or item_lon is None:
+                        continue
+                    place_id = item.get("place_id", "")
+                    details = await fetch_google_place_details(place_id, api_key) if place_id else {}
+                    maps_url = details.get("url") or f"https://www.google.com/maps/search/?api=1&query={item_lat},{item_lon}&query_place_id={place_id}"
+                    tags = {"name": f"{item.get('name', '')} {term}", "description": " ".join(item.get("types") or [])}
+                    vendors.append({
+                        "id": f"google-{place_id or normalise_location_key(item.get('name', 'vendor'))}",
+                        "name": item.get("name") or "Agritech vendor",
+                        "category": vendor_category(tags),
+                        "address": item.get("vicinity") or item.get("formatted_address") or "Address available on Google Maps",
+                        "phone": details.get("international_phone_number") or details.get("formatted_phone_number") or "",
+                        "rating": item.get("rating"),
+                        "opening_status": "Open Now" if (item.get("opening_hours") or {}).get("open_now") else "Opening hours not listed",
+                        "latitude": float(item_lat),
+                        "longitude": float(item_lon),
+                        "distance_km": 0,
+                        "maps_url": maps_url,
+                        "source": "Google Places live nearby search",
+                    })
+    except Exception:
+        return []
+    return strict_vendor_filter(vendors, lat, lon, radius, category)
+
 def overpass_query(lat: float, lon: float, radius: int, category: str) -> str:
     if category == "all":
         return f"""
@@ -339,6 +454,11 @@ async def fetch_vendors(lat: float, lon: float, radius: int = 9000, category: st
     cached = VENDOR_CACHE.get(key)
     if cached and time.time() - cached["created_at"] < CACHE_TTL_SECONDS:
         return cached["value"]
+    google_vendors = await fetch_google_places_vendors(lat, lon, radius, category)
+    if google_vendors:
+        result = google_vendors[:24]
+        VENDOR_CACHE[key] = {"created_at": time.time(), "value": result}
+        return result
     query = overpass_query(lat, lon, radius, category)
     try:
         async with httpx.AsyncClient(timeout=22, headers={"User-Agent": "RaithaRakshakaAI/2.0"}) as client:
@@ -391,7 +511,7 @@ async def fetch_vendors(lat: float, lon: float, radius: int = 9000, category: st
             "maps_url": f"https://www.google.com/maps/search/?api=1&query={item_lat},{item_lon}",
             "source": "OpenStreetMap Overpass live data",
         })
-    vendors.sort(key=lambda item: item["distance_km"])
+    vendors = strict_vendor_filter(vendors, lat, lon, radius, category)
     if not vendors:
         vendors = await fetch_nominatim_vendor_search(lat, lon, radius, category)
     result = vendors[:24]
@@ -979,13 +1099,14 @@ async def vendor_search(
     # Ensure latitude and longitude are floats at this point
     assert latitude is not None and longitude is not None
     vendors = await fetch_vendors(latitude, longitude, radius=radius, category=category)
+    source = vendors[0].get("source") if vendors else "Google Places / OpenStreetMap live nearby search"
     return {
         "location": place,
         "vendors": vendors,
         "count": len(vendors),
         "category": category,
         "radius_m": radius,
-        "source": "OpenStreetMap Overpass live data",
+        "source": source,
         "updated_at": now_iso(),
     }
 

@@ -2,6 +2,7 @@ import { createContext, useContext, useState, useCallback, useMemo, useEffect } 
 
 const AppContext = createContext(null);
 const LOCATION_STORAGE_KEY = 'raitha:selectedLocation';
+const LANGUAGE_STORAGE_KEY = 'raitha:language';
 const DEFAULT_LOCATION = {
   district: 'Bangalore',
   state: 'Karnataka',
@@ -37,7 +38,13 @@ function loadStoredLocation() {
 
 export function AppProvider({ children }) {
   const [toast, setToast] = useState(null);
-  const [language, setLanguage] = useState('en');
+  const [language, setLanguageState] = useState(() => {
+    try {
+      return localStorage.getItem(LANGUAGE_STORAGE_KEY) || 'en';
+    } catch {
+      return 'en';
+    }
+  });
   const [selectedLocation, setSelectedLocationState] = useState(loadStoredLocation);
 
   useEffect(() => {
@@ -47,6 +54,16 @@ export function AppProvider({ children }) {
       // Storage can fail in private windows; the in-memory state still remains authoritative.
     }
   }, [selectedLocation]);
+
+  const setLanguage = useCallback((next) => {
+    const lang = next || 'en';
+    setLanguageState(lang);
+    try {
+      localStorage.setItem(LANGUAGE_STORAGE_KEY, lang);
+    } catch {
+      // Language still changes for this session if localStorage is unavailable.
+    }
+  }, []);
 
   const showToast = useCallback((message, type = 'success', duration = 3500) => {
     setToast({ message, type, id: Date.now() });
@@ -70,7 +87,7 @@ export function AppProvider({ children }) {
     setSelectedLocation,
     location: selectedLocation.district,
     setLocation,
-  }), [toast, showToast, language, selectedLocation, setSelectedLocation, setLocation]);
+  }), [toast, showToast, language, setLanguage, selectedLocation, setSelectedLocation, setLocation]);
 
   return (
     <AppContext.Provider value={value}>

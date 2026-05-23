@@ -7,7 +7,7 @@ from dotenv import load_dotenv
 
 load_dotenv(os.path.join(os.path.dirname(__file__), ".env"))
 
-from fastapi import FastAPI, File, UploadFile
+from fastapi import FastAPI, File, UploadFile, Form, Depends
 from fastapi.middleware.cors import CORSMiddleware
 from pydantic import BaseModel
 
@@ -21,7 +21,11 @@ from agents import (
     now_iso,
 )
 
+from translate import router as translate_router
+
 app = FastAPI(title="RaithaRakshaka API", version="2.0.0")
+
+app.include_router(translate_router)
 
 orchestrator_agent = OrchestratorAgent()
 crop_agent = CropDiagnosticAgent()

@@ -21,6 +21,13 @@ export const getWeather = (location = 'Bangalore') =>
 export const getSchemes = (payload) =>
   api.post('/api/schemes/eligible', payload).then(r => r.data);
 
+export const translateBatch = (texts = [], targetLang = 'en', sourceLang = 'en') =>
+  api.post('/api/translate/batch', {
+    texts,
+    target_lang: targetLang,
+    source_lang: sourceLang,
+  }).then(r => r.data);
+
 const normaliseMarketLocation = (location = 'Bangalore', state = 'Karnataka') => {
   if (typeof location === 'string') {
     return { district: location, state, mandi: location, coordinates: {} };

@@ -1,8 +1,9 @@
 import { useState, useEffect } from 'react';
 import { Link, useLocation } from 'react-router-dom';
 import { motion, AnimatePresence } from 'framer-motion';
-import { Leaf, LayoutDashboard, Microscope, MessageSquare, Cloud, BookOpen, TrendingUp, Heart, Menu, X, Globe } from 'lucide-react';
+import { Leaf, LayoutDashboard, Microscope, MessageSquare, Cloud, BookOpen, TrendingUp, Heart, Menu, X, Globe, Download } from 'lucide-react';
 import { useApp } from '../context/AppContext';
+import T from './T';
 
 const NAV_LINKS = [
   { path: '/dashboard', label: 'Dashboard', icon: LayoutDashboard },
@@ -26,12 +27,48 @@ export default function Navbar() {
   const [open, setOpen] = useState(false);
   const [scrolled, setScrolled] = useState(false);
   const [langOpen, setLangOpen] = useState(false);
+  const [deferredPrompt, setDeferredPrompt] = useState(null);
 
   useEffect(() => {
     const h = () => setScrolled(window.scrollY > 20);
     window.addEventListener('scroll', h);
     return () => window.removeEventListener('scroll', h);
   }, []);
+
+  useEffect(() => {
+    const handler = (e) => {
+      e.preventDefault();
+      setDeferredPrompt(e);
+    };
+    window.addEventListener('beforeinstallprompt', handler);
+    return () => window.removeEventListener('beforeinstallprompt', handler);
+  }, []);
+
+  const handleInstall = async () => {
+    if (deferredPrompt) {
+      deferredPrompt.prompt();
+      const { outcome } = await deferredPrompt.userChoice;
+      if (outcome === 'accepted') {
+        setDeferredPrompt(null);
+      }
+    }
+  };
+
+  const changeWebsiteLanguage = (code) => {
+    setLanguage(code);
+    setLangOpen(false);
+    
+    // Trigger Google Translate hidden combo box
+    const select = document.querySelector('.goog-te-combo');
+    if (select) {
+      select.value = code;
+      select.dispatchEvent(new Event('change'));
+    } else {
+      // Fallback if script hasn't loaded fully
+      document.cookie = `googtrans=/en/${code}; path=/`;
+      window.location.reload();
+    }
+  };
 
   useEffect(() => { setOpen(false); }, [pathname]);
 
@@ -81,7 +118,7 @@ export default function Navbar() {
                       }}
                     >
                       <Icon size={14} />
-                      {label}
+                      <T>{label}</T>
                     </motion.div>
                   </Link>
                 );
@@ -90,6 +127,25 @@ export default function Navbar() {
 
             {/* Right side */}
             <div style={{ display: 'flex', alignItems: 'center', gap: '0.75rem' }}>
+              
+              {/* Install PWA Button */}
+              {deferredPrompt && (
+                <motion.button 
+                  whileHover={{ scale: 1.05 }} 
+                  onClick={handleInstall}
+                  style={{
+                    display: 'flex', alignItems: 'center', gap: '0.4rem',
+                    background: 'rgba(34,197,94,0.15)', border: '1px solid #22c55e',
+                    borderRadius: '10px', padding: '0.45rem 0.75rem',
+                    color: '#4ade80', fontSize: '0.82rem', cursor: 'pointer',
+                    fontWeight: 600
+                  }}
+                >
+                  <Download size={14} />
+                  <span className="hidden sm:inline">Install App</span>
+                </motion.button>
+              )}
+
               {/* Language switcher */}
               <div style={{ position: 'relative' }}>
                 <motion.button
@@ -121,7 +177,7 @@ export default function Navbar() {
                       {LANGS.map(l => (
                         <button
                           key={l.code}
-                          onClick={() => { setLanguage(l.code); setLangOpen(false); }}
+                          onClick={() => changeWebsiteLanguage(l.code)}
                           style={{
                             display: 'block', width: '100%', padding: '0.6rem 1rem',
                             textAlign: 'left', background: language === l.code ? 'rgba(34,197,94,0.1)' : 'transparent',

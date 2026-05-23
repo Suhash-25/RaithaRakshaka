@@ -3,6 +3,7 @@ import { AppProvider } from './context/AppContext';
 import Navbar from './components/Navbar';
 import Footer from './components/Footer';
 import Toast from './components/Toast';
+import GlobalTranslator from './components/GlobalTranslator';
 import LandingPage from './pages/LandingPage';
 import DashboardPage from './pages/DashboardPage';
 import DiseasePage from './pages/DiseasePage';
@@ -20,6 +21,7 @@ export default function App() {
         <div style={{ minHeight: '100vh', background: 'var(--bg-primary)' }}>
           <Navbar />
           <Toast />
+          <GlobalTranslator />
           <Routes>
             <Route path="/" element={<LandingPage />} />
             <Route path="/dashboard" element={<DashboardPage />} />

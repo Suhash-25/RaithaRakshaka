@@ -6,18 +6,18 @@ import { useApp } from '../context/AppContext';
 
 const NAV_LINKS = [
   { path: '/dashboard', label: 'Dashboard', icon: LayoutDashboard },
-  { path: '/disease',   label: 'Disease AI', icon: Microscope },
-  { path: '/chat',      label: 'AI Chat',    icon: MessageSquare },
-  { path: '/weather',   label: 'Weather',    icon: Cloud },
-  { path: '/map',       label: 'Smart Map',  icon: Map },
-  { path: '/schemes',   label: 'Schemes',    icon: BookOpen },
-  { path: '/market',    label: 'Market',     icon: TrendingUp },
-  { path: '/wellness',  label: 'Wellness',   icon: Heart },
+  { path: '/disease', label: 'Disease AI', icon: Microscope },
+  { path: '/chat', label: 'AI Chat', icon: MessageSquare },
+  { path: '/weather', label: 'Weather', icon: Cloud },
+  { path: '/map', label: 'Smart Map', icon: Map },
+  { path: '/schemes', label: 'Schemes', icon: BookOpen },
+  { path: '/market', label: 'Market', icon: TrendingUp },
+  { path: '/wellness', label: 'Wellness', icon: Heart },
 ];
 
 const LANGS = [
   { code: 'en', label: 'English' },
-  { code: 'hi', label: 'हिंदी' },
+  { code: 'hi', label: 'हिन्दी' },
   { code: 'kn', label: 'ಕನ್ನಡ' },
 ];
 
@@ -41,7 +41,6 @@ export default function Navbar() {
       <nav className="navbar" style={{ boxShadow: scrolled ? '0 4px 30px rgba(0,0,0,0.3)' : 'none' }}>
         <div className="content-wrapper" style={{ padding: '0 1.5rem', maxWidth: '1280px', margin: '0 auto' }}>
           <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', height: '68px' }}>
-            {/* Logo */}
             <Link to="/" style={{ textDecoration: 'none', display: 'flex', alignItems: 'center', gap: '0.6rem' }}>
               <motion.div
                 whileHover={{ rotate: 15, scale: 1.1 }}
@@ -62,7 +61,6 @@ export default function Navbar() {
               </div>
             </Link>
 
-            {/* Desktop Nav */}
             <div style={{ display: 'flex', alignItems: 'center', gap: '0.25rem' }} className="hidden md:flex">
               {NAV_LINKS.map(({ path, label, icon: Icon }) => {
                 const active = pathname === path;
@@ -89,10 +87,8 @@ export default function Navbar() {
               })}
             </div>
 
-            {/* Right side */}
             <div style={{ display: 'flex', alignItems: 'center', gap: '0.75rem' }}>
-              {/* Language switcher */}
-              <div style={{ position: 'relative' }}>
+              <div data-no-translate style={{ position: 'relative' }}>
                 <motion.button
                   whileHover={{ scale: 1.05 }}
                   onClick={() => setLangOpen(v => !v)}
@@ -145,7 +141,6 @@ export default function Navbar() {
                 </motion.button>
               </Link>
 
-              {/* Mobile hamburger */}
               <motion.button
                 whileTap={{ scale: 0.9 }}
                 onClick={() => setOpen(v => !v)}
@@ -159,7 +154,6 @@ export default function Navbar() {
         </div>
       </nav>
 
-      {/* Mobile Menu */}
       <AnimatePresence>
         {open && (
           <motion.div

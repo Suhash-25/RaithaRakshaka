@@ -489,3 +489,23 @@ body {
 /* ─── CHART LINE ─── */
 .trend-up   { color: #4ade80; }
 .trend-down { color: #f87171; }
+
+/* ─── GOOGLE TRANSLATE OVERRIDES ─── */
+.goog-te-banner-frame.skiptranslate, .goog-te-gadget-icon {
+  display: none !important;
+}
+body {
+  top: 0px !important;
+}
+/* Hide the tooltip that appears on hover */
+.goog-tooltip {
+  display: none !important;
+}
+.goog-tooltip:hover {
+  display: none !important;
+}
+/* Hide the text highlight on hover */
+.goog-text-highlight {
+  background-color: transparent !important;
+  box-shadow: none !important;
+}

@@ -40,10 +40,19 @@ weather_agent = WeatherRiskAgent()
 scheme_agent = GovernmentSchemeAgent()
 market_agent = MarketPriceAgent()
 
+def csv_env(name: str, default: str = "") -> List[str]:
+    raw = os.getenv(name, default)
+    return [item.strip() for item in raw.split(",") if item.strip()]
+
+cors_origins = csv_env("CORS_ORIGINS", "http://localhost:5173,http://127.0.0.1:5173")
+allow_all_origins = "*" in cors_origins
+cors_origin_regex = os.getenv("CORS_ORIGIN_REGEX", "").strip() or None
+
 app.add_middleware(
     CORSMiddleware,
-    allow_origins=["*"],
-    allow_credentials=True,
+    allow_origins=["*"] if allow_all_origins else cors_origins,
+    allow_origin_regex=cors_origin_regex,
+    allow_credentials=not allow_all_origins,
     allow_methods=["*"],
     allow_headers=["*"],
 )

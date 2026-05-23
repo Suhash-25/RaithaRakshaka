@@ -1,0 +1,44 @@
+services:
+  - type: web
+    name: raitharakshaka-api
+    runtime: docker
+    rootDir: krishi_backend
+    dockerfilePath: ./Dockerfile
+    plan: free
+    healthCheckPath: /api/health
+    autoDeploy: true
+    envVars:
+      - key: PORT
+        value: 8001
+      - key: WEB_CONCURRENCY
+        value: 2
+      - key: WEB_TIMEOUT
+        value: 180
+      - key: CORS_ORIGINS
+        value: http://localhost:5173,http://127.0.0.1:5173
+      - key: CORS_ORIGIN_REGEX
+        value: ^https://.*\.vercel\.app$
+      - key: ENABLE_LIVE_AI
+        value: true
+      - key: ENABLE_TAVILY_SEARCH
+        value: true
+      - key: ENABLE_SOILGRIDS
+        value: true
+      - key: ENABLE_OLLAMA_SUMMARY
+        value: false
+      - key: GROQ_API_KEY
+        sync: false
+      - key: OPENROUTER_API_KEY
+        sync: false
+      - key: TAVILY_API_KEY
+        sync: false
+      - key: DATA_GOV_API_KEY
+        sync: false
+      - key: GOOGLE_PLACES_API_KEY
+        sync: false
+      - key: NASA_EARTHDATA_TOKEN
+        sync: false
+      - key: SUPABASE_URL
+        sync: false
+      - key: SUPABASE_ANON_KEY
+        sync: false

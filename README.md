@@ -42,6 +42,108 @@ Open:
 http://127.0.0.1:5173
 ```
 
+## Production Deployment
+
+The recommended production shape is:
+
+- Frontend: static Vite build served by Nginx
+- Backend: FastAPI served by Gunicorn with Uvicorn workers
+- API routing: same-origin `/api/*` proxied from Nginx to backend
+- Secrets: backend environment variables only, never committed
+
+### Docker Compose
+
+Create production environment values:
+
+```powershell
+Copy-Item krishi_backend/.env.example krishi_backend/.env
+notepad krishi_backend/.env
+```
+
+Then build and run:
+
+```powershell
+docker compose up --build -d
+```
+
+Open:
+
+```text
+http://localhost:8080
+```
+
+Health checks:
+
+```powershell
+Invoke-RestMethod http://localhost:8080/healthz
+Invoke-RestMethod http://localhost:8080/api/health
+Invoke-RestMethod http://localhost:8080/api/provider-status
+```
+
+The backend is intentionally not published directly by Docker Compose. Nginx serves the frontend and proxies `/api/*` to the backend inside the Docker network.
+
+The default production backend image installs only runtime dependencies for fast deployment. To build a heavier image with PyTorch-based crop disease model inference inside Docker, use `krishi_backend/Dockerfile.ml` and install `requirements-ml.txt`.
+
+Stop:
+
+```powershell
+docker compose down
+```
+
+### Split Frontend / Backend Deployment
+
+If deploying frontend and backend separately:
+
+1. Backend host must set:
+
+```env
+CORS_ORIGINS=https://your-frontend-domain.com
+```
+
+2. Frontend host must set:
+
+```env
+VITE_API_URL=https://your-backend-domain.com
+```
+
+3. Rebuild frontend after changing `VITE_API_URL`.
+
+### Vercel Frontend + Render Backend
+
+Backend on Render:
+
+1. Push this repo to GitHub.
+2. In Render, create a new Blueprint from this repository.
+3. Render reads `render.yaml` and creates `raitharakshaka-api`.
+4. Add the prompted secret environment variables in the Render dashboard.
+5. The expected backend URL is:
+
+```text
+https://raitharakshaka-api.onrender.com
+```
+
+Frontend on Vercel:
+
+1. Import the same GitHub repo in Vercel.
+2. Set Root Directory to `frontend`.
+3. Set Environment Variable:
+
+```env
+VITE_API_URL=https://raitharakshaka-api.onrender.com
+```
+
+4. Deploy.
+
+The backend allows Vercel domains through `CORS_ORIGIN_REGEX=^https://.*\.vercel\.app$`. For a custom domain, add it to `CORS_ORIGINS` on Render.
+
+### Production Environment Notes
+
+- Set `GOOGLE_PLACES_API_KEY` for accurate Google Maps-style agritech vendor search.
+- Set `GROQ_API_KEY` or `OPENROUTER_API_KEY` for live AI and translation quality.
+- Set `DATA_GOV_API_KEY` for stronger mandi data fallback.
+- Train the crop disease model before expecting ML image classification.
+- Keep `CORS_ORIGINS` restricted to your real frontend domains in production.
+
 ## Environment
 
 Backend secrets live in `krishi_backend/.env`, which is ignored by git. Required keys:
@@ -53,6 +155,7 @@ TAVILY_API_KEY=
 NASA_EARTHDATA_TOKEN=
 DATA_GOV_API_KEY=
 GOOGLE_PLACES_API_KEY=
+CORS_ORIGINS=http://localhost:8080
 ENABLE_LIVE_AI=true
 ENABLE_TAVILY_SEARCH=true
 ENABLE_SOILGRIDS=true
@@ -88,6 +191,7 @@ Train it once from the backend folder:
 
 ```powershell
 cd krishi_backend
+pip install -r requirements-ml.txt
 python train_crop_disease_model.py --epochs 8 --batch-size 16
 ```
 

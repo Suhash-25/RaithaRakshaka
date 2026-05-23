@@ -1,11 +1,9 @@
 fastapi
 uvicorn[standard]
+gunicorn
 python-dotenv
 httpx
 python-multipart
 pydantic
 pydantic-settings
-datasets
 pillow
-torch
-torchvision

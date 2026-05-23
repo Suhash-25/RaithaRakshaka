@@ -1,0 +1,25 @@
+services:
+  backend:
+    build:
+      context: ./krishi_backend
+    env_file:
+      - ./krishi_backend/.env
+    environment:
+      PORT: 8001
+      CORS_ORIGINS: http://localhost:8080,http://127.0.0.1:8080
+      WEB_CONCURRENCY: 2
+      WEB_TIMEOUT: 180
+    expose:
+      - "8001"
+    restart: unless-stopped
+
+  frontend:
+    build:
+      context: ./frontend
+      args:
+        VITE_API_URL: ""
+    depends_on:
+      - backend
+    ports:
+      - "8080:80"
+    restart: unless-stopped

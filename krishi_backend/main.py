@@ -422,47 +422,62 @@ async def fetch_google_places_vendors(lat: float, lon: float, radius: int, categ
     if not api_key:
         return []
     vendors = []
+    region = await reverse_geocode(lat, lon)
+    place_text = ", ".join(part for part in [region.get("district") or region.get("region"), region.get("state"), region.get("country")] if part)
     try:
         async with httpx.AsyncClient(timeout=12) as client:
             for term in vendor_search_terms(category):
-                response = await client.get(
-                    "https://maps.googleapis.com/maps/api/place/nearbysearch/json",
-                    params={
-                        "location": f"{lat},{lon}",
-                        "radius": radius,
-                        "keyword": term,
-                        "key": api_key,
-                    },
-                )
-                response.raise_for_status()
-                payload = response.json()
-                if payload.get("status") not in {"OK", "ZERO_RESULTS"}:
-                    continue
-                for item in payload.get("results") or []:
-                    loc = (item.get("geometry") or {}).get("location") or {}
-                    item_lat = loc.get("lat")
-                    item_lon = loc.get("lng")
-                    if item_lat is None or item_lon is None:
+                searches = [
+                    (
+                        "https://maps.googleapis.com/maps/api/place/nearbysearch/json",
+                        {
+                            "location": f"{lat},{lon}",
+                            "radius": radius,
+                            "keyword": term,
+                            "key": api_key,
+                        },
+                    ),
+                    (
+                        "https://maps.googleapis.com/maps/api/place/textsearch/json",
+                        {
+                            "query": f"{term} in {place_text}",
+                            "location": f"{lat},{lon}",
+                            "radius": radius,
+                            "key": api_key,
+                        },
+                    ),
+                ]
+                for url, params in searches:
+                    response = await client.get(url, params=params)
+                    response.raise_for_status()
+                    payload = response.json()
+                    if payload.get("status") not in {"OK", "ZERO_RESULTS"}:
                         continue
-                    place_id = item.get("place_id", "")
-                    details = await fetch_google_place_details(place_id, api_key) if place_id else {}
-                    maps_url = details.get("url") or f"https://www.google.com/maps/search/?api=1&query={item_lat},{item_lon}&query_place_id={place_id}"
-                    tags = {"name": f"{item.get('name', '')} {term}", "description": " ".join(item.get("types") or [])}
-                    vendors.append({
-                        "id": f"google-{place_id or normalise_location_key(item.get('name', 'vendor'))}",
-                        "name": item.get("name") or "Agritech vendor",
-                        "category": vendor_category(tags),
-                        "address": item.get("vicinity") or item.get("formatted_address") or "Address available on Google Maps",
-                        "phone": details.get("international_phone_number") or details.get("formatted_phone_number") or "",
-                        "rating": item.get("rating"),
-                        "opening_status": "Open Now" if (item.get("opening_hours") or {}).get("open_now") else "Opening hours not listed",
-                        "latitude": float(item_lat),
-                        "longitude": float(item_lon),
-                        "distance_km": 0,
-                        "maps_url": maps_url,
-                        "source": "Google Places live nearby search",
-                        "matched_query": term,
-                    })
+                    for item in payload.get("results") or []:
+                        loc = (item.get("geometry") or {}).get("location") or {}
+                        item_lat = loc.get("lat")
+                        item_lon = loc.get("lng")
+                        if item_lat is None or item_lon is None:
+                            continue
+                        place_id = item.get("place_id", "")
+                        details = await fetch_google_place_details(place_id, api_key) if place_id else {}
+                        maps_url = details.get("url") or f"https://www.google.com/maps/search/?api=1&query={item_lat},{item_lon}&query_place_id={place_id}"
+                        tags = {"name": f"{item.get('name', '')} {term}", "description": " ".join(item.get("types") or [])}
+                        vendors.append({
+                            "id": f"google-{place_id or normalise_location_key(item.get('name', 'vendor'))}",
+                            "name": item.get("name") or "Agritech vendor",
+                            "category": vendor_category(tags),
+                            "address": item.get("vicinity") or item.get("formatted_address") or "Address available on Google Maps",
+                            "phone": details.get("international_phone_number") or details.get("formatted_phone_number") or "",
+                            "rating": item.get("rating"),
+                            "opening_status": "Open Now" if (item.get("opening_hours") or {}).get("open_now") else "Opening hours not listed",
+                            "latitude": float(item_lat),
+                            "longitude": float(item_lon),
+                            "distance_km": 0,
+                            "maps_url": maps_url,
+                            "source": "Google Places live nearby search",
+                            "matched_query": term,
+                        })
     except Exception:
         return []
     return strict_vendor_filter(vendors, lat, lon, radius, category)

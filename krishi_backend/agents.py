@@ -683,6 +683,10 @@ class MarketPriceAgent:
         "maize": {"cmdt_id": 4, "cmdt_name": "Maize", "cmdt_group_id": 1},
         "cotton": {"cmdt_id": 15, "cmdt_name": "Cotton", "cmdt_group_id": 4},
         "groundnut": {"cmdt_id": 10, "cmdt_name": "Groundnut", "cmdt_group_id": 3},
+        "sugarcane": {"cmdt_id": 122, "cmdt_name": "Sugarcane", "cmdt_group_id": 10},
+        "sugar cane": {"cmdt_id": 122, "cmdt_name": "Sugarcane", "cmdt_group_id": 10},
+        "soybean": {"cmdt_id": 13, "cmdt_name": "Soyabean", "cmdt_group_id": 3},
+        "soyabean": {"cmdt_id": 13, "cmdt_name": "Soyabean", "cmdt_group_id": 3},
     }
     COMMON_STATES = {"karnataka": 16}
     LOCATION_ALIASES = {
@@ -726,6 +730,8 @@ class MarketPriceAgent:
         live = await self.fetch_agmarknet(crop, state, location, district=district, mandi=mandi)
         if not live:
             live = await self.fetch_data_gov(crop, state, district=district or location, mandi=mandi)
+        if not live and (district or location):
+            live = await self.fetch_data_gov(crop, state, district=None, mandi=None)
         result = live or self.unavailable_market(crop, location=location, state=state, district=district or location)
         status = "success" if live else "warning"
         message = f"Live mandi signal ready for {result['crop']}" if live else "Live mandi feed unavailable"
@@ -760,6 +766,7 @@ class MarketPriceAgent:
             "corn": "maize",
             "chilli": "green chilli",
             "sugar cane": "sugarcane",
+            "soybean": "soyabean",
         }
         target = aliases.get(crop_norm, crop_norm)
         if not filters and target in self.COMMON_COMMODITIES:
@@ -953,6 +960,7 @@ class MarketPriceAgent:
         today = datetime.now()
         current_payload = None
         current_date = today
+        fallback_to_state = False
         for days_back in range(0, 3):
             report_date = today - timedelta(days=days_back)
             current_payload = await self.fetch_agmarknet_report(commodity, report_date, timeout=5)
@@ -961,25 +969,21 @@ class MarketPriceAgent:
                 current_date = report_date
                 break
         else:
-            return self.unavailable_market(
-                crop,
-                location=display_location,
-                state=state,
-                district=district or location,
-                source="Agmarknet 2.0 live report",
-                message="No market data available for selected district.",
-            )
+            for days_back in range(0, 5):
+                report_date = today - timedelta(days=days_back)
+                current_payload = await self.fetch_agmarknet_report(commodity, report_date, timeout=5)
+                records = self.flatten_agmarknet_records(current_payload or {}, state_id, display_location, {"strict": False}) if current_payload else []
+                if records:
+                    current_date = report_date
+                    fallback_to_state = True
+                    break
+            else:
+                return None
 
-        records = self.flatten_agmarknet_records(current_payload or {}, state_id, display_location, market_scope)
+        active_scope = {"strict": False} if fallback_to_state else market_scope
+        records = self.flatten_agmarknet_records(current_payload or {}, state_id, display_location, active_scope)
         if not records:
-            return self.unavailable_market(
-                crop,
-                location=display_location,
-                state=state,
-                district=district or location,
-                source="Agmarknet 2.0 live report",
-                message="No market data available for selected district.",
-            )
+            return None
 
         selected = records[:5]
         current = round(sum(r["price"] for r in selected) / len(selected))
@@ -988,7 +992,7 @@ class MarketPriceAgent:
         for days_back in range(1, 3):
             report_date = current_date - timedelta(days=days_back)
             previous_payload = await self.fetch_agmarknet_report(commodity, report_date, timeout=4)
-            previous_records = self.flatten_agmarknet_records(previous_payload or {}, state_id, display_location, market_scope) if previous_payload else []
+            previous_records = self.flatten_agmarknet_records(previous_payload or {}, state_id, display_location, active_scope) if previous_payload else []
             if previous_records:
                 previous_selected = previous_records[:5]
                 previous = round(sum(r["price"] for r in previous_selected) / len(previous_selected))
@@ -999,7 +1003,7 @@ class MarketPriceAgent:
             {
                 "name": r["name"],
                 "price": r["price"],
-                "distance_km": "selected district",
+                "distance_km": "selected district" if not fallback_to_state else "nearest available state market",
                 "arrivals": r["arrivals"],
                 "arrival_unit": r["arrival_unit"],
                 "variety": r["variety"],
@@ -1010,6 +1014,8 @@ class MarketPriceAgent:
             for r in selected
         ]
         source = f"Agmarknet 2.0 live report ({current_date.strftime('%d %b %Y')})"
+        if fallback_to_state:
+            source += " - Karnataka fallback"
         return self.market_payload(
             crop,
             current,
@@ -1020,6 +1026,11 @@ class MarketPriceAgent:
             location=display_location,
             state=state,
             district=district or location,
+            scope_note=(
+                f"No current Agmarknet row was found for {display_location}; showing nearest available Karnataka market signal."
+                if fallback_to_state
+                else ""
+            ),
         )
 
     async def fetch_data_gov(
@@ -1118,6 +1129,7 @@ class MarketPriceAgent:
         location: str = "",
         state: str = "",
         district: str = "",
+        scope_note: str = "",
     ) -> Dict[str, Any]:
         week_ago = previous_price or current
         month_ago = previous_price or current
@@ -1140,7 +1152,11 @@ class MarketPriceAgent:
             "demand": "High" if sum(float(m.get("arrivals") or 0) for m in markets) > 100 else "Moderate",
             "source": source,
             "updated_at": now_iso(),
-            "ai_prediction": f"Agmarknet live prices show {crop.title()} around Rs {current}/quintal near {location or 'the selected region'}. Compare arrivals before deciding the selling market.",
+            "ai_prediction": (
+                scope_note
+                or f"Agmarknet live prices show {crop.title()} around Rs {current}/quintal near {location or 'the selected region'}. Compare arrivals before deciding the selling market."
+            ),
+            "scope_note": scope_note,
             "chart": [
                 {"label": previous_label, "price": week_ago},
                 {"label": "Today", "price": current},

@@ -941,10 +941,8 @@ class MarketPriceAgent:
             if payload.get("success"):
                 self.REPORT_CACHE[key] = {"created_at": datetime.now(), "data": payload}
                 return payload
-            self.REPORT_CACHE[key] = {"created_at": datetime.now(), "data": None}
             return None
         except Exception:
-            self.REPORT_CACHE[key] = {"created_at": datetime.now(), "data": None}
             return None
 
     async def fetch_agmarknet(
@@ -971,7 +969,7 @@ class MarketPriceAgent:
         current_date = today
         for days_back in range(0, 3):
             report_date = today - timedelta(days=days_back)
-            current_payload = await self.fetch_agmarknet_report(commodity, report_date, timeout=5)
+            current_payload = await self.fetch_agmarknet_report(commodity, report_date, timeout=14)
             records = self.flatten_agmarknet_records(current_payload or {}, state_id, display_location, market_scope) if current_payload else []
             if records:
                 current_date = report_date
@@ -989,7 +987,7 @@ class MarketPriceAgent:
         previous_label = "Previous"
         for days_back in range(1, 3):
             report_date = current_date - timedelta(days=days_back)
-            previous_payload = await self.fetch_agmarknet_report(commodity, report_date, timeout=4)
+            previous_payload = await self.fetch_agmarknet_report(commodity, report_date, timeout=10)
             previous_records = self.flatten_agmarknet_records(previous_payload or {}, state_id, display_location, market_scope) if previous_payload else []
             if previous_records:
                 previous_selected = previous_records[:5]
